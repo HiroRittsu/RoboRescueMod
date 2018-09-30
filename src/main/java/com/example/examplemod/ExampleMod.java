@@ -36,7 +36,7 @@ public class ExampleMod {
 	private ArrayList<Integer> road_id = new ArrayList<>();
 	private int load_index;
 
-	private String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/kobe/map/";
+	private String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/test/map/";
 
 	private World world = null;
 	private Document doc = GMLReader.openGML(GML_DIR + "map.gml");
@@ -58,7 +58,7 @@ public class ExampleMod {
 
 		nodes = reader.readNode(doc);
 		edges = reader.readEdge(doc, nodes);
-		roads = reader.readRoad(doc, edges);
+		roads = reader.readRoads(doc, edges);
 
 		for (int id : roads.keySet())
 			road_id.add(id);
@@ -78,16 +78,17 @@ public class ExampleMod {
 				// FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager()
 				// .executeCommand(FMLCommonHandler.instance().getMinecraftServerInstance(), "tp
 				// @p 0 50 0");
-				
-				System.out.println(node.getX() + "," + node.getY());
+
+				// System.out.println(node.getX() + "," + node.getY());
 
 				BlockPos pos = new BlockPos(node.getX(), 4, -1 * node.getY());
 				world.setBlockState(pos, Blocks.IRON_BLOCK.getDefaultState());
 
 			}
+			load_index++;
+		} else {
+			System.out.println("finish");
 		}
-
-		load_index++;
 
 	}
 
