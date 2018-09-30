@@ -16,12 +16,9 @@ public class DrawMap {
 		int deltaX = (int) (end.x - start.x);
 		int deltaY = (int) (end.z - start.z);
 		int stepX, stepY;
-		int step;
 		int fraction;
 
 		ArrayList<Vec3d> result = new ArrayList<>();
-
-		step = 0;
 
 		if (deltaX < 0)
 			stepX = -1;
@@ -36,7 +33,6 @@ public class DrawMap {
 		deltaY = Math.abs(deltaY * 2);
 
 		result.add(new Vec3d(nextX, 0, nextY));
-		step++;
 
 		if (deltaX > deltaY) {
 			fraction = deltaY - deltaX / 2;
@@ -48,11 +44,10 @@ public class DrawMap {
 				nextX += stepX;
 				fraction += deltaY;
 				result.add(new Vec3d(nextX, 0, nextY));
-				step++;
 			}
 		} else {
 			fraction = deltaX - deltaY / 2;
-			while (nextY != end.y) {
+			while (nextY != end.z) {
 				if (fraction >= 0) {
 					nextX += stepX;
 					fraction -= deltaY;
@@ -60,7 +55,6 @@ public class DrawMap {
 				nextY += stepY;
 				fraction += deltaX;
 				result.add(new Vec3d(nextX, 0, nextY));
-				step++;
 			}
 		}
 
@@ -76,13 +70,14 @@ public class DrawMap {
 
 			Building building = buildings.get(index);
 
-			for (int i = 0; i <= building.getFloor(); i++) {
-				for (Integer[] ids : building.getEdgeIds()) { // node points
+			for (Integer[] ids : building.getEdgeIds()) { // node points
 
-					vec3ds = completionLine(nodes.get(ids[0]), nodes.get(ids[1])); // completion
+				vec3ds = completionLine(nodes.get(ids[0]), nodes.get(ids[1])); // completion
 
+				for (int i = 0; i <= building.getFloor(); i++) {
 					for (Vec3d vec3d : vec3ds) { // draw
-						BlockPos pos = new BlockPos(vec3d.x, vec3d.y + 4 + (4 * i), vec3d.z);
+
+						BlockPos pos = new BlockPos(vec3d.x, vec3d.y + 4 + (4 * i), -1 * vec3d.z);
 						world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
 					}
 				}
@@ -99,12 +94,14 @@ public class DrawMap {
 
 			Road road = roads.get(index);
 
-			for (Integer[] ids : road.getEdgeIds()) { // node points
+			System.out.println(road.getId());
 
+			for (Integer[] ids : road.getEdgeIds()) { // node points
+				System.out.println(nodes.get(ids[0]) + " " + nodes.get(ids[1]));
 				vec3ds = completionLine(nodes.get(ids[0]), nodes.get(ids[1])); // completion
 
 				for (Vec3d vec3d : vec3ds) { // draw
-					BlockPos pos = new BlockPos(vec3d.x, 4, -1 * vec3d.y);
+					BlockPos pos = new BlockPos(vec3d.x, 4, -1 * vec3d.z);
 					world.setBlockState(pos, Blocks.DOUBLE_STONE_SLAB.getDefaultState());
 				}
 			}

@@ -1,6 +1,5 @@
 package com.example.examplemod;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
