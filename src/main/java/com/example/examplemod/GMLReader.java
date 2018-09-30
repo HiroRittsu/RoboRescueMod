@@ -10,68 +10,10 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import com.sun.javafx.geom.Vec3d;
+import net.minecraft.util.math.Vec3d;
+
 
 public class GMLReader {
-
-	public static int MULTI_STEP = 1;
-
-	private ArrayList<Point> completionLine(Point start, Point end) {
-		int nextX = (int) start.x;
-		int nextY = (int) start.y;
-		int deltaX = (int) (end.x - start.x);
-		int deltaY = (int) (end.y - start.y);
-		int stepX, stepY;
-		int step;
-		int fraction;
-
-		ArrayList<Point> result = new ArrayList<>();
-
-		step = 0;
-
-		if (deltaX < 0)
-			stepX = -1;
-		else
-			stepX = 1;
-		if (deltaY < 0)
-			stepY = -1;
-		else
-			stepY = 1;
-
-		deltaX = Math.abs(deltaX * 2);
-		deltaY = Math.abs(deltaY * 2);
-
-		result.add(new Point(nextX, nextY));
-		step++;
-
-		if (deltaX > deltaY) {
-			fraction = deltaY - deltaX / 2;
-			while (nextX != end.x) {
-				if (fraction >= 0) {
-					nextY += stepY;
-					fraction -= deltaX;
-				}
-				nextX += stepX;
-				fraction += deltaY;
-				result.add(new Point(nextX, nextY));
-				step++;
-			}
-		} else {
-			fraction = deltaX - deltaY / 2;
-			while (nextY != end.y) {
-				if (fraction >= 0) {
-					nextX += stepX;
-					fraction -= deltaY;
-				}
-				nextY += stepY;
-				fraction += deltaX;
-				result.add(new Point(nextX, nextY));
-				step++;
-			}
-		}
-
-		return result;
-	}
 
 	private static int readID(Element node) {
 
@@ -103,7 +45,7 @@ public class GMLReader {
 
 	public Building readBuildingData(Element building, Map<Integer, Edge> edges) {
 
-		ArrayList<Integer> edge_ids = new ArrayList<>();
+		ArrayList<Integer[]> edge_ids = new ArrayList<>();
 		int id = readID(building);
 		int floors = 0;
 		int buildingcode = 0;
@@ -120,8 +62,7 @@ public class GMLReader {
 				Element directededge = (Element) next4;
 
 				Edge edge = edges.get(Integer.parseInt(directededge.attributeValue("href").replaceAll("#", "")));
-				for (Integer node : edge.getNodeID())
-					edge_ids.add(node);
+				edge_ids.add(edge.getNodeID());
 			}
 		}
 		return new Building(id, floors, "Wood", edge_ids);
@@ -145,7 +86,7 @@ public class GMLReader {
 	public Road readRoadData(Element road, Map<Integer, Edge> edges) {
 
 		int id = readID(road);
-		ArrayList<Integer> edge_id = new ArrayList<>();
+		ArrayList<Integer[]> edge_id = new ArrayList<>();
 
 		for (Object next3 : road.elements("Face")) {
 			Element face = (Element) next3;
@@ -154,8 +95,7 @@ public class GMLReader {
 
 				Edge edge = edges.get(Integer.parseInt(directededge.attributeValue("href").replaceAll("#", "")));
 
-				for (Integer node : edge.getNodeID())
-					edge_id.add(node);
+				edge_id.add(edge.getNodeID());
 			}
 		}
 		return new Road(id, edge_id);

@@ -1,6 +1,7 @@
 package com.example.examplemod;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -12,7 +13,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,26 +20,22 @@ import java.util.Map;
 import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
 
-@Mod(modid = ExampleMod.MODID, name = ExampleMod.NAME, version = ExampleMod.VERSION)
-public class ExampleMod {
+@Mod(modid = RoboRescueMod.MODID, name = RoboRescueMod.NAME, version = RoboRescueMod.VERSION)
+public class RoboRescueMod {
 	public static final String MODID = "examplemod";
 	public static final String NAME = "Example Mod";
 	public static final String VERSION = "1.0";
 
-	private Map<Integer, Point> nodes = new HashMap<>();
-	private Map<Integer, ArrayList<Point>> edges = new HashMap<>();
+	private Map<Integer, Vec3d> nodes = new HashMap<>();
+	private Map<Integer, Edge> edges = new HashMap<>();
 	private ArrayList<Road> roads = new ArrayList<>();
 	private ArrayList<Building> buildings = new ArrayList<>();
 
-	private ArrayList<Integer> road_id = new ArrayList<>();
 	private int road_index = 0;
 	private int building_index = 0;
 
-	//private String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/kobe/map/";
-	private String GML_DIR = "/home/migly/git/rcrs-server-master/maps/gml/ritsumei/";
-
 	private World world = null;
-	private Document doc = GMLReader.openGML(GML_DIR + "map.gml");
+	private Document doc;
 
 	private static Logger logger;
 
@@ -54,10 +50,14 @@ public class ExampleMod {
 		// some example code
 		logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
 
+		String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/test/map/";
+		// String GML_DIR = "/home/migly/git/rcrs-server-master/maps/gml/ritsumei/";
+
 		GMLReader reader = new GMLReader();
+		doc = GMLReader.openGML(GML_DIR + "map.gml");
 
 		nodes = reader.readNode(doc);
-		edges = reader.readEdge(doc, nodes);
+		edges = reader.readEdge(doc);
 		roads = reader.readRoads(doc, edges);
 		buildings = reader.readBuildings(doc, edges);
 
@@ -76,7 +76,7 @@ public class ExampleMod {
 			return;
 		}
 
-		DrawMap.drawRoad(road_index, roads, world);
+		DrawMap.drawRoad(road_index, roads, nodes, world);
 		road_index++;
 
 		if (buildings == null) {
@@ -84,7 +84,7 @@ public class ExampleMod {
 			return;
 		}
 
-		DrawMap.drawBuildings(building_index, buildings, world);
+		DrawMap.drawBuildings(building_index, buildings, nodes, world);
 		building_index++;
 
 	}

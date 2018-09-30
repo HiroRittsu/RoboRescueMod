@@ -9,12 +9,14 @@ public class Building {
 	private int id;
 	private int floor;
 	private String material;
-	private ArrayList<Integer> edge_id;
+	private ArrayList<Edge> edges;
+	private ArrayList<Integer[]> edge_ids;
 
-	public Building(int id, int floor, String material, ArrayList<Integer> edge_ids) {
+	public Building(int id, int floor, String material, ArrayList<Integer[]> edge_ids) {
 		this.id = id;
 		this.floor = floor;
 		this.material = material;
+		this.edge_ids = edge_ids;
 	}
 
 	public int getId() {
@@ -33,8 +35,12 @@ public class Building {
 		return this.material;
 	}
 
-	public ArrayList<Integer> getEdgeId() {
-		return this.edge_id;
+	public ArrayList<Edge> getEdgeId() {
+		return this.edges;
+	}
+
+	public ArrayList<Integer[]> getEdgeIds() {
+		return this.edge_ids;
 	}
 
 }
