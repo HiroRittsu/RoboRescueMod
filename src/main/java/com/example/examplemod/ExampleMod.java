@@ -1,7 +1,6 @@
 package com.example.examplemod;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -36,7 +35,7 @@ public class ExampleMod {
 	private int road_index = 0;
 	private int building_index = 0;
 
-	//private String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/sf/map/";
+	//private String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/kobe/map/";
 	private String GML_DIR = "/home/migly/git/rcrs-server-master/maps/gml/ritsumei/";
 
 	private World world = null;
