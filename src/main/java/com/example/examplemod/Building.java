@@ -1,34 +1,33 @@
 package com.example.examplemod;
 
+import java.awt.Point;
 import java.util.ArrayList;
-
-import net.minecraft.util.math.Vec3d;
 
 public class Building {
 
-	private Vec3d point;
+	private Point point;
 	private int id;
 	private int floor;
 	private String material;
-	private ArrayList<Vec3d> edge_point;
+	private ArrayList<Point> edge_point;
 	private ArrayList<Integer> edge_id;
 
-	public Building(int id, int floor, String material, ArrayList<Vec3d> edge_point) {
+	public Building(int id, int floor, String material, ArrayList<Point> edge_points) {
 		this.id = id;
 		this.floor = floor;
 		this.material = material;
-		this.edge_point = edge_point;
+		this.edge_point = edge_points;
 	}
 
 	public int getId() {
 		return this.id;
 	}
 
-	public void setPosition(Vec3d point) {
+	public void setPosition(Point point) {
 		this.point = point;
 	}
 
-	public Vec3d getPosition() {
+	public Point getPosition() {
 		return this.point;
 	}
 
@@ -40,7 +39,7 @@ public class Building {
 		return this.material;
 	}
 
-	public ArrayList<Vec3d> getEdge_point() {
+	public ArrayList<Point> getEdge_point() {
 		return this.edge_point;
 	}
 

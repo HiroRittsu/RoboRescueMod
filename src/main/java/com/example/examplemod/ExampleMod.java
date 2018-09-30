@@ -5,7 +5,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -30,13 +29,15 @@ public class ExampleMod {
 
 	private Map<Integer, Point> nodes = new HashMap<>();
 	private Map<Integer, ArrayList<Point>> edges = new HashMap<>();
-	private Map<Integer, ArrayList<Point>> roads = new HashMap<>();
-	private ArrayList<Point> buidings = new ArrayList<>();
+	private ArrayList<Road> roads = new ArrayList<>();
+	private ArrayList<Building> buildings = new ArrayList<>();
 
 	private ArrayList<Integer> road_id = new ArrayList<>();
-	private int load_index;
+	private int road_index = 0;
+	private int building_index = 0;
 
-	private String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/test/map/";
+	//private String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/sf/map/";
+	private String GML_DIR = "/home/migly/git/rcrs-server-master/maps/gml/ritsumei/";
 
 	private World world = null;
 	private Document doc = GMLReader.openGML(GML_DIR + "map.gml");
@@ -59,36 +60,33 @@ public class ExampleMod {
 		nodes = reader.readNode(doc);
 		edges = reader.readEdge(doc, nodes);
 		roads = reader.readRoads(doc, edges);
-
-		for (int id : roads.keySet())
-			road_id.add(id);
+		buildings = reader.readBuildings(doc, edges);
 
 	}
 
 	@SubscribeEvent
 	public void ServerTick(TickEvent.ServerTickEvent event) {
 
-		if (road_id == null || world == null)
+		if (world == null) {
+			System.out.println("world is null");
 			return;
-
-		if (load_index < road_id.size()) {
-			System.out.println(road_id.get(load_index));
-			for (Point node : roads.get(road_id.get(load_index))) {
-
-				// FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager()
-				// .executeCommand(FMLCommonHandler.instance().getMinecraftServerInstance(), "tp
-				// @p 0 50 0");
-
-				// System.out.println(node.getX() + "," + node.getY());
-
-				BlockPos pos = new BlockPos(node.getX(), 4, -1 * node.getY());
-				world.setBlockState(pos, Blocks.IRON_BLOCK.getDefaultState());
-
-			}
-			load_index++;
-		} else {
-			System.out.println("finish");
 		}
+
+		if (roads == null) {
+			System.out.println("building is null");
+			return;
+		}
+
+		DrawMap.drawRoad(road_index, roads, world);
+		road_index++;
+
+		if (buildings == null) {
+			System.out.println("building is null");
+			return;
+		}
+
+		DrawMap.drawBuildings(building_index, buildings, world);
+		building_index++;
 
 	}
 

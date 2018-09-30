@@ -15,10 +15,10 @@ public class GMLReader {
 	public static int MULTI_STEP = 1;
 
 	private ArrayList<Point> completionLine(Point start, Point end) {
-		int nextX = start.x;
-		int nextY = start.y;
-		int deltaX = end.x - start.x;
-		int deltaY = end.y - start.y;
+		int nextX = (int) start.x;
+		int nextY = (int) start.y;
+		int deltaX = (int) (end.x - start.x);
+		int deltaY = (int) (end.y - start.y);
 		int stepX, stepY;
 		int step;
 		int fraction;
@@ -99,9 +99,54 @@ public class GMLReader {
 		return doc;
 	}
 
-	public ArrayList<Point> readRoadData(Element road, Map<Integer, ArrayList<Point>> edges) {
+	public Building readBuildingData(Element building, Map<Integer, ArrayList<Point>> edges) {
 
-		ArrayList<Point> point = new ArrayList<>();
+		ArrayList<Point> edge_points = new ArrayList<>();
+		int id = readID(building);
+		int floors = 0;
+		int buildingcode = 0;
+		int importance = 0;
+
+		for (Object next3 : building.elements("Face")) {
+			Element face = (Element) next3;
+
+			floors = Integer.parseInt(face.attributeValue("floors"));
+			buildingcode = Integer.parseInt(face.attributeValue("buildingcode"));
+			importance = Integer.parseInt(face.attributeValue("importance"));
+
+			for (Object next4 : face.elements("directedEdge")) {
+				Element directededge = (Element) next4;
+
+				// get Position
+				for (Point point : edges
+						.get(Integer.parseInt(directededge.attributeValue("href").replaceAll("#", "")))) {
+					edge_points.add(new Point(point.x, point.y));
+
+				}
+			}
+		}
+		return new Building(id, floors, "Wood", edge_points);
+	}
+
+	public ArrayList<Building> readBuildings(Document doc, Map<Integer, ArrayList<Point>> edges) {
+
+		ArrayList<Building> result = new ArrayList<>();
+
+		for (Object next : doc.getRootElement().elements("buildinglist")) {
+			Element roadList = (Element) next;
+			for (Object next2 : roadList.elements("building")) {
+				Element building = (Element) next2;
+				result.add(readBuildingData(building, edges));
+			}
+		}
+		return result;
+
+	}
+
+	public Road readRoadData(Element road, Map<Integer, ArrayList<Point>> edges) {
+
+		int id = readID(road);
+		ArrayList<Point> edge_points = new ArrayList<>();
 
 		for (Object next3 : road.elements("Face")) {
 			Element face = (Element) next3;
@@ -109,24 +154,28 @@ public class GMLReader {
 			for (Object next4 : face.elements("directedEdge")) {
 				Element directededge = (Element) next4;
 
-				for (Point edge_point : edges
-						.get(Integer.parseInt(directededge.attributeValue("href").replaceAll("#", ""))))
-					point.add(edge_point);
+				// get Position
+				for (Point point : edges
+						.get(Integer.parseInt(directededge.attributeValue("href").replaceAll("#", "")))) {
+					edge_points.add(new Point(point.x, point.y));
+
+				}
 			}
 		}
-		return point;
+
+		return new Road(id, edge_points);
 	}
 
-	public Map<Integer, ArrayList<Point>> readRoads(Document doc, Map<Integer, ArrayList<Point>> edges) {
+	public ArrayList<Road> readRoads(Document doc, Map<Integer, ArrayList<Point>> edges) {
 
-		Map<Integer, ArrayList<Point>> result = new HashMap<>();
+		ArrayList<Road> result = new ArrayList<>();
 
 		for (Object next : doc.getRootElement().elements("roadlist")) {
 			Element roadList = (Element) next;
 			for (Object next2 : roadList.elements("road")) {
 				Element road = (Element) next2;
 
-				result.put(readID(road), readRoadData(road, edges));
+				result.add(readRoadData(road, edges));
 			}
 		}
 		return result;
@@ -172,7 +221,6 @@ public class GMLReader {
 
 		Map<Integer, Point> result = new HashMap<>();
 		String value;
-		int id;
 		int x;
 		int y;
 
@@ -185,10 +233,7 @@ public class GMLReader {
 				x = (int) Double.parseDouble(value.split(",", 0)[0]);
 				y = (int) Double.parseDouble(value.split(",", 0)[1]);
 
-				// ID
-				id = readID(node);
-
-				result.put(id, new Point(x, y));
+				result.put(readID(node), new Point(x, y));
 			}
 		}
 
