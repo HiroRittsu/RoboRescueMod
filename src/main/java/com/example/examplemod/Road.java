@@ -7,19 +7,18 @@ public class Road {
 
 	Point position;
 	private int id;
-	private ArrayList<Point> edge_point;
-	private ArrayList<Integer> edge_id;
+	private ArrayList<Integer> edge_ids;
 
-	public Road(int id, ArrayList<Point> edge_points) {
+	public Road(int id, ArrayList<Integer> edge_ids) {
 		this.id = id;
-		this.edge_point = edge_points;
+		this.edge_ids = edge_ids;
 	}
 
 	public int getId() {
 		return this.id;
 	}
 
-	public ArrayList<Point> getEdge_point() {
-		return this.edge_point;
+	public ArrayList<Integer> getEdgeId() {
+		return this.edge_ids;
 	}
 }

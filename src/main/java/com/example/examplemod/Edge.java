@@ -17,6 +17,10 @@ public class Edge {
 		return this.id;
 	}
 
+	public Integer[] getNodeID() {
+		return this.nodes;
+	}
+
 	public double getStartId() {
 		return nodes[0];
 	}

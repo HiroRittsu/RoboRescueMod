@@ -101,9 +101,9 @@ public class GMLReader {
 		return doc;
 	}
 
-	public Building readBuildingData(Element building, Map<Integer, ArrayList<Point>> edges) {
+	public Building readBuildingData(Element building, Map<Integer, Edge> edges) {
 
-		ArrayList<Point> edge_points = new ArrayList<>();
+		ArrayList<Integer> edge_ids = new ArrayList<>();
 		int id = readID(building);
 		int floors = 0;
 		int buildingcode = 0;
@@ -119,18 +119,15 @@ public class GMLReader {
 			for (Object next4 : face.elements("directedEdge")) {
 				Element directededge = (Element) next4;
 
-				// get Position
-				for (Point point : edges
-						.get(Integer.parseInt(directededge.attributeValue("href").replaceAll("#", "")))) {
-					edge_points.add(new Point(point.x, point.y));
-
-				}
+				Edge edge = edges.get(Integer.parseInt(directededge.attributeValue("href").replaceAll("#", "")));
+				for (Integer node : edge.getNodeID())
+					edge_ids.add(node);
 			}
 		}
-		return new Building(id, floors, "Wood", edge_points);
+		return new Building(id, floors, "Wood", edge_ids);
 	}
 
-	public ArrayList<Integer> readBuildings(Document doc, Map<Integer, ArrayList<Point>> edges) {
+	public ArrayList<Building> readBuildings(Document doc, Map<Integer, Edge> edges) {
 
 		ArrayList<Building> result = new ArrayList<>();
 
@@ -145,30 +142,26 @@ public class GMLReader {
 
 	}
 
-	public Road readRoadData(Element road, Map<Integer, ArrayList<Point>> edges) {
+	public Road readRoadData(Element road, Map<Integer, Edge> edges) {
 
 		int id = readID(road);
-		ArrayList<Point> edge_points = new ArrayList<>();
+		ArrayList<Integer> edge_id = new ArrayList<>();
 
 		for (Object next3 : road.elements("Face")) {
 			Element face = (Element) next3;
-
 			for (Object next4 : face.elements("directedEdge")) {
 				Element directededge = (Element) next4;
 
-				// get Position
-				for (Point point : edges
-						.get(Integer.parseInt(directededge.attributeValue("href").replaceAll("#", "")))) {
-					edge_points.add(new Point(point.x, point.y));
+				Edge edge = edges.get(Integer.parseInt(directededge.attributeValue("href").replaceAll("#", "")));
 
-				}
+				for (Integer node : edge.getNodeID())
+					edge_id.add(node);
 			}
 		}
-
-		return new Road(id, edge_points);
+		return new Road(id, edge_id);
 	}
 
-	public ArrayList<Road> readRoads(Document doc, Map<Integer, ArrayList<Point>> edges) {
+	public ArrayList<Road> readRoads(Document doc, Map<Integer, Edge> edges) {
 
 		ArrayList<Road> result = new ArrayList<>();
 
@@ -183,39 +176,38 @@ public class GMLReader {
 		return result;
 	}
 
-	public Map<Integer, ArrayList<Integer>> readEdge(Document doc) {
+	private Edge readEdgeData(Element edge) {
 
-		Map<Integer, Integer[]> result = new HashMap<>();
-		String startID = null;
-		String endID = null;
-		int id;
+		int id = readID(edge);
+		Integer[] nodes = new Integer[2];
+
+		for (Object next3 : edge.elements("directedNode")) {
+
+			Element directedNodeElement = (Element) next3;
+			if (directedNodeElement.attributeValue("orientation").equals("-")) {
+				nodes[0] = Integer.parseInt(directedNodeElement.attributeValue("href").replaceAll("#", ""));
+			}
+			if (directedNodeElement.attributeValue("orientation").equals("+")) {
+				nodes[1] = Integer.parseInt(directedNodeElement.attributeValue("href").replaceAll("#", ""));
+			}
+		}
+
+		return new Edge(id, nodes);
+
+	}
+
+	public Map<Integer, Edge> readEdge(Document doc) {
+
+		Map<Integer, Edge> result = new HashMap<>();
 
 		for (Object next : doc.getRootElement().elements("edgelist")) {
 			Element edgeList = (Element) next;
 			for (Object next2 : edgeList.elements("Edge")) {
 				Element edge = (Element) next2;
-				id = readID(edge);
-				for (Object next3 : edge.elements("directedNode")) {
-
-					Element directedNodeElement = (Element) next3;
-					if (directedNodeElement.attributeValue("orientation").equals("-")) {
-						startID = directedNodeElement.attributeValue("href").replaceAll("#", "");
-					}
-					if (directedNodeElement.attributeValue("orientation").equals("+")) {
-						endID = directedNodeElement.attributeValue("href").replaceAll("#", "");
-					}
-				}
-
-				// ライン補完
-				result.put(id,
-						completionLine(nodes.get(Integer.parseInt(startID)), nodes.get(Integer.parseInt(endID))));
-
-				startID = null;
-				endID = null;
-
+				readEdgeData(edge);
+				result.put(readID(edge), readEdgeData(edge));
 			}
 		}
-
 		return result;
 	}
 

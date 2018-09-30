@@ -9,22 +9,16 @@ public class Building {
 	private int id;
 	private int floor;
 	private String material;
-	private ArrayList<Point> edge_point;
 	private ArrayList<Integer> edge_id;
 
-	public Building(int id, int floor, String material, ArrayList<Point> edge_points) {
+	public Building(int id, int floor, String material, ArrayList<Integer> edge_ids) {
 		this.id = id;
 		this.floor = floor;
 		this.material = material;
-		this.edge_point = edge_points;
 	}
 
 	public int getId() {
 		return this.id;
-	}
-
-	public void setPosition(Point point) {
-		this.point = point;
 	}
 
 	public Point getPosition() {
@@ -39,11 +33,7 @@ public class Building {
 		return this.material;
 	}
 
-	public ArrayList<Point> getEdge_point() {
-		return this.edge_point;
-	}
-
-	public ArrayList<Integer> getEdge_id() {
+	public ArrayList<Integer> getEdgeId() {
 		return this.edge_id;
 	}
 
