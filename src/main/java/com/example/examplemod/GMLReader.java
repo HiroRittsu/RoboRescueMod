@@ -10,6 +10,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.sun.javafx.geom.Vec3d;
+
 public class GMLReader {
 
 	public static int MULTI_STEP = 1;
@@ -128,7 +130,7 @@ public class GMLReader {
 		return new Building(id, floors, "Wood", edge_points);
 	}
 
-	public ArrayList<Building> readBuildings(Document doc, Map<Integer, ArrayList<Point>> edges) {
+	public ArrayList<Integer> readBuildings(Document doc, Map<Integer, ArrayList<Point>> edges) {
 
 		ArrayList<Building> result = new ArrayList<>();
 
@@ -181,9 +183,9 @@ public class GMLReader {
 		return result;
 	}
 
-	public Map<Integer, ArrayList<Point>> readEdge(Document doc, Map<Integer, Point> nodes) {
+	public Map<Integer, ArrayList<Integer>> readEdge(Document doc) {
 
-		Map<Integer, ArrayList<Point>> result = new HashMap<>();
+		Map<Integer, Integer[]> result = new HashMap<>();
 		String startID = null;
 		String endID = null;
 		int id;
@@ -217,12 +219,12 @@ public class GMLReader {
 		return result;
 	}
 
-	public Map<Integer, Point> readNode(Document doc) {
+	public Map<Integer, Vec3d> readNode(Document doc) {
 
-		Map<Integer, Point> result = new HashMap<>();
+		Map<Integer, Vec3d> result = new HashMap<>();
 		String value;
 		int x;
-		int y;
+		int z;
 
 		for (Object next : doc.getRootElement().elements("nodelist")) {
 			Element nodeList = (Element) next;
@@ -231,9 +233,9 @@ public class GMLReader {
 				// 座標
 				value = node.getStringValue().replaceAll("\n", "").replaceAll(" ", "");
 				x = (int) Double.parseDouble(value.split(",", 0)[0]);
-				y = (int) Double.parseDouble(value.split(",", 0)[1]);
+				z = (int) Double.parseDouble(value.split(",", 0)[1]);
 
-				result.put(readID(node), new Point(x, y));
+				result.put(readID(node), new Vec3d(x, 0, z));
 			}
 		}
 
