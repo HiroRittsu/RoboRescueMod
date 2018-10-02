@@ -2,6 +2,7 @@ package com.example.examplemod;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Building {
 
@@ -10,9 +11,9 @@ public class Building {
 	private int floor;
 	private String material;
 	private ArrayList<Edge> edges;
-	private ArrayList<Integer[]> edge_ids;
+	private HashSet<Integer[]> edge_ids;
 
-	public Building(int id, int floor, String material, ArrayList<Integer[]> edge_ids) {
+	public Building(int id, int floor, String material, HashSet<Integer[]> edge_ids) {
 		this.id = id;
 		this.floor = floor;
 		this.material = material;
@@ -39,7 +40,7 @@ public class Building {
 		return this.edges;
 	}
 
-	public ArrayList<Integer[]> getEdgeIds() {
+	public HashSet<Integer[]> getEdgeIds() {
 		return this.edge_ids;
 	}
 

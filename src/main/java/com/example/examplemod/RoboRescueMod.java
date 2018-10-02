@@ -50,8 +50,8 @@ public class RoboRescueMod {
 		// some example code
 		logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
 
-		String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/test/map/";
-		// String GML_DIR = "/home/migly/git/rcrs-server-master/maps/gml/ritsumei/";
+		//String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/test/map/";
+		String GML_DIR = "/home/migly/git/rcrs-server-master/maps/gml/ritsumei/";
 
 		GMLReader reader = new GMLReader();
 		doc = GMLReader.openGML(GML_DIR + "map.gml");
@@ -73,6 +73,11 @@ public class RoboRescueMod {
 
 		if (roads == null) {
 			System.out.println("building is null");
+			return;
+		}
+
+		if (roads.size() < road_index && buildings.size() < building_index) {
+			System.out.println("finish");
 			return;
 		}
 

@@ -1,15 +1,15 @@
 package com.example.examplemod;
 
 import java.awt.Point;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class Road {
 
 	Point position;
 	private int id;
-	private ArrayList<Integer[]> edge_ids;
+	private HashSet<Integer[]> edge_ids;
 
-	public Road(int id, ArrayList<Integer[]> edge_ids) {
+	public Road(int id, HashSet<Integer[]> edge_ids) {
 		this.id = id;
 		this.edge_ids = edge_ids;
 	}
@@ -18,11 +18,7 @@ public class Road {
 		return this.id;
 	}
 
-	public ArrayList<Integer[]> getEdgeId() {
-		return this.edge_ids;
-	}
-
-	public ArrayList<Integer[]> getEdgeIds() {
+	public HashSet<Integer[]> getEdgeIds() {
 		return this.edge_ids;
 	}
 }
