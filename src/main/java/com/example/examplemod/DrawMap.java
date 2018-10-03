@@ -2,6 +2,8 @@ package com.example.examplemod;
 
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.geom.Area;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -34,73 +36,41 @@ public class DrawMap {
 		return (count != 0 ? new Vec3d(sum_x / count, sum_y / count, sum_z / count) : null);
 	}
 
-	private static Point[] serchArea(Point point) {
-
-		Point[] targets = new Point[4];
-
-		targets[0] = new Point(point.x, point.y + 1);
-		targets[1] = new Point(point.x + 1, point.y);
-		targets[2] = new Point(point.x, point.y - 1);
-		targets[3] = new Point(point.x - 1, point.y);
-
-		return targets;
-	}
-
 	private static HashSet<Point> completionArea(HashSet<Vec3d> flame) {
 
-		// ダイクストラ/////
+		HashSet<Point> result = new HashSet<>();
+		Polygon polygon = new Polygon();
+		Area area;
+		Rectangle2D bounding_box;
+		double min_x;
+		double min_z;
+		double max_x;
+		double max_z;
 
-		HashSet<Point> open = new HashSet<>();
-		HashSet<Point> closed = new HashSet<>();
-		Point temp;
-
-		// 重心計算
-		Vec3d edges_centroid = calcCentroid(flame);
-
-		//if (!edges_centroid.equals(new Vec3d(74.5, 0.0, 43.5))) {
-			//closed.add(new Point(0, 0));
-			//return closed;
-		//}
-
-		// 開始地点を格納
-		open.add(toPoint(edges_centroid));
-
-		// 探索済み座標格納
+		// area登録
 		for (Vec3d vec3d : flame)
-			closed.add(toPoint(vec3d));
+			polygon.addPoint((int) vec3d.x, (int) vec3d.z);
 
-		System.out.println("#########################################");
-		
-		if(closed.contains(open.iterator().next())) {
-			System.out.println("重複");
-			return closed;
-		}
+		area = new Area(polygon);
 
-		// 深さ優先探索
-		while (!open.isEmpty()) {
+		bounding_box = area.getBounds2D();
+		min_x = bounding_box.getMinX();
+		min_z = bounding_box.getMinY();
+		max_x = bounding_box.getMaxX();
+		max_z = bounding_box.getMaxY();
 
-			System.out.println("closesize :" + closed.size());
+		// 塗りつぶし
+		for (int x = (int) min_x; x <= max_x; x++) {
+			for (int z = (int) min_z; z <= max_z; z++) {
 
-			//System.out.println("opensize :" + open.size());
-			if (open.size() > 5000) {
-				System.out.println("edges_centroid" + edges_centroid);
-				break;
-			}
+				if (area.contains(x, z))
+					result.add(new Point(x, z));
 
-			temp = open.iterator().next(); // pop
-			open.remove(temp);
-
-			closed.add(temp); // set
-
-			Point[] targets = serchArea(temp);
-
-			for (Point target : targets) {
-				//if (!closed.contains(target))
-					//open.add(target);
 			}
 		}
 
-		return closed;
+		return result;
+
 	}
 
 	private static HashSet<Vec3d> completionLine(Vec3d start, Vec3d end) {
@@ -175,13 +145,13 @@ public class DrawMap {
 
 			area = completionArea(flame);
 
-			for (int i = 0; i <= building.getFloor(); i++) {
-				for (Point point : area) { // draw
+			// for (int i = 0; i <= building.getFloor(); i++) {
+			for (Point point : area) { // draw
 
-					BlockPos pos = new BlockPos(point.x, 3 + i * 4, -1 * point.y);
-					world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
-				}
+				BlockPos pos = new BlockPos(point.x, 3, -1 * point.y);
+				world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
 			}
+			// }
 		}
 	}
 
