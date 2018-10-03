@@ -1,6 +1,7 @@
 package com.example.examplemod;
 
 import java.awt.Point;
+import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -45,33 +46,57 @@ public class DrawMap {
 		return targets;
 	}
 
-	private static HashSet<Point> completionArea(HashSet<Vec3d> edges) {
+	private static HashSet<Point> completionArea(HashSet<Vec3d> flame) {
 
 		// ダイクストラ/////
 
-		ArrayList<Point> open = new ArrayList<>();
+		HashSet<Point> open = new HashSet<>();
 		HashSet<Point> closed = new HashSet<>();
+		Point temp;
 
 		// 重心計算
-		Vec3d edges_centroid = calcCentroid(edges);
+		Vec3d edges_centroid = calcCentroid(flame);
+
+		//if (!edges_centroid.equals(new Vec3d(74.5, 0.0, 43.5))) {
+			//closed.add(new Point(0, 0));
+			//return closed;
+		//}
 
 		// 開始地点を格納
 		open.add(toPoint(edges_centroid));
 
 		// 探索済み座標格納
-		for (Vec3d vec3d : edges)
+		for (Vec3d vec3d : flame)
 			closed.add(toPoint(vec3d));
+
+		System.out.println("#########################################");
+		
+		if(closed.contains(open.iterator().next())) {
+			System.out.println("重複");
+			return closed;
+		}
 
 		// 深さ優先探索
 		while (!open.isEmpty()) {
 
-			closed.add(open.get(0)); // set
+			System.out.println("closesize :" + closed.size());
 
-			Point[] targets = serchArea(open.remove(0)); // pop
+			//System.out.println("opensize :" + open.size());
+			if (open.size() > 5000) {
+				System.out.println("edges_centroid" + edges_centroid);
+				break;
+			}
+
+			temp = open.iterator().next(); // pop
+			open.remove(temp);
+
+			closed.add(temp); // set
+
+			Point[] targets = serchArea(temp);
 
 			for (Point target : targets) {
-				if (!closed.contains(target))
-					open.add(target);
+				//if (!closed.contains(target))
+					//open.add(target);
 			}
 		}
 
@@ -133,23 +158,28 @@ public class DrawMap {
 			throws NullPointerException {
 
 		HashSet<Vec3d> edges = new HashSet<>();
+		HashSet<Vec3d> flame = new HashSet<>();
 		HashSet<Point> area = new HashSet<>();
 
 		if (index < buildings.size()) {
 
 			Building building = buildings.get(index);
 
-			for (Integer[] ids : building.getEdgeIds()) { // node points
+			for (Integer[] ids : building.getEdgeIds()) { // node points すべてのエッジを書き出し
 
 				edges = completionLine(nodes.get(ids[0]), nodes.get(ids[1])); // completion
-				area = completionArea(edges);
 
-				for (int i = 0; i <= building.getFloor() * 4; i++) {
-					for (Point point : area) { // draw
+				flame.addAll(edges);
 
-						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.y);
-						world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
-					}
+			}
+
+			area = completionArea(flame);
+
+			for (int i = 0; i <= building.getFloor(); i++) {
+				for (Point point : area) { // draw
+
+					BlockPos pos = new BlockPos(point.x, 3 + i * 4, -1 * point.y);
+					world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
 				}
 			}
 		}
@@ -159,23 +189,26 @@ public class DrawMap {
 			throws NullPointerException {
 
 		HashSet<Vec3d> edges = new HashSet<>();
+		HashSet<Vec3d> flame = new HashSet<>();
 		HashSet<Point> area = new HashSet<>();
 
 		if (index < roads.size()) {
 
 			Road road = roads.get(index);
 
-			System.out.println(road.getId());
-
 			for (Integer[] ids : road.getEdgeIds()) { // node points
-				System.out.println(nodes.get(ids[0]) + " " + nodes.get(ids[1]));
-				edges = completionLine(nodes.get(ids[0]), nodes.get(ids[1])); // completion
-				area = completionArea(edges);
 
-				for (Point point : area) { // draw
-					BlockPos pos = new BlockPos(point.x, 3, -1 * point.y);
-					world.setBlockState(pos, Blocks.DOUBLE_STONE_SLAB.getDefaultState());
-				}
+				edges = completionLine(nodes.get(ids[0]), nodes.get(ids[1])); // completion
+
+				flame.addAll(edges);
+
+			}
+
+			area = completionArea(flame);
+
+			for (Point point : area) { // draw
+				BlockPos pos = new BlockPos(point.x, 3, -1 * point.y);
+				world.setBlockState(pos, Blocks.DOUBLE_STONE_SLAB.getDefaultState());
 			}
 		}
 	}
