@@ -1,7 +1,6 @@
 package com.example.examplemod;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
@@ -26,7 +25,7 @@ public class RoboRescueMod {
 	public static final String NAME = "RoboRescue Mod";
 	public static final String VERSION = "1.0";
 
-	private Map<Integer, Vec3d> nodes = new HashMap<>();
+	private Map<Integer, Point3D> nodes = new HashMap<>();
 	private Map<Integer, Edge> edges = new HashMap<>();
 	private ArrayList<Road> roads = new ArrayList<>();
 	private ArrayList<Building> buildings = new ArrayList<>();

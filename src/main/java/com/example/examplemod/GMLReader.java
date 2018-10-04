@@ -10,8 +10,6 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import net.minecraft.util.math.Vec3d;
-
 
 public class GMLReader {
 
@@ -151,9 +149,9 @@ public class GMLReader {
 		return result;
 	}
 
-	public Map<Integer, Vec3d> readNode(Document doc) {
+	public Map<Integer, Point3D> readNode(Document doc) {
 
-		Map<Integer, Vec3d> result = new HashMap<>();
+		Map<Integer, Point3D> result = new HashMap<>();
 		String value;
 		int x;
 		int z;
@@ -167,7 +165,7 @@ public class GMLReader {
 				x = (int) Double.parseDouble(value.split(",", 0)[0]);
 				z = (int) Double.parseDouble(value.split(",", 0)[1]);
 
-				result.put(readID(node), new Vec3d(x, 0, z));
+				result.put(readID(node), new Point3D(x, 0, z));
 			}
 		}
 
