@@ -21,7 +21,7 @@ public class RoboRescueMod {
 	public static final String NAME = "RoboRescue Mod";
 	public static final String VERSION = "1.0";
 
-	private GMLMainNode gNode = new GMLMainNode();
+	private GMLMainNode gMainNode = new GMLMainNode();
 
 	private World world = null;
 
@@ -41,19 +41,18 @@ public class RoboRescueMod {
 
 	@SubscribeEvent
 	public void ServerTick(TickEvent.ServerTickEvent event) {
-
-		gNode.drawRoad(world);
-		gNode.drawBuildings(world);
-
+		gMainNode.drawRoad();
+		gMainNode.drawBuildings();
 	}
 
 	@SubscribeEvent
 	public void onPlayerLoggin(PlayerLoggedInEvent event) {
 		world = DimensionManager.getWorld(0);
+		gMainNode.setWorld(world);
 	}
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
-		event.registerServerCommand(gNode);
+		event.registerServerCommand(gMainNode);
 	}
 }

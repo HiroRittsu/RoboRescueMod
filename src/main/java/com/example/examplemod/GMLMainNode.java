@@ -25,6 +25,10 @@ public class GMLMainNode extends CommandBase {
 	public World world = null;
 	public Document doc;
 
+	public void setWorld(World world) {
+		this.world = world;
+	}
+
 	public void init(String Path) {
 
 		GMLReader reader = new GMLReader();
@@ -36,11 +40,10 @@ public class GMLMainNode extends CommandBase {
 		buildings = reader.readBuildings(doc, edges);
 
 		// 初期化
-		
 
 	}
 
-	public void drawRoad(World world) {
+	public void drawRoad() {
 		if (world == null || this.roads == null)
 			return;
 		if (this.roads.size() > this.road_index) {
@@ -49,7 +52,7 @@ public class GMLMainNode extends CommandBase {
 		}
 	}
 
-	public void drawBuildings(World world) {
+	public void drawBuildings() {
 		if (world == null || this.buildings == null)
 			return;
 		if (this.buildings.size() > this.building_index) {
