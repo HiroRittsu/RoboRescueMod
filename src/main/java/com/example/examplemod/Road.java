@@ -1,15 +1,15 @@
 package com.example.examplemod;
 
-import java.awt.Point;
-import java.util.HashSet;
+import java.awt.Polygon;
+import java.util.ArrayList;
 
-public class Road {
+public class Road extends Polygon{
 
-	Point position;
+	Point3D position;
 	private int id;
-	private HashSet<Integer[]> edge_ids;
+	private ArrayList<Integer[]> edge_ids;
 
-	public Road(int id, HashSet<Integer[]> edge_ids) {
+	public Road(int id, ArrayList<Integer[]> edge_ids) {
 		this.id = id;
 		this.edge_ids = edge_ids;
 	}
@@ -18,7 +18,7 @@ public class Road {
 		return this.id;
 	}
 
-	public HashSet<Integer[]> getEdgeIds() {
+	public ArrayList<Integer[]> getEdgeIds() {
 		return this.edge_ids;
 	}
 }

@@ -1,9 +1,5 @@
 package com.example.examplemod;
 
-import java.awt.Point;
-import java.awt.Polygon;
-import java.awt.Shape;
-import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
@@ -14,8 +10,47 @@ import net.minecraft.world.World;
 
 public class DrawMap {
 
-	private static Point3D calcStartPoint() {
-		return null;
+	private static boolean contains(int x, int y, int z, HashSet<Point3D> closed, int[] bounding_box) {
+
+		// [0]:min_x, [1]:min_z, [2]:max_x, [3]:max_z
+		boolean p_x = true;
+		boolean m_x = true;
+		boolean p_z = true;
+		boolean m_z = true;
+		int i = 0;
+
+		if (closed.contains(new Point3D(x, y, z)))
+			return false;
+
+		while (p_x || m_x || p_z || m_z) {
+
+			System.out.println(i);
+
+			if (x + i > bounding_box[2] && x - i < bounding_box[0] && z + i > bounding_box[3]
+					&& z - i < bounding_box[1])
+				return false;
+
+			i++;
+
+			// +x方向
+			if (closed.contains(new Point3D(x + i, y, z)))
+				p_x = false;
+
+			// -x方向
+			if (closed.contains(new Point3D(x - i, y, z)))
+				m_x = false;
+
+			// +z方向
+			if (closed.contains(new Point3D(x, y, z + i)))
+				p_z = false;
+
+			// -z方向
+			if (closed.contains(new Point3D(x, y, z - i)))
+				m_z = false;
+
+		}
+
+		return true;
 	}
 
 	private static Point3D calcCentroid(ArrayList<Point3D> points) {
@@ -35,101 +70,36 @@ public class DrawMap {
 		return (count != 0 ? new Point3D(sum_x / count, sum_y / count, sum_z / count) : null);
 	}
 
-	private static Point3D[] serchArea(Point3D point3d) {
-
-		Point3D[] targets = new Point3D[4];
-
-		targets[0] = new Point3D(point3d.x, 0, point3d.z + 1);
-		targets[1] = new Point3D(point3d.x + 1, 0, point3d.z);
-		targets[2] = new Point3D(point3d.x, 0, point3d.z - 1);
-		targets[3] = new Point3D(point3d.x - 1, 0, point3d.z);
-
-		return targets;
-	}
-
 	private static HashSet<Point3D> completionArea(ArrayList<Point3D> flame) {
-
-		// ダイクストラ/////
 
 		HashSet<Point3D> open = new HashSet<>();
 		HashSet<Point3D> closed = new HashSet<>();
-		Polygon polygon = new Polygon();
-		Area area;
-		Shape shape;
-		Point3D temp;
-
-		// 重心計算
-		Point3D edges_centroid = calcCentroid(flame);
-
-		if (!edges_centroid.equals(new Point3D(-19, 0, 54))) {
-			closed.add(new Point3D(0, 0, 0));
-			return closed;
-		}
-
-		// 開始地点を格納
-		open.add(edges_centroid);
+		int[] bounding_box = new int[4];
 
 		// 探索済み座標格納
 		for (Point3D point3d : flame) {
 			closed.add(point3d);
-			polygon.addPoint(point3d.x, point3d.z);
+
+			if (bounding_box[0] > point3d.x)
+				bounding_box[0] = point3d.x;
+
+			if (bounding_box[1] > point3d.z)
+				bounding_box[1] = point3d.z;
+			
+			if (bounding_box[2] < point3d.x)
+				bounding_box[2] = point3d.x;
+
+			if (bounding_box[3] < point3d.z)
+				bounding_box[3] = point3d.z;
 		}
 
-		polygon.addPoint(flame.get(0).x, flame.get(0).z);
+		// 塗りつぶし
+		for (int x = bounding_box[0]; x <= bounding_box[2]; x++) {
+			for (int z = bounding_box[1]; z <= bounding_box[3]; z++) {
 
-		area = new Area(polygon);
+				if (contains(x, 0, z, closed, bounding_box))
+					closed.add(new Point3D(x, 0, z));
 
-		System.out.println("#########################################");
-
-		// if (closed.contains(open.iterator().next())) {
-		// System.out.println("重複");
-		// return closed;
-		// }
-
-		if (area.contains(-19, 54)) {
-			System.out.println("含まれる");
-		} else {
-			System.out.println("含まれない");
-		}
-
-		/*
-		 * if (area.contains(-20, 54)) { System.out.println("含まれる"); } else {
-		 * System.out.println("含まれない"); }
-		 * 
-		 * if (area.contains(-21, 54)) { System.out.println("含まれる"); } else {
-		 * System.out.println("含まれない"); }
-		 * 
-		 * if (area.contains(-22, 54)) { System.out.println("含まれる"); } else {
-		 * System.out.println("含まれない"); }
-		 */
-
-		if (!area.contains(new Point(edges_centroid.x, edges_centroid.z))) {
-			System.out.println(edges_centroid.x + " " + edges_centroid.z);
-			System.out.println("重心外部");
-			return closed;
-		}
-
-		// 深さ優先探索
-		while (!open.isEmpty()) {
-
-			// System.out.println("closesize :" + closed.size());
-
-			// System.out.println("opensize :" + open.size());
-			if (open.size() > 5000) {
-				System.out.println("edges_centroid" + edges_centroid);
-				break;
-			}
-
-			temp = open.iterator().next(); // pop
-			open.remove(temp);
-
-			closed.add(temp); // set
-
-			Point3D[] targets = serchArea(temp);
-
-			for (Point3D target : targets) {
-				if (!closed.contains(target))
-					open.add(target);
 			}
 		}
 

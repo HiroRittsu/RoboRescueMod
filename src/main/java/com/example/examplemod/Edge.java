@@ -1,10 +1,10 @@
 package com.example.examplemod;
 
-import net.minecraft.util.math.Vec3d;
+import java.awt.Polygon;
 
-public class Edge {
+public class Edge extends Polygon {
 
-	Vec3d position;
+	Point3D position;
 	int id;
 	Integer[] nodes;
 

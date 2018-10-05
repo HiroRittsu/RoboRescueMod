@@ -42,4 +42,10 @@ public class Point3D {
 		return getClass().getName() + "[ " + x + ", " + y + ", " + z + " ]";
 	}
 
+	public void update(int x, int y, int z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+
 }

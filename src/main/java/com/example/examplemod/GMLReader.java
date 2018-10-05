@@ -1,8 +1,8 @@
 package com.example.examplemod;
 
+import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 import org.dom4j.Document;
@@ -43,7 +43,7 @@ public class GMLReader {
 
 	public Building readBuildingData(Element building, Map<Integer, Edge> edges) {
 
-		HashSet<Integer[]> edge_ids = new HashSet<>();
+		ArrayList<Integer[]> edge_ids = new ArrayList<>();
 		int id = readID(building);
 		int floors = 0;
 		int buildingcode = 0;
@@ -78,13 +78,12 @@ public class GMLReader {
 			}
 		}
 		return result;
-
 	}
 
 	public Road readRoadData(Element road, Map<Integer, Edge> edges) {
 
 		int id = readID(road);
-		HashSet<Integer[]> edge_id = new HashSet<>();
+		ArrayList<Integer[]> edge_id = new ArrayList<>();
 
 		for (Object next3 : road.elements("Face")) {
 			Element face = (Element) next3;
