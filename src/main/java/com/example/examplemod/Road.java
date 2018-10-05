@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 public class Road extends Polygon{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Point3D position;
 	private int id;
 	private ArrayList<Integer[]> edge_ids;

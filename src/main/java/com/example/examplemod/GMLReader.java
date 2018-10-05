@@ -9,7 +9,6 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-
 public class GMLReader {
 
 	private static int readID(Element node) {
@@ -34,6 +33,7 @@ public class GMLReader {
 		try {
 			doc = reader.read(PATH);
 		} catch (DocumentException e) {
+			System.out.println("ファイルが見つかりません");
 			e.printStackTrace();
 		}
 

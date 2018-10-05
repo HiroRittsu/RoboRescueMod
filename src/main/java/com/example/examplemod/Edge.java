@@ -4,6 +4,10 @@ import java.awt.Polygon;
 
 public class Edge extends Polygon {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	Point3D position;
 	int id;
 	Integer[] nodes;

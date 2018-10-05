@@ -26,10 +26,6 @@ public class GMLMainNode extends CommandBase {
 	public Document doc;
 
 	public void init(String Path) {
-		// 初期化
-		//
-
-		System.out.println("Path : " + Path);
 
 		GMLReader reader = new GMLReader();
 		doc = GMLReader.openGML(Path + "map.gml");
@@ -38,6 +34,10 @@ public class GMLMainNode extends CommandBase {
 		edges = reader.readEdge(doc);
 		roads = reader.readRoads(doc, edges);
 		buildings = reader.readBuildings(doc, edges);
+
+		// 初期化
+		
+
 	}
 
 	public void drawRoad(World world) {

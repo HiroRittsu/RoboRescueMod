@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 public class Building extends Polygon{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Point3D point;
 	private int id;
 	private int floor;

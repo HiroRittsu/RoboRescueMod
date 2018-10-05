@@ -37,18 +37,6 @@ public class RoboRescueMod {
 	public void init(FMLInitializationEvent event) {
 		// some example code
 		logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
-
-		/*
-		 * String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/test/map/"; // String
-		 * GML_DIR = "/home/migly/git/rcrs-server-master/maps/gml/ritsumei/";
-		 * 
-		 * GMLReader reader = new GMLReader(); doc = GMLReader.openGML(GML_DIR +
-		 * "map.gml");
-		 * 
-		 * nodes = reader.readNode(doc); edges = reader.readEdge(doc); roads =
-		 * reader.readRoads(doc, edges); buildings = reader.readBuildings(doc, edges);
-		 */
-
 	}
 
 	@SubscribeEvent
