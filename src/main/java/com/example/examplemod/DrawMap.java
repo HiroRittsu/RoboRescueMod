@@ -53,11 +53,6 @@ public class DrawMap {
 		return true;
 	}
 
-	private static Point3D startPoint() {
-
-		return null;
-	}
-
 	private static Point3D[] serchArea(Point3D point) {
 
 		Point3D[] targets = new Point3D[4];
@@ -158,9 +153,7 @@ public class DrawMap {
 								open.add(target);
 						}
 					}
-
 				}
-
 			}
 		}
 

@@ -13,14 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.logging.log4j.Logger;
-import org.dom4j.Document;
-
-import com.google.common.eventbus.Subscribe;
 
 @Mod(modid = RoboRescueMod.MODID, name = RoboRescueMod.NAME, version = RoboRescueMod.VERSION)
 public class RoboRescueMod {
@@ -28,16 +21,9 @@ public class RoboRescueMod {
 	public static final String NAME = "RoboRescue Mod";
 	public static final String VERSION = "1.0";
 
-	private Map<Integer, Point3D> nodes = new HashMap<>();
-	private Map<Integer, Edge> edges = new HashMap<>();
-	private ArrayList<Road> roads = new ArrayList<>();
-	private ArrayList<Building> buildings = new ArrayList<>();
-
-	private int road_index = 0;
-	private int building_index = 0;
+	private GMLMainNode gNode = new GMLMainNode();
 
 	private World world = null;
-	private Document doc;
 
 	private static Logger logger;
 
@@ -52,47 +38,24 @@ public class RoboRescueMod {
 		// some example code
 		logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
 
-		String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/test/map/";
-		// String GML_DIR = "/home/migly/git/rcrs-server-master/maps/gml/ritsumei/";
-
-		GMLReader reader = new GMLReader();
-		doc = GMLReader.openGML(GML_DIR + "map.gml");
-
-		nodes = reader.readNode(doc);
-		edges = reader.readEdge(doc);
-		roads = reader.readRoads(doc, edges);
-		buildings = reader.readBuildings(doc, edges);
+		/*
+		 * String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/test/map/"; // String
+		 * GML_DIR = "/home/migly/git/rcrs-server-master/maps/gml/ritsumei/";
+		 * 
+		 * GMLReader reader = new GMLReader(); doc = GMLReader.openGML(GML_DIR +
+		 * "map.gml");
+		 * 
+		 * nodes = reader.readNode(doc); edges = reader.readEdge(doc); roads =
+		 * reader.readRoads(doc, edges); buildings = reader.readBuildings(doc, edges);
+		 */
 
 	}
 
 	@SubscribeEvent
 	public void ServerTick(TickEvent.ServerTickEvent event) {
 
-		if (world == null) {
-			System.out.println("world is null");
-			return;
-		}
-
-		if (roads == null) {
-			System.out.println("building is null");
-			return;
-		}
-
-		if (roads.size() < road_index && buildings.size() < building_index) {
-			System.out.println("finish");
-			return;
-		}
-
-		DrawMap.drawRoad(road_index, roads, nodes, world);
-		road_index++;
-
-		if (buildings == null) {
-			System.out.println("building is null");
-			return;
-		}
-
-		DrawMap.drawBuildings(building_index, buildings, nodes, world);
-		building_index++;
+		gNode.drawRoad(world);
+		gNode.drawBuildings(world);
 
 	}
 
@@ -103,6 +66,6 @@ public class RoboRescueMod {
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
-		event.registerServerCommand(new GMLCommand());
+		event.registerServerCommand(gNode);
 	}
 }
