@@ -49,7 +49,6 @@ public class DrawMap {
 				m_z = false;
 
 		}
-
 		return true;
 	}
 
@@ -133,11 +132,8 @@ public class DrawMap {
 
 					while (!open.isEmpty()) {
 
-						// System.out.println("closesize :" + closed.size());
-
 						System.out.println("opensize :" + open.size());
 						if (open.size() > 5000) {
-							// System.out.println("edges_centroid" + edges_centroid);
 							break;
 						}
 
@@ -209,6 +205,44 @@ public class DrawMap {
 		}
 
 		return result;
+	}
+
+	public static void resetField(World world, Map<Integer, Point3D> nodes) {
+
+		int[] bounding_box = new int[4];
+
+		for (Point3D point3d : nodes.values()) {
+
+			if (bounding_box[0] > point3d.x)
+				bounding_box[0] = point3d.x;
+
+			if (bounding_box[1] > point3d.z)
+				bounding_box[1] = point3d.z;
+
+			if (bounding_box[2] < point3d.x)
+				bounding_box[2] = point3d.x;
+
+			if (bounding_box[3] < point3d.z)
+				bounding_box[3] = point3d.z;
+		}
+
+		for (int i = 0; i < 5; i++) {
+
+			for (int z = bounding_box[1]; z < bounding_box[3]; z++) {
+				for (int x = bounding_box[0]; x < bounding_box[2]; x++) {
+
+					BlockPos pos = new BlockPos(x, i + 3, -1 * z);
+
+					if (i == 0) {
+						world.setBlockState(pos, Blocks.GRASS.getDefaultState());
+					} else {
+						world.setBlockState(pos, Blocks.AIR.getDefaultState());
+					}
+
+				}
+			}
+
+		}
 	}
 
 	public static void drawBuildings(int index, ArrayList<Building> buildings, Map<Integer, Point3D> nodes, World world)
