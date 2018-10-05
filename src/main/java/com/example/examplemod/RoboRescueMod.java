@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -18,6 +19,8 @@ import java.util.Map;
 
 import org.apache.logging.log4j.Logger;
 import org.dom4j.Document;
+
+import com.google.common.eventbus.Subscribe;
 
 @Mod(modid = RoboRescueMod.MODID, name = RoboRescueMod.NAME, version = RoboRescueMod.VERSION)
 public class RoboRescueMod {
@@ -50,7 +53,7 @@ public class RoboRescueMod {
 		logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
 
 		String GML_DIR = "/home/migly/git/rcrs-server/maps/gml/test/map/";
-		//String GML_DIR = "/home/migly/git/rcrs-server-master/maps/gml/ritsumei/";
+		// String GML_DIR = "/home/migly/git/rcrs-server-master/maps/gml/ritsumei/";
 
 		GMLReader reader = new GMLReader();
 		doc = GMLReader.openGML(GML_DIR + "map.gml");
@@ -95,8 +98,11 @@ public class RoboRescueMod {
 
 	@SubscribeEvent
 	public void onPlayerLoggin(PlayerLoggedInEvent event) {
-
 		world = DimensionManager.getWorld(0);
+	}
 
+	@EventHandler
+	public void serverStarting(FMLServerStartingEvent event) {
+		event.registerServerCommand(new GMLCommand());
 	}
 }

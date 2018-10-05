@@ -53,6 +53,23 @@ public class DrawMap {
 		return true;
 	}
 
+	private static Point3D startPoint() {
+
+		return null;
+	}
+
+	private static Point3D[] serchArea(Point3D point) {
+
+		Point3D[] targets = new Point3D[4];
+
+		targets[0] = new Point3D(point.x, 0, point.z + 1);
+		targets[1] = new Point3D(point.x + 1, 0, point.z);
+		targets[2] = new Point3D(point.x, 0, point.z - 1);
+		targets[3] = new Point3D(point.x - 1, 0, point.z);
+
+		return targets;
+	}
+
 	private static Point3D calcCentroid(ArrayList<Point3D> points) {
 
 		int count = 0;
@@ -74,6 +91,7 @@ public class DrawMap {
 
 		HashSet<Point3D> open = new HashSet<>();
 		HashSet<Point3D> closed = new HashSet<>();
+		Point3D[] temp;
 		int[] bounding_box = new int[4];
 
 		// 探索済み座標格納
@@ -85,7 +103,7 @@ public class DrawMap {
 
 			if (bounding_box[1] > point3d.z)
 				bounding_box[1] = point3d.z;
-			
+
 			if (bounding_box[2] < point3d.x)
 				bounding_box[2] = point3d.x;
 
@@ -93,12 +111,55 @@ public class DrawMap {
 				bounding_box[3] = point3d.z;
 		}
 
-		// 塗りつぶし
-		for (int x = bounding_box[0]; x <= bounding_box[2]; x++) {
-			for (int z = bounding_box[1]; z <= bounding_box[3]; z++) {
+		boolean flag = false;
 
-				if (contains(x, 0, z, closed, bounding_box))
-					closed.add(new Point3D(x, 0, z));
+		// 塗りつぶし
+		for (Point3D point3d : flame) {
+
+			if (flag)
+				break;
+
+			temp = serchArea(point3d);
+
+			for (Point3D serch : temp) {
+
+				if (closed.contains(serch))
+					continue;
+
+				if (contains(serch.x, 0, serch.z, closed, bounding_box)) { // エッジ内の場合
+
+					flag = true;
+
+					/////// 幅優先///////////////
+					Point3D pop;
+
+					// 開始地点を格納
+					open.add(serch);
+
+					while (!open.isEmpty()) {
+
+						// System.out.println("closesize :" + closed.size());
+
+						System.out.println("opensize :" + open.size());
+						if (open.size() > 5000) {
+							// System.out.println("edges_centroid" + edges_centroid);
+							break;
+						}
+
+						pop = open.iterator().next(); // pop
+						open.remove(pop);
+
+						closed.add(pop); // set
+
+						Point3D[] targets = serchArea(pop);
+
+						for (Point3D target : targets) {
+							if (!closed.contains(target))
+								open.add(target);
+						}
+					}
+
+				}
 
 			}
 		}
@@ -178,13 +239,27 @@ public class DrawMap {
 
 			area = completionArea(flame);
 
-			for (int i = 0; i <= building.getFloor(); i++) {
-				for (Point3D point : area) { // draw
+			for (int i = 0; i <= building.getFloor() * 4; i++) {
 
-					BlockPos pos = new BlockPos(point.x, 3 + i * 4, -1 * point.z);
-					world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
+				if (i % 4 == 0) {
+
+					for (Point3D point : area) { // draw
+
+						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
+						world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
+					}
+
+				} else {
+
+					for (Point3D point : flame) { // draw
+
+						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
+						world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
+					}
 				}
+
 			}
+
 		}
 	}
 
