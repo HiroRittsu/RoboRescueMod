@@ -11,6 +11,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class GMLMainNode extends CommandBase {
 
@@ -33,6 +34,16 @@ public class GMLMainNode extends CommandBase {
 
 		GMLReader reader = new GMLReader();
 		doc = GMLReader.openGML(Path + "map.gml");
+
+		if (doc == null) {
+			System.out.println("ロード失敗");
+			FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager()
+					.executeCommand(FMLCommonHandler.instance().getMinecraftServerInstance(), "#ロード失敗");
+		} else {
+			System.out.println("ロード成功");
+			FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager()
+			.executeCommand(FMLCommonHandler.instance().getMinecraftServerInstance(), "#ロード成功");
+		}
 
 		nodes = reader.readNode(doc);
 		edges = reader.readEdge(doc);

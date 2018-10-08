@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -228,8 +230,8 @@ public class DrawMap {
 
 		for (int i = 0; i < 5; i++) {
 
-			for (int z = bounding_box[1]; z < bounding_box[3]; z++) {
-				for (int x = bounding_box[0]; x < bounding_box[2]; x++) {
+			for (int z = bounding_box[1] - 5; z < bounding_box[3] + 5; z++) {
+				for (int x = bounding_box[0] - 5; x < bounding_box[2] + 5; x++) {
 
 					BlockPos pos = new BlockPos(x, i + 3, -1 * z);
 
@@ -273,7 +275,10 @@ public class DrawMap {
 					for (Point3D point : area) { // draw
 
 						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
-						world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
+						// world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
+						// world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState());
+						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
+								BlockPlanks.EnumType.byMetadata(building.getId() % 6)));
 					}
 
 				} else {
@@ -281,7 +286,8 @@ public class DrawMap {
 					for (Point3D point : flame) { // draw
 
 						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
-						world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
+						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
+								BlockPlanks.EnumType.byMetadata(building.getId() % 6)));
 					}
 				}
 
