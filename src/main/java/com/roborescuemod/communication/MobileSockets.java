@@ -1,11 +1,9 @@
 package com.roborescuemod.communication;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,14 +31,14 @@ public class MobileSockets {
 		}
 	}
 
-	public void server(int port) {
+	public void joinServer(int port) {
 
 		try {
 			// serverの設定
 			server = new ServerSocket();
 			server.bind(new InetSocketAddress("localhost", port));
 
-			System.out.println("接続待ち");
+			System.out.println("Waiting Client...");
 			// 応答待機、応答後接続
 			socket = server.accept();
 
@@ -54,13 +52,16 @@ public class MobileSockets {
 
 	}
 
-	public void client(int port) {
+	public void joinClient(int port) {
+		System.out.println("Waiting Server...");
 
-		try {
-			socket = new Socket("localhost", port);
-			buffer();
-		} catch (IOException e) {
-			System.out.println(".");
+		while (socket == null) {
+			try {
+				socket = new Socket("localhost", port);
+				buffer();
+			} catch (IOException e) {
+				// System.out.print(".");
+			}
 		}
 
 		System.out.println("connected");
@@ -88,12 +89,13 @@ public class MobileSockets {
 		return null;
 	}
 
-	public void pub_file(String Path) {
+	public void publishFile(String Path) {
 
-		byte[] buffer   = new byte[512];      // ファイル送信時のバッファ
+		byte[] buffer = new byte[51200]; // ファイル送信時のバッファ
 
 		try {
-			InputStream  inputStream  = new FileInputStream(Path);
+			@SuppressWarnings("resource")
+			InputStream inputStream = new FileInputStream(Path);
 			OutputStream outputStream = socket.getOutputStream();
 
 			// ファイルをストリームで送信
@@ -103,34 +105,26 @@ public class MobileSockets {
 			}
 
 		} catch (FileNotFoundException e) {
-			// TODO 自動生成された catch ブロック
+			System.out.println(e);
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
+			System.out.println(e);
 			e.printStackTrace();
 		}
 
-
 	}
 
-	public InputStream get_file() {
-
-		byte[] buffer = new byte[512]; // ファイル受信時のバッファ
+	public InputStream subscribeFileData() {
 
 		try {
-			InputStream  inputStream  = socket.getInputStream();
-			OutputStream outputStream = new FileOutputStream("test");
+			
+			return socket.getInputStream();
 
-			// ファイルをストリームで受信
-			int fileLength;
-			while ((fileLength = inputStream.read(buffer)) > 0) {
-				outputStream.write(buffer, 0, fileLength);
-			}
 		} catch (FileNotFoundException e) {
-			// TODO 自動生成された catch ブロック
+			System.out.println(e);
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO 自動生成された catch ブロック
+			System.out.println(e);
 			e.printStackTrace();
 		}
 
