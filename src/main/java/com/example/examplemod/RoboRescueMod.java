@@ -22,7 +22,8 @@ public class RoboRescueMod {
 	public static final String VERSION = "1.0";
 
 	private GMLMainNode gMainNode = new GMLMainNode();
-	//private MobileSockets mobileSockets = new MobileSockets();
+	private ServerTicks serverTicks = new ServerTicks();
+	// private MobileSockets mobileSockets = new MobileSockets();
 
 	private World world = null;
 
@@ -32,7 +33,7 @@ public class RoboRescueMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(this);
 		logger = event.getModLog();
-		//mobileSockets.client(12345);
+		// mobileSockets.client(12345);
 	}
 
 	@EventHandler
@@ -45,7 +46,8 @@ public class RoboRescueMod {
 	public void ServerTick(TickEvent.ServerTickEvent event) {
 		gMainNode.drawRoad();
 		gMainNode.drawBuildings();
-		//System.out.println(mobileSockets.get_msgs());
+		serverTicks.calcTicks();
+		// System.out.println(mobileSockets.get_msgs());
 	}
 
 	@SubscribeEvent
