@@ -13,7 +13,7 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class MobileSockets {
+public class SocketAPI {
 
 	private ServerSocket server = null;
 	private Socket socket = null;
