@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.roborescuemod.commons;
 
 public class Point3D {
 

@@ -1,10 +1,17 @@
-package com.example.examplemod;
+package com.roborescuemod.roborescuemod;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.dom4j.Document;
+
+import com.roborescuemod.buildmap.Building;
+import com.roborescuemod.buildmap.Edge;
+import com.roborescuemod.buildmap.Road;
+import com.roborescuemod.commons.DrawMap;
+import com.roborescuemod.commons.GMLReader;
+import com.roborescuemod.commons.Point3D;
 
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;

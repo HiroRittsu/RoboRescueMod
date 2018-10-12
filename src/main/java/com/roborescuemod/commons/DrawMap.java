@@ -1,8 +1,11 @@
-package com.example.examplemod;
+package com.roborescuemod.commons;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Map;
+
+import com.roborescuemod.buildmap.Building;
+import com.roborescuemod.buildmap.Road;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;

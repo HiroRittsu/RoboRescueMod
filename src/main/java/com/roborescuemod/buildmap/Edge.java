@@ -1,6 +1,8 @@
-package com.example.examplemod;
+package com.roborescuemod.buildmap;
 
 import java.awt.Polygon;
+
+import com.roborescuemod.commons.Point3D;
 
 public class Edge extends Polygon {
 

@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.roborescuemod.commons;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,6 +8,10 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+
+import com.roborescuemod.buildmap.Building;
+import com.roborescuemod.buildmap.Edge;
+import com.roborescuemod.buildmap.Road;
 
 public class GMLReader {
 

@@ -1,7 +1,9 @@
-package com.example.examplemod;
+package com.roborescuemod.buildmap;
 
 import java.awt.Polygon;
 import java.util.ArrayList;
+
+import com.roborescuemod.commons.Point3D;
 
 public class Building extends Polygon{
 

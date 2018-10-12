@@ -1,4 +1,4 @@
-package com.example.examplemod;
+package com.roborescuemod.communication;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
