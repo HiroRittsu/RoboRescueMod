@@ -1,13 +1,17 @@
 package com.roborescuemod.roborescuemod;
 
+import net.minecraft.world.World;
+
 public class ServerTicks {
 
-	Cycles cycles = new Cycles();
+	private Cycles cycles = null;
+
+	public ServerTicks(World world) {
+		cycles = new Cycles(world);
+	}
 
 	public void calcTicks() {
-
 		cycles.calcCycles();
-
 	}
 
 }

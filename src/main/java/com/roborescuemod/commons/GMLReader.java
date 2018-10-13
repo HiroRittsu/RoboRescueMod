@@ -1,5 +1,6 @@
 package com.roborescuemod.commons;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,7 +38,22 @@ public class GMLReader {
 		try {
 			doc = reader.read(PATH);
 		} catch (DocumentException e) {
-			System.out.println("ファイルが見つかりません");
+			System.out.println("Not Found");
+			e.printStackTrace();
+		}
+
+		return doc;
+	}
+
+	public Document openStream(InputStream inputStream) {
+		
+		SAXReader reader = new SAXReader();
+		Document doc = null;
+		
+		try {
+			doc = reader.read(inputStream);
+		} catch (DocumentException e) {
+			System.out.println("Not Found Stream");
 			e.printStackTrace();
 		}
 

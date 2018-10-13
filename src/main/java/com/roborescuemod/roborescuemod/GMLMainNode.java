@@ -58,7 +58,7 @@ public class GMLMainNode extends CommandBase {
 		buildings = reader.readBuildings(doc, edges);
 
 		// 初期化
-		DrawMap.resetField(world, nodes);
+		//DrawMap.resetField(world, nodes);
 	}
 
 	public void drawRoad() {

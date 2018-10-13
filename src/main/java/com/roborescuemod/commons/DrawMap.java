@@ -7,7 +7,6 @@ import java.util.Map;
 import com.roborescuemod.buildmap.Building;
 import com.roborescuemod.buildmap.Road;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -212,7 +211,7 @@ public class DrawMap {
 		return result;
 	}
 
-	public static void resetField(World world, Map<Integer, Point3D> nodes) {
+	public void resetField(World world, Map<Integer, Point3D> nodes) {
 
 		int[] bounding_box = new int[4];
 
@@ -250,7 +249,7 @@ public class DrawMap {
 		}
 	}
 
-	public static void drawBuildings(int index, ArrayList<Building> buildings, Map<Integer, Point3D> nodes, World world)
+	public void drawBuildings(int index, ArrayList<Building> buildings, Map<Integer, Point3D> nodes, World world)
 			throws NullPointerException {
 
 		ArrayList<Point3D> edges = new ArrayList<>();
@@ -277,7 +276,7 @@ public class DrawMap {
 
 					for (Point3D point : area) { // draw
 
-						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
+						BlockPos pos = new BlockPos(point.x, 5 + 3 + i, -1 * point.z);
 						// world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
 						// world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState());
 						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
@@ -288,7 +287,7 @@ public class DrawMap {
 
 					for (Point3D point : flame) { // draw
 
-						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
+						BlockPos pos = new BlockPos(point.x, 5 + 3 + i, -1 * point.z);
 						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
 								BlockPlanks.EnumType.byMetadata(building.getId() % 6)));
 					}
@@ -299,7 +298,7 @@ public class DrawMap {
 		}
 	}
 
-	public static void drawRoad(int index, ArrayList<Road> roads, Map<Integer, Point3D> nodes, World world)
+	public void drawRoad(int index, ArrayList<Road> roads, Map<Integer, Point3D> nodes, World world)
 			throws NullPointerException {
 
 		ArrayList<Point3D> edges = new ArrayList<>();

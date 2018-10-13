@@ -31,12 +31,12 @@ public class SocketAPI {
 		}
 	}
 
-	public void joinServer(int port) {
+	public void joinServer(int port, String ip) {
 
 		try {
 			// serverの設定
 			server = new ServerSocket();
-			server.bind(new InetSocketAddress("localhost", port));
+			server.bind(new InetSocketAddress(ip, port));
 
 			System.out.println("Waiting Client...");
 			// 応答待機、応答後接続
@@ -52,15 +52,15 @@ public class SocketAPI {
 
 	}
 
-	public void joinClient(int port) {
+	public void joinClient(int port, String ip) {
 		System.out.println("Waiting Server...");
 
 		while (socket == null) {
 			try {
-				socket = new Socket("localhost", port);
+				socket = new Socket(ip, port);
 				buffer();
 			} catch (IOException e) {
-				// /System.out.print(".");
+				System.out.print(".");
 			}
 		}
 
