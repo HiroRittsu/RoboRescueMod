@@ -60,7 +60,7 @@ public class SocketAPI {
 				socket = new Socket("localhost", port);
 				buffer();
 			} catch (IOException e) {
-				// System.out.print(".");
+				// /System.out.print(".");
 			}
 		}
 
@@ -117,7 +117,7 @@ public class SocketAPI {
 	public InputStream subscribeFileData() {
 
 		try {
-			
+
 			return socket.getInputStream();
 
 		} catch (FileNotFoundException e) {
