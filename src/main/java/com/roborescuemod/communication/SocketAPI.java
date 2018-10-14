@@ -60,7 +60,7 @@ public class SocketAPI {
 				socket = new Socket(ip, port);
 				buffer();
 			} catch (IOException e) {
-				System.out.print(".");
+				//System.out.print(".");
 			}
 		}
 

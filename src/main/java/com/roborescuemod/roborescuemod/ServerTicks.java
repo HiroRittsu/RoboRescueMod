@@ -1,6 +1,7 @@
 package com.roborescuemod.roborescuemod;
 
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 public class ServerTicks {
 
@@ -12,6 +13,10 @@ public class ServerTicks {
 
 	public void calcTicks() {
 		cycles.calcCycles();
+	}
+
+	public void setCommandEvent(FMLServerStartingEvent event) {
+		cycles.setCommandEvent(event);
 	}
 
 }

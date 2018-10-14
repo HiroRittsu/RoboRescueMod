@@ -26,6 +26,7 @@ public class RoboRescueMod {
 	// private MobileSockets mobileSockets = new MobileSockets();
 
 	private World world = null;
+	private BuildCommand buildCommand = null;
 
 	private static Logger logger;
 
@@ -47,6 +48,8 @@ public class RoboRescueMod {
 		// gMainNode.drawRoad();
 		// gMainNode.drawBuildings();
 		// System.out.println(mobileSockets.get_msgs());
+		
+		System.out.println("debugdebugdebugdebugdbeu");
 
 		if (serverTicks != null)
 			serverTicks.calcTicks();
@@ -56,11 +59,14 @@ public class RoboRescueMod {
 	public void onPlayerLoggin(PlayerLoggedInEvent event) {
 		world = DimensionManager.getWorld(0);
 		serverTicks = new ServerTicks(world);
+		// serverTicks.setCommand(buildCommand);
 		// gMainNode.setWorld(world);
 	}
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
-		// event.registerServerCommand(gMainNode);
+
+		//serverTicks.setCommandEvent(event);
+		//System.out.println("###########################3" + event);
 	}
 }

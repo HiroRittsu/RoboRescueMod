@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.dom4j.Document;
 
-import com.roborescuemod.commons.DrawMap;
-import com.roborescuemod.commons.GMLReader;
 import com.roborescuemod.commons.Point3D;
 
 import net.minecraft.world.World;
@@ -27,6 +25,19 @@ public class BuildMap {
 
 	public BuildMap(World world, InputStream inputStream) {
 		doc = gReader.openStream(inputStream);
+		nodes = gReader.readNode(doc);
+		edges = gReader.readEdge(doc);
+		roads = gReader.readRoads(doc, edges);
+		buildings = gReader.readBuildings(doc, edges);
+
+		// reset field
+		drawMap.resetField(world, nodes);
+
+		this.world = world;
+	}
+
+	public BuildMap(World world, String Path) {
+		doc = gReader.openGML(Path);
 		nodes = gReader.readNode(doc);
 		edges = gReader.readEdge(doc);
 		roads = gReader.readRoads(doc, edges);
