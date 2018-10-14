@@ -23,6 +23,7 @@ public class RoboRescueMod {
 
 	// private GMLMainNode gMainNode = new GMLMainNode();
 	private ServerTicks serverTicks = null;
+	private FMLServerStartingEvent event = null;
 	// private MobileSockets mobileSockets = new MobileSockets();
 
 	private World world = null;
@@ -52,12 +53,12 @@ public class RoboRescueMod {
 	@SubscribeEvent
 	public void onPlayerLoggin(PlayerLoggedInEvent event) {
 		world = DimensionManager.getWorld(0);
-		// serverTicks.setCommand(buildCommand);
+		serverTicks = new ServerTicks(world);
+		serverTicks.setCommandEvent(this.event);
 	}
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
-		serverTicks = new ServerTicks(world);
-		serverTicks.setCommandEvent(event);
+		this.event = event;
 	}
 }

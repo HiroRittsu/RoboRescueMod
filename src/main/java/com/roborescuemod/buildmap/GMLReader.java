@@ -34,7 +34,7 @@ public class GMLReader {
 		Document doc = null;
 
 		try {
-			doc = reader.read(PATH);
+			doc = reader.read(PATH + "map.gml");
 		} catch (DocumentException e) {
 			System.out.println("Not Found");
 			e.printStackTrace();
@@ -44,10 +44,10 @@ public class GMLReader {
 	}
 
 	public Document openStream(InputStream inputStream) {
-		
+
 		SAXReader reader = new SAXReader();
 		Document doc = null;
-		
+
 		try {
 			doc = reader.read(inputStream);
 		} catch (DocumentException e) {
@@ -85,6 +85,9 @@ public class GMLReader {
 
 	public ArrayList<Building> readBuildings(Document doc, Map<Integer, Edge> edges) {
 
+		if (doc == null)
+			return null;
+
 		ArrayList<Building> result = new ArrayList<>();
 
 		for (Object next : doc.getRootElement().elements("buildinglist")) {
@@ -116,6 +119,9 @@ public class GMLReader {
 	}
 
 	public ArrayList<Road> readRoads(Document doc, Map<Integer, Edge> edges) {
+
+		if (doc == null)
+			return null;
 
 		ArrayList<Road> result = new ArrayList<>();
 
@@ -152,6 +158,9 @@ public class GMLReader {
 
 	public Map<Integer, Edge> readEdge(Document doc) {
 
+		if (doc == null)
+			return null;
+
 		Map<Integer, Edge> result = new HashMap<>();
 
 		for (Object next : doc.getRootElement().elements("edgelist")) {
@@ -166,6 +175,9 @@ public class GMLReader {
 	}
 
 	public Map<Integer, Point3D> readNode(Document doc) {
+
+		if (doc == null)
+			return null;
 
 		Map<Integer, Point3D> result = new HashMap<>();
 		String value;

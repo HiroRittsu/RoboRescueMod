@@ -35,16 +35,13 @@ public class Cycles {
 		}).start();
 
 		this.world = world;
-
 	}
 
 	public void setCommandEvent(FMLServerStartingEvent event) {
-		event.registerServerCommand(new BuildCommand());
+		event.registerServerCommand(buildCommand = new BuildCommand());
 	}
 
 	public void calcCycles() {
-		
-		System.out.println("cycles ##################################");
 
 		if (world == null)
 			return;
@@ -59,12 +56,15 @@ public class Cycles {
 				buildMap = new BuildMap(this.world, inputStream);
 			}
 
-			if ((this.Path = buildCommand.getPath()) != null) {
+			if ((this.Path = buildCommand.popPath()) != null) {
 				buildMap = new BuildMap(this.world, this.Path);
+				System.out.println(this.Path);
 			}
 
 			if (buildMap == null)
 				return;
+			else
+				cycle = -1;
 		}
 
 		///// cycle/////////////////////////
@@ -72,6 +72,9 @@ public class Cycles {
 			// build map
 			if (buildMap.buildMap() == 0) {
 				cycle = 0;
+				buildMap = null;
+				inputStream = null;
+				this.Path = null;
 			}
 
 		} else if (cycle == 0) {
