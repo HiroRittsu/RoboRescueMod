@@ -39,7 +39,7 @@ public class Cycles {
 	}
 
 	public void setCommandEvent(FMLServerStartingEvent event) {
-		//event.registerServerCommand(new BuildCommand());
+		event.registerServerCommand(new BuildCommand());
 	}
 
 	public void calcCycles() {

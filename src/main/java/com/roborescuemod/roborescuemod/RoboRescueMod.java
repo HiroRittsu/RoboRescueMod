@@ -45,12 +45,6 @@ public class RoboRescueMod {
 
 	@SubscribeEvent
 	public void ServerTick(TickEvent.ServerTickEvent event) {
-		// gMainNode.drawRoad();
-		// gMainNode.drawBuildings();
-		// System.out.println(mobileSockets.get_msgs());
-		
-		System.out.println("debugdebugdebugdebugdbeu");
-
 		if (serverTicks != null)
 			serverTicks.calcTicks();
 	}
@@ -58,15 +52,12 @@ public class RoboRescueMod {
 	@SubscribeEvent
 	public void onPlayerLoggin(PlayerLoggedInEvent event) {
 		world = DimensionManager.getWorld(0);
-		serverTicks = new ServerTicks(world);
 		// serverTicks.setCommand(buildCommand);
-		// gMainNode.setWorld(world);
 	}
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
-
-		//serverTicks.setCommandEvent(event);
-		//System.out.println("###########################3" + event);
+		serverTicks = new ServerTicks(world);
+		serverTicks.setCommandEvent(event);
 	}
 }
