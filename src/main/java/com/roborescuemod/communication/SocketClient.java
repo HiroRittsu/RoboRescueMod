@@ -1,15 +1,21 @@
 package com.roborescuemod.communication;
 
+import java.io.InputStream;
+
 public class SocketClient {
 
-	String ip = "localhost";
+	private OriginalSocket originalSocket = new OriginalSocket();
 
-	public SocketAPI connectMapData(int port) {
+	public SocketClient(int port, String ip) {
+		originalSocket.joinClient(port, ip);
+	}
 
-		SocketAPI socketAPI_map = new SocketAPI();
-		socketAPI_map.joinClient(port, ip);
+	public InputStream subscribeGML() {
+		return originalSocket.subscribeFile();
+	}
 
-		return socketAPI_map;
+	public String subscribeText() {
+		return originalSocket.subscribeMsgs();
 	}
 
 }

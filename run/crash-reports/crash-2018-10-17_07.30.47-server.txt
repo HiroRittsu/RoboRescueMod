@@ -1,0 +1,51 @@
+---- Minecraft Crash Report ----
+// On the bright side, I bought you a teddy bear!
+
+Time: 10/17/18 7:30 AM
+Description: Exception in server tick loop
+
+java.lang.NullPointerException: Exception in server tick loop
+	at com.roborescuemod.buildmap.DrawMap.resetField(DrawMap.java:217)
+	at com.roborescuemod.buildmap.BuildMap.<init>(BuildMap.java:34)
+	at com.roborescuemod.roborescuemod.Cycles.calcCycles(Cycles.java:71)
+	at com.roborescuemod.roborescuemod.ServerTicks.calcTicks(ServerTicks.java:15)
+	at com.roborescuemod.roborescuemod.RoboRescueMod.ServerTick(RoboRescueMod.java:50)
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler_12_RoboRescueMod_ServerTick_ServerTickEvent.invoke(.dynamic)
+	at net.minecraftforge.fml.common.eventhandler.ASMEventHandler.invoke(ASMEventHandler.java:90)
+	at net.minecraftforge.fml.common.eventhandler.EventBus.post(EventBus.java:182)
+	at net.minecraftforge.fml.common.FMLCommonHandler.onPreServerTick(FMLCommonHandler.java:279)
+	at net.minecraft.server.MinecraftServer.tick(MinecraftServer.java:732)
+	at net.minecraft.server.integrated.IntegratedServer.tick(IntegratedServer.java:192)
+	at net.minecraft.server.MinecraftServer.run(MinecraftServer.java:592)
+	at java.lang.Thread.run(Thread.java:748)
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- System Details --
+Details:
+	Minecraft Version: 1.12.2
+	Operating System: Linux (amd64) version 4.4.0-137-generic
+	Java Version: 1.8.0_181, Oracle Corporation
+	Java VM Version: Java HotSpot(TM) 64-Bit Server VM (mixed mode), Oracle Corporation
+	Memory: 3097181288 bytes (2953 MB) / 4116185088 bytes (3925 MB) up to 4116185088 bytes (3925 MB)
+	JVM Flags: 4 total; -Xms4G -Xmx4G -XX:MetaspaceSize=512M -XX:MaxMetaspaceSize=512M
+	IntCache: cache: 0, tcache: 0, allocated: 0, tallocated: 0
+	FML: MCP 9.42 Powered by Forge 14.23.5.2770 5 mods loaded, 5 mods active
+	States: 'U' = Unloaded 'L' = Loaded 'C' = Constructed 'H' = Pre-initialized 'I' = Initialized 'J' = Post-initialized 'A' = Available 'D' = Disabled 'E' = Errored
+
+	| State     | ID            | Version      | Source                           | Signature |
+	|:--------- |:------------- |:------------ |:-------------------------------- |:--------- |
+	| UCHIJAAAA | minecraft     | 1.12.2       | minecraft.jar                    | None      |
+	| UCHIJAAAA | mcp           | 9.42         | minecraft.jar                    | None      |
+	| UCHIJAAAA | FML           | 8.0.99.99    | forgeSrc-1.12.2-14.23.5.2770.jar | None      |
+	| UCHIJAAAA | forge         | 14.23.5.2770 | forgeSrc-1.12.2-14.23.5.2770.jar | None      |
+	| UCHIJAAAA | roborescuemod | 1.0          | bin                              | None      |
+
+	Loaded coremods (and transformers): 
+	GL info: ~~ERROR~~ RuntimeException: No OpenGL context found in the current thread.
+	Profiler Position: N/A (disabled)
+	Player Count: 1 / 8; [EntityPlayerMP['Migly_A'/128, l='TEST3', x=-1092.83, y=4.00, z=-805.49]]
+	Type: Integrated Server (map_client.txt)
+	Is Modded: Definitely; Client brand changed to 'fml,forge'

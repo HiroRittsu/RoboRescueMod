@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.nio.file.Path;
 
 import com.roborescuemod.buildmap.BuildMap;
-import com.roborescuemod.communication.SocketAPI;
+import com.roborescuemod.communication.OriginalSocket;
 import com.roborescuemod.communication.SocketClient;
 
 import net.minecraft.world.World;
@@ -12,10 +12,9 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 public class Cycles {
 
-	SocketClient socketClient_map = new SocketClient();
-	private static InputStream inputStream;
+	private static InputStream inputStream = null;
 	private static BuildMap buildMap = null;
-	private static SocketAPI socketAPI_map = null;
+	private static OriginalSocket originalSocket = null;
 
 	private World world = null;
 
@@ -27,11 +26,28 @@ public class Cycles {
 	public Cycles(World world) {
 		// socket
 		new Thread(new Runnable() {
+
+			SocketClient client = null;
+
 			@Override
 			public void run() {
-				// inputStream = socketClient_map.connectMapData(6591).subscribeFileData();
-				socketAPI_map = socketClient_map.connectMapData(6591);
+
+				client = new SocketClient(6591, "localhost");
+
+				System.out.println("########################################");
+
+				// originalSocket = client.connectMapData(6591,"localhost");
+
+				while (true) {
+					//System.out.println("debug");
+					System.out.println("listen to server");
+					System.out.println(client.subscribeText());
+					// inputStream = client.subscribeGML();
+
+					// System.out.println("debug");
+				}
 			}
+
 		}).start();
 
 		this.world = world;
@@ -46,19 +62,18 @@ public class Cycles {
 		if (world == null)
 			return;
 
-		// set inputstream
-		if (socketAPI_map != null && inputStream == null)
-			inputStream = socketAPI_map.subscribeFileData();
+		/*
+		 * set inputstream if (socketAPI_map != null && inputStream == null) inputStream
+		 * = socketAPI_map.subscribeFileData();
+		 */
 
 		// ready build map
 		if (buildMap == null) {
+
 			if (inputStream != null) {
 				buildMap = new BuildMap(this.world, inputStream);
-			}
-
-			if ((this.Path = buildCommand.popPath()) != null) {
+			} else if ((this.Path = buildCommand.popPath()) != null) {
 				buildMap = new BuildMap(this.world, this.Path);
-				System.out.println(this.Path);
 			}
 
 			if (buildMap == null)
