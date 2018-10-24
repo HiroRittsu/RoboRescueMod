@@ -15,7 +15,7 @@ difficulty:2
 fancyGraphics:true
 ao:2
 renderClouds:true
-resourcePacks:[]
+resourcePacks:["岩盤テクスチャ - 2.zip"]
 incompatibleResourcePacks:[]
 lastServer:
 lang:en_us
@@ -74,7 +74,7 @@ key_key.fullscreen:87
 key_key.spectatorOutlines:0
 key_key.swapHands:33
 key_key.saveToolbarActivator:46
-key_key.loadToolbarActivator:0
+key_key.loadToolbarActivator:47
 key_key.advancements:38
 key_key.hotbar.1:2
 key_key.hotbar.2:3
