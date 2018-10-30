@@ -66,6 +66,6 @@
 	<classpathentry kind="lib" path="/home/migly/.gradle/caches/minecraft/deobfedDeps/compileDummy.jar"/>
 	<classpathentry kind="lib" path="/home/migly/.gradle/caches/minecraft/deobfedDeps/providedDummy.jar"/>
 	<classpathentry kind="lib" path="/home/migly/.gradle/caches/minecraft/net/minecraftforge/forge/1.12.2-14.23.5.2770/start"/>
-	<classpathentry kind="lib" path="/home/migly/eclipse-workspace/Modding/RoboRescueMod/lib/dom4j.jar"/>
+	<classpathentry kind="lib" path="/home/migly/eclipse-workspace/RoboRescueMod/lib/dom4j.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
