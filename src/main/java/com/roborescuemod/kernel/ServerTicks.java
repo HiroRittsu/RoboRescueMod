@@ -1,4 +1,4 @@
-package com.roborescuemod.roborescuemod;
+package com.roborescuemod.kernel;
 
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;

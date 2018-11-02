@@ -1,4 +1,4 @@
-package com.roborescuemod.roborescuemod;
+package com.roborescuemod.kernel;
 
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -14,7 +14,6 @@ public class Cycles {
 
 	private static InputStream inputStream = null;
 	private static BuildMap buildMap = null;
-	private static OriginalSocket originalSocket = null;
 
 	private World world = null;
 
@@ -23,33 +22,10 @@ public class Cycles {
 	private BuildCommand buildCommand = null;
 	private String Path = null;
 
+	private SocketClient client = null;
+
 	public Cycles(World world) {
-		// socket
-		new Thread(new Runnable() {
-
-			SocketClient client = null;
-
-			@Override
-			public void run() {
-
-				client = new SocketClient(6591, "localhost");
-
-				System.out.println("########################################");
-
-				// originalSocket = client.connectMapData(6591,"localhost");
-
-				while (true) {
-					//System.out.println("debug");
-					System.out.println("listen to server");
-					System.out.println(client.subscribeText());
-					// inputStream = client.subscribeGML();
-
-					// System.out.println("debug");
-				}
-			}
-
-		}).start();
-
+		client = new SocketClient();
 		this.world = world;
 	}
 
@@ -93,7 +69,7 @@ public class Cycles {
 			}
 
 		} else if (cycle == 0) {
-
+			cycle++;
 		} else {
 
 		}

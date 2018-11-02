@@ -1,4 +1,4 @@
-package com.roborescuemod.roborescuemod;
+package com.roborescuemod.kernel;
 
 import java.io.File;
 

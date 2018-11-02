@@ -1,21 +1,38 @@
 package com.roborescuemod.communication;
 
-import java.io.InputStream;
+import java.util.ArrayList;
 
 public class SocketClient {
 
+	private ArrayList<String> agent_data = new ArrayList<>();
+
 	private OriginalSocket originalSocket = new OriginalSocket();
 
-	public SocketClient(int port, String ip) {
-		originalSocket.joinClient(port, ip);
+	public SocketClient() {
+		threadSocket();
 	}
 
-	public InputStream subscribeGML() {
-		return originalSocket.subscribeFile();
+	private void threadSocket() {
+		new Thread(new Runnable() {
+			@Override
+			public void run() {
+
+				originalSocket.joinClient(12345, "localhost");
+
+				while (true) {
+
+					agent_data.add(originalSocket.subscribeMsgs());
+
+					originalSocket.delaitinon(1);
+
+				}
+
+			}
+		}).start();
 	}
 
-	public String subscribeText() {
-		return originalSocket.subscribeMsgs();
+	public String popAgentData() {
+		return agent_data.remove(0);
 	}
 
 }

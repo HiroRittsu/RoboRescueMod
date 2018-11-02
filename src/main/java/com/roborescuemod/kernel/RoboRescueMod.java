@@ -1,4 +1,4 @@
-package com.roborescuemod.roborescuemod;
+package com.roborescuemod.kernel;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
