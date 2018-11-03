@@ -12,6 +12,18 @@ public class Point3D {
 		this.z = z;
 	}
 
+	public void resetPoint(String s) {
+		if (s == "MAX") {
+			x = Integer.MAX_VALUE;
+			y = Integer.MAX_VALUE;
+			z = Integer.MAX_VALUE;
+		} else if (s == "MIN") {
+			x = Integer.MIN_VALUE;
+			y = Integer.MIN_VALUE;
+			z = Integer.MIN_VALUE;
+		}
+	}
+
 	public int getX() {
 		return this.x;
 	}
