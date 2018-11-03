@@ -27,8 +27,7 @@ public class BuildMap {
 	public BuildMap(World world, String Path) {
 		doc = gReader.openGML(Path);
 		this.minecraftMap = readMap(doc);
-		System.out.println(this.minecraftMap.getNodes().isEmpty());
-		System.out.println(this.minecraftMap.getMinPoint());
+
 		// reset field
 		drawMap.resetField(world, this.minecraftMap);
 		this.world = world;

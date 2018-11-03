@@ -20,11 +20,18 @@ public class MinecraftMap {
 	private Point3Df centroid;
 
 	public MinecraftMap(Map<Integer, Point3D> nodes) {
-		Point3Df[] primary = converter.calcPrimaryPoint(nodes, this.max, this.min, this.centroid);
+		Point3Df[] primary = converter.calcPrimaryPoint(nodes);
 		this.max = primary[0];
 		this.min = primary[1];
 		this.centroid = primary[2];
-		this.nodes = converter.convertPoint(nodes, centroid, new Point3D(0, 0, 0));
+
+		this.nodes = converter.convertPoint(nodes, this.centroid, new Point3D(0, 0, 0));
+
+		primary = converter.calcPrimaryPoint(this.nodes);
+		this.max = primary[0];
+		this.min = primary[1];
+		this.centroid = primary[2];
+		System.out.println("重心:" + this.centroid);
 	}
 
 	public Map<Integer, Point3D> getNodes() {

@@ -194,30 +194,14 @@ public class DrawMap {
 
 	public void resetField(World world, MinecraftMap minecraftMap) {
 
-		/*
-		 * int[] bounding_box = new int[4];
-		 * 
-		 * for (Point3D point3d : minecraftMap.values()) {
-		 * 
-		 * if (bounding_box[0] > point3d.x) bounding_box[0] = point3d.x;
-		 * 
-		 * if (bounding_box[1] > point3d.z) bounding_box[1] = point3d.z;
-		 * 
-		 * if (bounding_box[2] < point3d.x) bounding_box[2] = point3d.x;
-		 * 
-		 * if (bounding_box[3] < point3d.z) bounding_box[3] = point3d.z; }
-		 */
-
 		for (int i = 0; i < 5; i++) {
 
 			for (int z = (int) (minecraftMap.getMinPoint().getZ()) - 5; z < (int) (minecraftMap.getMaxPoint().getZ())
 					+ 5; z++) {
 				for (int x = (int) (minecraftMap.getMinPoint().getX())
-						- 5; x < (int) (minecraftMap.getMinPoint().getX()) + 5; x++) {
+						- 5; x < (int) (minecraftMap.getMaxPoint().getX()) + 5; x++) {
 
-					BlockPos pos = new BlockPos(x, i + 3, -1 * z);
-
-					System.out.println("reset " + minecraftMap.getMinPoint() + " " + minecraftMap.getMaxPoint());
+					BlockPos pos = new BlockPos(x, i + 3, z);
 
 					if (i == 0) {
 						world.setBlockState(pos, Blocks.GRASS.getDefaultState());
@@ -300,7 +284,6 @@ public class DrawMap {
 			for (Point3D point : area) { // draw
 				BlockPos pos = new BlockPos(point.x, 3, -1 * point.z);
 				world.setBlockState(pos, Blocks.DOUBLE_STONE_SLAB.getDefaultState());
-				System.out.println("road " + point);
 			}
 		}
 	}
