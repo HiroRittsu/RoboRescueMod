@@ -27,8 +27,6 @@ public class DrawMap {
 
 		while (p_x || m_x || p_z || m_z) {
 
-			System.out.println(i);
-
 			if (x + i > bounding_box[2] && x - i < bounding_box[0] && z + i > bounding_box[3]
 					&& z - i < bounding_box[1])
 				return false;
@@ -65,23 +63,6 @@ public class DrawMap {
 		targets[3] = new Point3D(point.x - 1, 0, point.z);
 
 		return targets;
-	}
-
-	private static Point3D calcCentroid(ArrayList<Point3D> points) {
-
-		int count = 0;
-		int sum_x = 0;
-		int sum_y = 0;
-		int sum_z = 0;
-
-		for (Point3D point3d : points) {
-			sum_x += point3d.x;
-			sum_y += point3d.y;
-			sum_z += point3d.z;
-			count++;
-		}
-
-		return (count != 0 ? new Point3D(sum_x / count, sum_y / count, sum_z / count) : null);
 	}
 
 	private static HashSet<Point3D> completionArea(ArrayList<Point3D> flame) {
@@ -135,7 +116,7 @@ public class DrawMap {
 
 					while (!open.isEmpty()) {
 
-						System.out.println("opensize :" + open.size());
+						// System.out.println("opensize :" + open.size());
 						if (open.size() > 5000) {
 							break;
 						}
@@ -160,6 +141,7 @@ public class DrawMap {
 	}
 
 	private static ArrayList<Point3D> completionLine(Point3D start, Point3D end) {
+
 		int nextX = (int) start.x;
 		int nextZ = (int) start.z;
 		int deltaX = (int) (end.x - start.x);
@@ -285,6 +267,12 @@ public class DrawMap {
 				} else {
 
 					for (Point3D point : flame) { // draw
+
+						// System.out.println("############ID:" + building.getId());
+
+						if (building.getId() == 953) {
+							System.out.println(point.x + " " + point.z);
+						}
 
 						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
 						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,

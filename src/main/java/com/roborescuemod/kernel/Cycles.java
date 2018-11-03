@@ -7,6 +7,8 @@ import com.roborescuemod.buildmap.BuildMap;
 import com.roborescuemod.communication.OriginalSocket;
 import com.roborescuemod.communication.SocketClient;
 
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
@@ -16,6 +18,7 @@ public class Cycles {
 	private static BuildMap buildMap = null;
 
 	private World world = null;
+	public static Entity zombie;
 
 	private int cycle = -1;
 	private boolean start = false;
@@ -48,14 +51,17 @@ public class Cycles {
 
 			if (inputStream != null) {
 				buildMap = new BuildMap(this.world, inputStream);
+				cycle = -1;
 			} else if ((this.Path = buildCommand.popPath()) != null) {
 				buildMap = new BuildMap(this.world, this.Path);
+				cycle = -1;
 			}
 
-			if (buildMap == null)
+			/*
+			 * if (buildMap == null) return; else cycle = -1;
+			 */
+			if (buildMap == null && cycle == -1)
 				return;
-			else
-				cycle = -1;
 		}
 
 		///// cycle/////////////////////////
@@ -69,7 +75,17 @@ public class Cycles {
 			}
 
 		} else if (cycle == 0) {
+
+			System.out.println("##############spwn");
+
+			zombie = new EntityZombie(world);
+
+			zombie.setPosition(100, 10, 100);
+
+			world.spawnEntity(zombie);
+
 			cycle++;
+
 		} else {
 
 		}
