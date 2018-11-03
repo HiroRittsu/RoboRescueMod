@@ -3,7 +3,7 @@ package com.roborescuemod.commons;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.roborescuemod.buildmap.MinecraftMap;
+import com.roborescuemod.buildmap.GMLMap;
 
 public class PointConverter {
 
@@ -45,23 +45,7 @@ public class PointConverter {
 
 	}
 
-	public Map<Integer, Point3D> convertPoint(MinecraftMap minecraftMap, Point3D origin) {
-
-		Map<Integer, Point3D> result = new HashMap<>();
-		Point3Df distance = new Point3Df(minecraftMap.getCentroid().getX() - origin.getX(),
-				minecraftMap.getCentroid().getY() - origin.getY(), minecraftMap.getCentroid().getZ() - origin.getZ());
-
-		for (Map.Entry<Integer, Point3D> entry : minecraftMap.getNodes().entrySet()) {
-
-			result.put(entry.getKey(), new Point3D(entry.getValue().getX() - (int) distance.getX(),
-					entry.getValue().getY() - (int) distance.getY(), entry.getValue().getZ() - (int) distance.getZ()));
-
-		}
-
-		return result;
-	}
-
-	public Map<Integer, Point3D> convertPoint(Map<Integer, Point3D> nodes, Point3Df centroid, Point3D origin) {
+	public static Map<Integer, Point3D> convertPoint(Map<Integer, Point3D> nodes, Point3Df centroid, Point3D origin) {
 
 		Map<Integer, Point3D> result = new HashMap<>();
 		Point3Df distance = new Point3Df(centroid.getX() - origin.getX(), centroid.getY() - origin.getY(),
@@ -77,4 +61,41 @@ public class PointConverter {
 		return result;
 
 	}
+
+	public static Map<Integer, Point3D> convertMinecraftMap(GMLMap gmlMap) {
+
+		Point3Df origin = new Point3Df(0, 0, 0);
+
+		Map<Integer, Point3D> result = new HashMap<>();
+		Point3Df distance = new Point3Df(origin.getX() - gmlMap.getCentroid().getX(),
+				origin.getY() - gmlMap.getCentroid().getY(), origin.getZ() - gmlMap.getCentroid().getZ());
+
+		for (Map.Entry<Integer, Point3D> entry : gmlMap.getNodes().entrySet()) {
+
+			result.put(entry.getKey(), new Point3D(entry.getValue().getX() + (int) distance.getX(),
+					entry.getValue().getY() + (int) distance.getY(), entry.getValue().getZ() + (int) distance.getZ()));
+
+		}
+
+		return result;
+	}
+
+	public static Map<Integer, Point3D> convertRescueMap(GMLMap gmlMap) {
+
+		Map<Integer, Point3D> result = new HashMap<>();
+		Point3Df distance = new Point3Df(-1 * gmlMap.getMinPoint().getX(), -1 * gmlMap.getMinPoint().getY(),
+				-1 * gmlMap.getMinPoint().getZ());
+
+		for (Map.Entry<Integer, Point3D> entry : gmlMap.getNodes().entrySet()) {
+
+			result.put(entry.getKey(),
+					new Point3D((int) ((entry.getValue().getX() + distance.getX()) * 1000),
+							(int) ((entry.getValue().getY() + distance.getY()) * 1000),
+							(int) ((entry.getValue().getZ() + distance.getZ()) * 1000)));
+
+		}
+
+		return result;
+	}
+
 }

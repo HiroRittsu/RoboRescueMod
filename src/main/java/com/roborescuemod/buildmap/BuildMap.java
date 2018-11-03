@@ -3,13 +3,17 @@ package com.roborescuemod.buildmap;
 import java.io.InputStream;
 import org.dom4j.Document;
 
+import com.roborescuemod.commons.PointConverter;
+
 import net.minecraft.world.World;
 
 public class BuildMap {
 
 	private GMLReader gReader = new GMLReader();
 	private DrawMap drawMap = new DrawMap();
+	private GMLMap gmlMap = null;
 	private MinecraftMap minecraftMap = null;
+	private RescueMap rescueMap = null;
 	private Document doc = null;
 	private World world = null;
 	private int road_index = 0;
@@ -17,31 +21,34 @@ public class BuildMap {
 
 	public BuildMap(World world, InputStream inputStream) {
 		doc = gReader.openStream(inputStream);
-		this.minecraftMap = readMap(doc);
+		gmlMap = readMap(doc);
+		minecraftMap = new MinecraftMap(gmlMap);
+		rescueMap = new RescueMap(gmlMap);
 
 		// reset field
-		drawMap.resetField(world, this.minecraftMap);
+		drawMap.resetField(world, minecraftMap);
 		this.world = world;
 	}
 
 	public BuildMap(World world, String Path) {
 		doc = gReader.openGML(Path);
-		this.minecraftMap = readMap(doc);
+		gmlMap = readMap(doc);
+		minecraftMap = new MinecraftMap(gmlMap);
+		rescueMap = new RescueMap(gmlMap);
 
 		// reset field
-		drawMap.resetField(world, this.minecraftMap);
+		drawMap.resetField(world, minecraftMap);
 		this.world = world;
 	}
 
-	private MinecraftMap readMap(Document doc) {
+	private GMLMap readMap(Document doc) {
 
-		MinecraftMap minecraftMap = new MinecraftMap(gReader.readNode(doc));
+		GMLMap gmlMap = new GMLMap(gReader.readNode(doc));
+		gmlMap.setEdges(gReader.readEdge(doc));
+		gmlMap.setRoads(gReader.readRoads(doc, gmlMap.getEdges()));
+		gmlMap.setBuildings(gReader.readBuildings(doc, gmlMap.getEdges()));
 
-		minecraftMap.setEdges(gReader.readEdge(doc));
-		minecraftMap.setRoads(gReader.readRoads(doc, minecraftMap.getEdges()));
-		minecraftMap.setBuildings(gReader.readBuildings(doc, minecraftMap.getEdges()));
-
-		return minecraftMap;
+		return gmlMap;
 	}
 
 	private boolean drawRoad() {

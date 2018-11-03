@@ -14,7 +14,8 @@ public class GMLMap extends MapData {
 	private Point3Df centroid;
 
 	public GMLMap(Map<Integer, Point3D> nodes) {
-		Point3Df[] primary = PointConverter.calcPrimaryPoint(nodes);
+		this.nodes = nodes;
+		Point3Df[] primary = PointConverter.calcPrimaryPoint(this.nodes);
 		this.max = primary[0];
 		this.min = primary[1];
 		this.centroid = primary[2];
