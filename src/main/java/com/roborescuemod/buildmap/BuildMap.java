@@ -18,24 +18,24 @@ public class BuildMap {
 	private int building_index = 0;
 
 	public BuildMap(World world, InputStream inputStream) {
-		doc = gReader.openStream(inputStream);
-		gmlMap = readMap(doc);
-		minecraftMap = new MinecraftMap(gmlMap);
-		rescueMap = new RescueMap(gmlMap);
+		this.doc = gReader.openStream(inputStream);
+		this.gmlMap = readMap(this.doc);
+		this.minecraftMap = new MinecraftMap(this.gmlMap);
+		this.rescueMap = new RescueMap(this.gmlMap);
 
 		// reset field
-		drawMap.resetField(world, minecraftMap);
+		this.drawMap.resetField(world, this.minecraftMap);
 		this.world = world;
 	}
 
 	public BuildMap(World world, String Path) {
-		doc = gReader.openGML(Path);
-		gmlMap = readMap(doc);
-		minecraftMap = new MinecraftMap(gmlMap);
-		rescueMap = new RescueMap(gmlMap);
+		this.doc = gReader.openGML(Path);
+		this.gmlMap = readMap(this.doc);
+		this.minecraftMap = new MinecraftMap(this.gmlMap);
+		this.rescueMap = new RescueMap(this.gmlMap);
 
 		// reset field
-		drawMap.resetField(world, minecraftMap);
+		this.drawMap.resetField(world, this.minecraftMap);
 		this.world = world;
 	}
 
@@ -44,7 +44,7 @@ public class BuildMap {
 	}
 
 	public RescueMap getRescueMap() {
-		return rescueMap;
+		return this.rescueMap;
 	}
 
 	public int buildMap() {
@@ -66,13 +66,13 @@ public class BuildMap {
 
 	private boolean drawRoad() {
 
-		if (world == null || minecraftMap.getRoads() == null)
+		if (this.world == null || this.minecraftMap.getRoads() == null)
 			return false;
 
-		if (minecraftMap.getRoads().size() <= this.road_index)
+		if (this.minecraftMap.getRoads().size() <= this.road_index)
 			return true;
 
-		drawMap.drawRoad(this.road_index, minecraftMap, world);
+		this.drawMap.drawRoad(this.road_index, this.minecraftMap, this.world);
 		this.road_index++;
 
 		return false;
@@ -80,13 +80,13 @@ public class BuildMap {
 
 	private boolean drawBuildings() {
 
-		if (world == null || minecraftMap.getBuildins() == null)
+		if (this.world == null || this.minecraftMap.getBuildins() == null)
 			return false;
 
-		if (minecraftMap.getRoads().size() <= this.building_index)
+		if (this.minecraftMap.getRoads().size() <= this.building_index)
 			return true;
 
-		drawMap.drawBuildings(this.building_index, minecraftMap, world);
+		this.drawMap.drawBuildings(this.building_index, this.minecraftMap, this.world);
 		this.building_index++;
 
 		return false;
