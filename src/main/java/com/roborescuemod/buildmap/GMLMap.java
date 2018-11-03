@@ -7,22 +7,14 @@ import com.roborescuemod.commons.Point3D;
 import com.roborescuemod.commons.Point3Df;
 import com.roborescuemod.commons.PointConverter;
 
-public class MinecraftMap extends MapData {
+public class GMLMap extends MapData {
 
-	private PointConverter converter = new PointConverter();
 	private Point3Df max;
 	private Point3Df min;
 	private Point3Df centroid;
 
-	public MinecraftMap(Map<Integer, Point3D> nodes) {
-		Point3Df[] primary = converter.calcPrimaryPoint(nodes);
-		this.max = primary[0];
-		this.min = primary[1];
-		this.centroid = primary[2];
-
-		this.nodes = converter.convertPoint(nodes, this.centroid, new Point3D(0, 0, 0));
-
-		primary = converter.calcPrimaryPoint(this.nodes);
+	public GMLMap(Map<Integer, Point3D> nodes) {
+		Point3Df[] primary = PointConverter.calcPrimaryPoint(nodes);
 		this.max = primary[0];
 		this.min = primary[1];
 		this.centroid = primary[2];

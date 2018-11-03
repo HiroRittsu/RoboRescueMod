@@ -7,7 +7,7 @@ import com.roborescuemod.buildmap.MinecraftMap;
 
 public class PointConverter {
 
-	public Point3Df[] calcPrimaryPoint(Map<Integer, Point3D> nodes) {
+	public static Point3Df[] calcPrimaryPoint(Map<Integer, Point3D> nodes) {
 
 		// [0]: max, [1]:min, [2]:centroid
 		Point3Df[] result = new Point3Df[3];

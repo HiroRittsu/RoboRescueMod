@@ -7,14 +7,14 @@ import com.roborescuemod.commons.Point3D;
 import com.roborescuemod.commons.Point3Df;
 import com.roborescuemod.commons.PointConverter;
 
-public class MinecraftMap extends MapData {
+public class RescueMap extends MapData {
 
 	private PointConverter converter = new PointConverter();
 	private Point3Df max;
 	private Point3Df min;
 	private Point3Df centroid;
 
-	public MinecraftMap(Map<Integer, Point3D> nodes) {
+	public RescueMap(Map<Integer, Point3D> nodes) {
 		Point3Df[] primary = converter.calcPrimaryPoint(nodes);
 		this.max = primary[0];
 		this.min = primary[1];
