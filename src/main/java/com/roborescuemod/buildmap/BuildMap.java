@@ -9,7 +9,7 @@ public class BuildMap {
 
 	private GMLReader gReader = new GMLReader();
 	private DrawMap drawMap = new DrawMap();
-	private RescueMap rescueMap = new RescueMap();
+	private MinecraftMap rescueMap = new MinecraftMap();
 	private Document doc = null;
 	private World world = null;
 	private int road_index = 0;
@@ -33,7 +33,7 @@ public class BuildMap {
 		this.world = world;
 	}
 
-	private void readMap(Document doc, RescueMap rescueMap) {
+	private void readMap(Document doc, MinecraftMap rescueMap) {
 		rescueMap.nodes = gReader.readNode(doc);
 		rescueMap.edges = gReader.readEdge(doc);
 		rescueMap.roads = gReader.readRoads(doc, rescueMap.edges);
