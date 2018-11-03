@@ -192,31 +192,32 @@ public class DrawMap {
 		return result;
 	}
 
-	public void resetField(World world, Map<Integer, Point3D> nodes) {
+	public void resetField(World world, MinecraftMap minecraftMap) {
 
-		int[] bounding_box = new int[4];
-
-		for (Point3D point3d : nodes.values()) {
-
-			if (bounding_box[0] > point3d.x)
-				bounding_box[0] = point3d.x;
-
-			if (bounding_box[1] > point3d.z)
-				bounding_box[1] = point3d.z;
-
-			if (bounding_box[2] < point3d.x)
-				bounding_box[2] = point3d.x;
-
-			if (bounding_box[3] < point3d.z)
-				bounding_box[3] = point3d.z;
-		}
+		/*
+		 * int[] bounding_box = new int[4];
+		 * 
+		 * for (Point3D point3d : minecraftMap.values()) {
+		 * 
+		 * if (bounding_box[0] > point3d.x) bounding_box[0] = point3d.x;
+		 * 
+		 * if (bounding_box[1] > point3d.z) bounding_box[1] = point3d.z;
+		 * 
+		 * if (bounding_box[2] < point3d.x) bounding_box[2] = point3d.x;
+		 * 
+		 * if (bounding_box[3] < point3d.z) bounding_box[3] = point3d.z; }
+		 */
 
 		for (int i = 0; i < 5; i++) {
 
-			for (int z = bounding_box[1] - 5; z < bounding_box[3] + 5; z++) {
-				for (int x = bounding_box[0] - 5; x < bounding_box[2] + 5; x++) {
+			for (int z = (int) (minecraftMap.getMinPoint().getZ()) - 5; z < (int) (minecraftMap.getMaxPoint().getZ())
+					+ 5; z++) {
+				for (int x = (int) (minecraftMap.getMinPoint().getX())
+						- 5; x < (int) (minecraftMap.getMinPoint().getX()) + 5; x++) {
 
 					BlockPos pos = new BlockPos(x, i + 3, -1 * z);
+
+					System.out.println("reset " + minecraftMap.getMinPoint() + " " + minecraftMap.getMaxPoint());
 
 					if (i == 0) {
 						world.setBlockState(pos, Blocks.GRASS.getDefaultState());
@@ -230,20 +231,19 @@ public class DrawMap {
 		}
 	}
 
-	public void drawBuildings(int index, ArrayList<Building> buildings, Map<Integer, Point3D> nodes, World world)
-			throws NullPointerException {
+	public void drawBuildings(int index, MinecraftMap minecraftMap, World world) throws NullPointerException {
 
 		ArrayList<Point3D> edges = new ArrayList<>();
 		ArrayList<Point3D> flame = new ArrayList<>();
 		HashSet<Point3D> area = new HashSet<>();
 
-		if (index < buildings.size()) {
+		if (index < minecraftMap.getBuildins().size()) {
 
-			Building building = buildings.get(index);
+			Building building = minecraftMap.getBuildins().get(index);
 
 			for (Integer[] ids : building.getEdgeIds()) { // node points すべてのエッジを書き出し
 
-				edges = completionLine(nodes.get(ids[0]), nodes.get(ids[1])); // completion
+				edges = completionLine(minecraftMap.getNodes().get(ids[0]), minecraftMap.getNodes().get(ids[1])); // completion
 
 				flame.addAll(edges);
 
@@ -258,8 +258,6 @@ public class DrawMap {
 					for (Point3D point : area) { // draw
 
 						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
-						// world.setBlockState(pos, Blocks.PLANKS.getDefaultState());
-						// world.setBlockState(pos, Blocks.COBBLESTONE.getDefaultState());
 						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
 								BlockPlanks.EnumType.byMetadata(building.getId() % 6)));
 					}
@@ -267,12 +265,6 @@ public class DrawMap {
 				} else {
 
 					for (Point3D point : flame) { // draw
-
-						// System.out.println("############ID:" + building.getId());
-
-						if (building.getId() == 953) {
-							System.out.println(point.x + " " + point.z);
-						}
 
 						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
 						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
@@ -285,20 +277,19 @@ public class DrawMap {
 		}
 	}
 
-	public void drawRoad(int index, ArrayList<Road> roads, Map<Integer, Point3D> nodes, World world)
-			throws NullPointerException {
+	public void drawRoad(int index, MinecraftMap minecraftMap, World world) throws NullPointerException {
 
 		ArrayList<Point3D> edges = new ArrayList<>();
 		ArrayList<Point3D> flame = new ArrayList<>();
 		HashSet<Point3D> area = new HashSet<>();
 
-		if (index < roads.size()) {
+		if (index < minecraftMap.getRoads().size()) {
 
-			Road road = roads.get(index);
+			Road road = minecraftMap.getRoads().get(index);
 
 			for (Integer[] ids : road.getEdgeIds()) { // node points
 
-				edges = completionLine(nodes.get(ids[0]), nodes.get(ids[1])); // completion
+				edges = completionLine(minecraftMap.getNodes().get(ids[0]), minecraftMap.getNodes().get(ids[1])); // completion
 
 				flame.addAll(edges);
 
@@ -309,6 +300,7 @@ public class DrawMap {
 			for (Point3D point : area) { // draw
 				BlockPos pos = new BlockPos(point.x, 3, -1 * point.z);
 				world.setBlockState(pos, Blocks.DOUBLE_STONE_SLAB.getDefaultState());
+				System.out.println("road " + point);
 			}
 		}
 	}

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.roborescuemod.commons.Point3D;
+import com.roborescuemod.commons.Point3Df;
 import com.roborescuemod.commons.PointConverter;
 
 public class MinecraftMap {
@@ -14,15 +15,16 @@ public class MinecraftMap {
 	private ArrayList<Road> roads = null;
 	private ArrayList<Building> buildings = null;
 	private PointConverter converter = new PointConverter();
+	private Point3Df max;
+	private Point3Df min;
+	private Point3Df centroid;
 
 	public MinecraftMap(Map<Integer, Point3D> nodes) {
-		for (Point3D p : nodes.values()) {
-
-		}
-	}
-
-	public void setNodes(Map<Integer, Point3D> nodes) {
-		this.nodes = nodes;
+		Point3Df[] primary = converter.calcPrimaryPoint(nodes, this.max, this.min, this.centroid);
+		this.max = primary[0];
+		this.min = primary[1];
+		this.centroid = primary[2];
+		this.nodes = converter.convertPoint(nodes, centroid, new Point3D(0, 0, 0));
 	}
 
 	public Map<Integer, Point3D> getNodes() {
@@ -53,17 +55,16 @@ public class MinecraftMap {
 		return this.buildings;
 	}
 
-	public Point3D getCentroid() {
-
-		return null;
+	public Point3Df getCentroid() {
+		return this.centroid;
 	}
 
-	public Point3D getMaxPoint() {
-		return null;
+	public Point3Df getMaxPoint() {
+		return this.max;
 	}
 
-	public Point3D getMinPoint() {
-		return null;
+	public Point3Df getMinPoint() {
+		return this.min;
 	}
 
 }
