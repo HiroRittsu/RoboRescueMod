@@ -4,9 +4,19 @@ import java.util.Map;
 
 public class PointConverter {
 
-	public Point3D calcCentroid(Map<Integer, Point3D> nodes) {
+	public void calcPrimaryPoint(Map<Integer, Point3D> nodes, Point3Df max, Point3Df min, Point3Df centroid) {
+
+		max.x = Double.MIN_VALUE;
+		max.y = Double.MIN_VALUE;
+		max.z = Double.MIN_VALUE;
 		
-		
-		return null;
+		for (Point3D p : nodes.values()) {
+
+			if (p.getX() > min.getX()) {
+				
+			}
+
+		}
+
 	}
 }
