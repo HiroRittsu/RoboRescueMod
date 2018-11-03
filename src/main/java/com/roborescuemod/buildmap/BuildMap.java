@@ -3,8 +3,6 @@ package com.roborescuemod.buildmap;
 import java.io.InputStream;
 import org.dom4j.Document;
 
-import com.roborescuemod.commons.PointConverter;
-
 import net.minecraft.world.World;
 
 public class BuildMap {
@@ -39,6 +37,21 @@ public class BuildMap {
 		// reset field
 		drawMap.resetField(world, minecraftMap);
 		this.world = world;
+	}
+
+	public MinecraftMap getMinecraftMap() {
+		return this.minecraftMap;
+	}
+
+	public RescueMap getRescueMap() {
+		return rescueMap;
+	}
+
+	public int buildMap() {
+		if (drawBuildings() && drawRoad()) {
+			return 0;
+		}
+		return 1;
 	}
 
 	private GMLMap readMap(Document doc) {
@@ -77,13 +90,6 @@ public class BuildMap {
 		this.building_index++;
 
 		return false;
-	}
-
-	public int buildMap() {
-		if (drawBuildings() && drawRoad()) {
-			return 0;
-		}
-		return 1;
 	}
 
 }
