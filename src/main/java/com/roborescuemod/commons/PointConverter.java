@@ -3,7 +3,7 @@ package com.roborescuemod.commons;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.roborescuemod.buildmap.GMLMap;
+import com.roborescuemod.map.GMLMap;
 
 public class PointConverter {
 

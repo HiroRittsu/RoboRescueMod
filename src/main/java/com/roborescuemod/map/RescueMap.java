@@ -1,17 +1,17 @@
-package com.roborescuemod.buildmap;
+package com.roborescuemod.map;
 
 import com.roborescuemod.commons.MapData;
 import com.roborescuemod.commons.Point3Df;
 import com.roborescuemod.commons.PointConverter;
 
-public class MinecraftMap extends MapData {
+public class RescueMap extends MapData {
 
 	private Point3Df max;
 	private Point3Df min;
 	private Point3Df centroid;
 
-	public MinecraftMap(GMLMap gmlMap) {
-		this.nodes = PointConverter.convertMinecraftMap(gmlMap);
+	public RescueMap(GMLMap gmlMap) {
+		this.nodes = PointConverter.convertRescueMap(gmlMap);
 
 		Point3Df[] primary = PointConverter.calcPrimaryPoint(this.nodes);
 		this.max = primary[0];

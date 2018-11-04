@@ -1,4 +1,4 @@
-package com.roborescuemod.buildmap;
+package com.roborescuemod.map;
 
 import java.awt.Polygon;
 import java.util.ArrayList;

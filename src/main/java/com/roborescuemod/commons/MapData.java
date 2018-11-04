@@ -3,10 +3,10 @@ package com.roborescuemod.commons;
 import java.util.ArrayList;
 import java.util.Map;
 
-import com.roborescuemod.buildmap.Building;
-import com.roborescuemod.buildmap.Edge;
-import com.roborescuemod.buildmap.Road;
 import com.roborescuemod.commons.Point3D;
+import com.roborescuemod.map.Building;
+import com.roborescuemod.map.Edge;
+import com.roborescuemod.map.Road;
 
 public class MapData {
 

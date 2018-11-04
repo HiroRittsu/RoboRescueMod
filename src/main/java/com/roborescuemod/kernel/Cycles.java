@@ -3,11 +3,14 @@ package com.roborescuemod.kernel;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-import com.roborescuemod.buildmap.BuildMap;
 import com.roborescuemod.communication.OriginalSocket;
 import com.roborescuemod.communication.SocketClient;
+import com.roborescuemod.map.BuildMap;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.MoverType;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -18,7 +21,7 @@ public class Cycles {
 	private static BuildMap buildMap = null;
 
 	private World world = null;
-	public static Entity zombie;
+	public static Entity sample_mob;
 
 	private int cycle = -1;
 	private boolean start = false;
@@ -57,9 +60,6 @@ public class Cycles {
 				cycle = -1;
 			}
 
-			/*
-			 * if (buildMap == null) return; else cycle = -1;
-			 */
 			if (buildMap == null && cycle == -1)
 				return;
 		}
@@ -78,16 +78,18 @@ public class Cycles {
 
 			System.out.println("##############spwn");
 
-			zombie = new EntityZombie(world);
+			sample_mob = new EntityCreeper(world);
+			
+			sample_mob.setPosition(100, 10, 100);
+			((EntityLiving) sample_mob).setNoAI(true);
+			world.spawnEntity(sample_mob);
 
-			zombie.setPosition(100, 10, 100);
-
-			world.spawnEntity(zombie);
-
-			cycle++;
+			cycle = 1;
 
 		} else {
 
+			//sample_mob.turn((float) 100, (float) 100);
+			sample_mob.rotationYaw = 45;
 		}
 	}
 

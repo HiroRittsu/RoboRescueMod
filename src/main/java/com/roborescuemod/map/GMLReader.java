@@ -1,4 +1,4 @@
-package com.roborescuemod.buildmap;
+package com.roborescuemod.map;
 
 import java.io.InputStream;
 import java.util.ArrayList;
