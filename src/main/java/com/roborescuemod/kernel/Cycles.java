@@ -3,6 +3,7 @@ package com.roborescuemod.kernel;
 import java.io.InputStream;
 import java.nio.file.Path;
 
+import com.roborescuemod.agent.EntitySample;
 import com.roborescuemod.communication.OriginalSocket;
 import com.roborescuemod.communication.SocketClient;
 import com.roborescuemod.map.BuildMap;
@@ -14,6 +15,8 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import scala.tools.ant.Same;
 
 public class Cycles {
 
@@ -29,6 +32,8 @@ public class Cycles {
 	private String Path = null;
 
 	private SocketClient client = null;
+
+	private int i = 0;
 
 	public Cycles(World world) {
 		client = new SocketClient();
@@ -79,17 +84,21 @@ public class Cycles {
 			System.out.println("##############spwn");
 
 			sample_mob = new EntityCreeper(world);
-			
+
 			sample_mob.setPosition(100, 10, 100);
-			((EntityLiving) sample_mob).setNoAI(true);
+
 			world.spawnEntity(sample_mob);
 
 			cycle = 1;
 
 		} else {
 
-			//sample_mob.turn((float) 100, (float) 100);
-			sample_mob.rotationYaw = 45;
+			sample_mob.setRotationYawHead(i++);
+			sample_mob.move(MoverType.SELF, 0, 0, 0);
+
+			System.out.println(sample_mob.getRotationYawHead());
+			System.out.println(sample_mob.getPosition());
+
 		}
 	}
 

@@ -1,9 +1,15 @@
 package com.roborescuemod.kernel;
 
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -12,8 +18,12 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import org.apache.logging.log4j.Logger;
+
+import com.roborescuemod.agent.EntitySample;
+import com.roborescuemod.agent.RenderSample;
 
 @Mod(modid = RoboRescueMod.MODID, name = RoboRescueMod.NAME, version = RoboRescueMod.VERSION)
 public class RoboRescueMod {
@@ -42,6 +52,11 @@ public class RoboRescueMod {
 	public void init(FMLInitializationEvent event) {
 		// some example code
 		logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+
+		EntityRegistry.registerModEntity((new ResourceLocation("SampleEntity")), EntitySample.class, "SampleEntity", 0,
+				this, 250, 1, false);
+		EntityRegistry.addSpawn(EntitySample.class, 20, 1, 4, EnumCreatureType.CREATURE, Biomes.PLAINS);
+
 	}
 
 	@SubscribeEvent
