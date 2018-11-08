@@ -40,10 +40,6 @@ public class Cycles {
 		this.world = world;
 	}
 
-	public void setCommandEvent(FMLServerStartingEvent event) {
-		event.registerServerCommand(buildCommand = new BuildCommand());
-	}
-
 	public void calcCycles() {
 
 		if (world == null)
@@ -60,7 +56,8 @@ public class Cycles {
 			if (inputStream != null) {
 				buildMap = new BuildMap(this.world, inputStream);
 				cycle = -1;
-			} else if ((this.Path = buildCommand.popPath()) != null) {
+			} else if ((this.Path = BuildCommand.Path) != null) {
+				BuildCommand.Path = null;
 				buildMap = new BuildMap(this.world, this.Path);
 				cycle = -1;
 			}

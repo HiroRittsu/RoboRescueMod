@@ -9,22 +9,7 @@ import net.minecraft.server.MinecraftServer;
 
 public class BuildCommand extends CommandBase {
 
-	private String Path = null;
-	File file;
-
-	public String getPath() {
-		return this.Path;
-	}
-
-	public void resetPath() {
-		this.Path = null;
-	}
-
-	public String popPath() {
-		String temp = this.Path;
-		this.Path = null;
-		return temp;
-	}
+	public static String Path = null;
 
 	@Override
 	public String getName() {
@@ -38,11 +23,11 @@ public class BuildCommand extends CommandBase {
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
-		this.Path = args[0];
-		file = new File(this.Path + "map.gml");
+		BuildCommand.Path = args[0];
+		File file = new File(BuildCommand.Path + "map.gml");
 		if (!file.exists()) {
-			this.Path = null;
-			System.out.println("Not Found File");
+			BuildCommand.Path = null;
+			RoboRescueMod.mc.player.sendChatMessage("Not Found File");
 		}
 
 	}

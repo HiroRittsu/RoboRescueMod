@@ -15,8 +15,4 @@ public class ServerTicks {
 		cycles.calcCycles();
 	}
 
-	public void setCommandEvent(FMLServerStartingEvent event) {
-		cycles.setCommandEvent(event);
-	}
-
 }

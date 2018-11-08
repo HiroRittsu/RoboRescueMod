@@ -1,5 +1,6 @@
 package com.roborescuemod.kernel;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
@@ -30,10 +31,13 @@ public class RoboRescueMod {
 	public static final String MODID = "roborescuemod";
 	public static final String NAME = "RoboRescue Mod";
 	public static final String VERSION = "1.0";
+	public static Minecraft mc = Minecraft.getMinecraft();
+
 
 	// private GMLMainNode gMainNode = new GMLMainNode();
 	private ServerTicks serverTicks = null;
 	private FMLServerStartingEvent event = null;
+	// public static FMLServerStartingEvent event = null;
 	// private MobileSockets mobileSockets = new MobileSockets();
 
 	private World world = null;
@@ -69,11 +73,11 @@ public class RoboRescueMod {
 	public void onPlayerLoggin(PlayerLoggedInEvent event) {
 		world = DimensionManager.getWorld(0);
 		serverTicks = new ServerTicks(world);
-		serverTicks.setCommandEvent(this.event);
 	}
 
 	@EventHandler
 	public void serverStarting(FMLServerStartingEvent event) {
 		this.event = event;
+		event.registerServerCommand(buildCommand = new BuildCommand());
 	}
 }
