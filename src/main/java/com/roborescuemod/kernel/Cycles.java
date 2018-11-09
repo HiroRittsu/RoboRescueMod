@@ -1,7 +1,9 @@
 package com.roborescuemod.kernel;
 
 import java.io.InputStream;
+import java.sql.Time;
 
+import com.roborescuemod.agent.AgentControl;
 //import com.roborescuemod.agent.EntitySample;
 import com.roborescuemod.communication.SocketClient;
 import com.roborescuemod.map.BuildMap;
@@ -24,12 +26,11 @@ public class Cycles {
 	private String Path = null;
 
 	private SocketClient client = null;
-
-	private int i = 0;
+	private AgentControl agentControl = null;
 
 	public Cycles(World world) {
-		client = new SocketClient();
 		Cycles.world = world;
+		agentControl = new AgentControl();
 	}
 
 	public void calcCycles() {
@@ -54,35 +55,44 @@ public class Cycles {
 		}
 
 		///// cycle/////////////////////////
-		if (cycle == -1) {
+		if (cycle <= -1) {
 			// build map
 			if (buildMap.buildMap() == 0) {
 				cycle = 0;
+				client = new SocketClient();
 				buildMap = null;
 				inputStream = null;
 				this.Path = null;
 			}
 
-		} else if (cycle == 0) {
+		} else if (cycle <= 3) {
 
 			System.out.println("##############spwn");
 
-			sample_mob = new EntityCreeper(world);
+			agentControl.registerAgent();
 
-			sample_mob.setPosition(100, 10, 100);
+			cycle = agentControl.getTime();
 
-			world.spawnEntity(sample_mob);
-
-			cycle = 1;
+			/*
+			 * sample_mob = new EntityCreeper(world);
+			 * 
+			 * sample_mob.setPosition(100, 10, 100);
+			 * 
+			 * world.spawnEntity(sample_mob);
+			 * 
+			 * cycle = 1;
+			 */
 
 		} else {
 
-			sample_mob.setRotationYawHead(i++);
-			sample_mob.move(MoverType.SELF, 0, 0, 0);
+			agentControl.update();
 
-			System.out.println(sample_mob.getRotationYawHead());
-			System.out.println(sample_mob.getPosition());
-
+			/*
+			 * sample_mob.setRotationYawHead(i++); sample_mob.move(MoverType.SELF, 0, 0, 0);
+			 * 
+			 * System.out.println(sample_mob.getRotationYawHead());
+			 * System.out.println(sample_mob.getPosition());
+			 */
 		}
 	}
 

@@ -245,12 +245,13 @@ public class DrawMap {
 
 				} else {
 
-					for (Point3D point : flame) { // draw
-
-						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
-						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
-								BlockPlanks.EnumType.byMetadata(building.getId() % 6)));
-					}
+					// for (Point3D point : flame) { // draw
+					//
+					// BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
+					// world.setBlockState(pos,
+					// Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
+					// BlockPlanks.EnumType.byMetadata(building.getId() % 6)));
+					// }
 				}
 
 			}

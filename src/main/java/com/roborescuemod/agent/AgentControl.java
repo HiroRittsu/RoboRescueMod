@@ -9,10 +9,14 @@ import com.roborescuemod.communication.SocketClient;
 public class AgentControl {
 
 	private HashMap<Integer, AgentData> agent_list = null;
-	public static int time = 0;
+	private int time = 0;
 
-	public AgentControl(HashMap<Integer, AgentData> agent_list) {
-		this.agent_list = agent_list;
+	public void registerAgent() {
+		this.agent_list = AgentReader.getDefaultInfo(SocketClient.agent_datas);
+	}
+	
+	public int getTime() {
+		return time;
 	}
 
 	public void update() {

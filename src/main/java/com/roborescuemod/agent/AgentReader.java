@@ -10,40 +10,45 @@ import com.roborescuemod.agent.policeforce.PoliceForce;
 import com.roborescuemod.commons.AgentData;
 import com.roborescuemod.commons.Point3Df;
 import com.roborescuemod.commons.PointConverter;
+import com.roborescuemod.communication.SocketClient;
 import com.roborescuemod.kernel.Cycles;
 
 public class AgentReader {
 
-	public static HashMap<Integer, AgentData> getDefaultInfo(String agent_data) {
+	public static HashMap<Integer, AgentData> getDefaultInfo(ArrayList<String> agent_datas) {
+
 		HashMap<Integer, AgentData> result = new HashMap<>();
-		AgentData agent = null;
-		ArrayList<Double> history = new ArrayList<>();
 
-		history = getHistory(agent_data);
+		for (String data : agent_datas) {
+			AgentData agent = null;
+			ArrayList<Double> history = new ArrayList<>();
 
-		switch (AgentReader.getURN(agent_data)) {
-		case "civilian":
-			agent = new Civilian(Cycles.world, getID(agent_data), new Point3Df(history.get(0), 0, history.get(1)));
-			break;
+			history = getHistory(data);
 
-		case "firebrigade":
-			agent = new FireBrigade(Cycles.world, getID(agent_data), new Point3Df(history.get(0), 0, history.get(1)));
-			break;
+			switch (AgentReader.getURN(data)) {
+			case "civilian":
+				agent = new Civilian(Cycles.world, getID(data), new Point3Df(history.get(0), 0, history.get(1)));
+				break;
 
-		case "policeforce":
-			agent = new PoliceForce(Cycles.world, getID(agent_data), new Point3Df(history.get(0), 0, history.get(1)));
-			break;
+			case "firebrigade":
+				agent = new FireBrigade(Cycles.world, getID(data), new Point3Df(history.get(0), 0, history.get(1)));
+				break;
 
-		case "ambulanceteam":
-			agent = new AmbulanceTeam(Cycles.world, getID(agent_data), new Point3Df(history.get(0), 0, history.get(1)));
-			break;
+			case "policeforce":
+				agent = new PoliceForce(Cycles.world, getID(data), new Point3Df(history.get(0), 0, history.get(1)));
+				break;
 
-		default:
-			System.out.println("Error AgentReader");
-			break;
+			case "ambulanceteam":
+				agent = new AmbulanceTeam(Cycles.world, getID(data), new Point3Df(history.get(0), 0, history.get(1)));
+				break;
+
+			default:
+				System.out.println("Error AgentReader");
+				break;
+			}
+
+			result.put(getID(data), agent);
 		}
-
-		result.put(getID(agent_data), agent);
 
 		return result;
 	}
