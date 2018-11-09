@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class SocketClient {
 
-	public static ArrayList<String> agent_data = new ArrayList<>();
+	public static ArrayList<String> agent_datas = new ArrayList<>();
 
 	private OriginalSocket originalSocket = new OriginalSocket();
 
@@ -21,7 +21,7 @@ public class SocketClient {
 
 				while (true) {
 
-					agent_data.add(originalSocket.subscribeMsgs());
+					agent_datas.add(originalSocket.subscribeMsgs());
 
 					originalSocket.delaitinon(1);
 

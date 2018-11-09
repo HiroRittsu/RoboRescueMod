@@ -10,16 +10,21 @@ public class AgentData {
 
 	public Entity agent = null;
 	public World world = null;
+	public Point3Df last_point = null;
 	public ArrayList<Double> path = new ArrayList<>();
 
-	public AgentData(World world, Entity agent, Point3D point) {
+	public AgentData(World world, Entity agent, Point3Df point) {
 		this.agent = agent;
 		agent.setPosition(point.x, point.y, point.z);
 		world.spawnEntity(agent);
+		last_point = new Point3Df(point.x, point.y, point.z);
 	}
 
 	private void move(double x, double z) {
-		agent.move(MoverType.SELF, x, 0, z);
+		agent.move(MoverType.SELF, x - last_point.x, 0, z - last_point.z);
+		last_point.x = x;
+		last_point.y = 0;
+		last_point.z = z;
 	}
 
 	private double pop() {

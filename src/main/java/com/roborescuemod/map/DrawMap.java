@@ -195,10 +195,8 @@ public class DrawMap {
 
 		for (int i = 0; i < 5; i++) {
 
-			for (int z = (int) (minecraftMap.getMinPoint().getZ()) - 5; z < (int) (minecraftMap.getMaxPoint().getZ())
-					+ 5; z++) {
-				for (int x = (int) (minecraftMap.getMinPoint().getX())
-						- 5; x < (int) (minecraftMap.getMaxPoint().getX()) + 5; x++) {
+			for (int z = (int) (MinecraftMap.min.getZ()) - 5; z < (int) (MinecraftMap.max.getZ()) + 5; z++) {
+				for (int x = (int) (MinecraftMap.min.getX()) - 5; x < (int) (MinecraftMap.max.getX()) + 5; x++) {
 
 					BlockPos pos = new BlockPos(x, i + 3, z);
 
