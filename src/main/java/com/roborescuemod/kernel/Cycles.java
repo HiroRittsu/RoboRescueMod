@@ -45,11 +45,6 @@ public class Cycles {
 		if (world == null)
 			return;
 
-		/*
-		 * set inputstream if (socketAPI_map != null && inputStream == null) inputStream
-		 * = socketAPI_map.subscribeFileData();
-		 */
-
 		// ready build map
 		if (buildMap == null) {
 

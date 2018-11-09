@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class SocketClient {
 
-	private ArrayList<String> agent_data = new ArrayList<>();
+	public static ArrayList<String> agent_data = new ArrayList<>();
 
 	private OriginalSocket originalSocket = new OriginalSocket();
 
@@ -29,10 +29,6 @@ public class SocketClient {
 
 			}
 		}).start();
-	}
-
-	public String popAgentData() {
-		return agent_data.remove(0);
 	}
 
 }
