@@ -6,33 +6,20 @@ import com.roborescuemod.commons.PointConverter;
 
 public class MinecraftMap extends MapData {
 
-	private Point3Df max;
-	private Point3Df min;
-	private Point3Df centroid;
+	public static Point3Df max;
+	public static Point3Df min;
+	public static Point3Df centroid;
 
 	public MinecraftMap(GMLMap gmlMap) {
 		this.nodes = PointConverter.convertMinecraftMap(gmlMap);
 
 		Point3Df[] primary = PointConverter.calcPrimaryPoint(this.nodes);
-		this.max = primary[0];
-		this.min = primary[1];
-		this.centroid = primary[2];
+		MinecraftMap.max = primary[0];
+		MinecraftMap.min = primary[1];
+		MinecraftMap.centroid = primary[2];
 
 		this.edges = gmlMap.getEdges();
 		this.roads = gmlMap.getRoads();
 		this.buildings = gmlMap.getBuildins();
 	}
-
-	public Point3Df getCentroid() {
-		return this.centroid;
-	}
-
-	public Point3Df getMaxPoint() {
-		return this.max;
-	}
-
-	public Point3Df getMinPoint() {
-		return this.min;
-	}
-
 }
