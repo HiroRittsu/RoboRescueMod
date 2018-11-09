@@ -23,8 +23,6 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 
 import org.apache.logging.log4j.Logger;
 
-import com.roborescuemod.agent.EntitySample;
-import com.roborescuemod.agent.RenderSample;
 
 @Mod(modid = RoboRescueMod.MODID, name = RoboRescueMod.NAME, version = RoboRescueMod.VERSION)
 public class RoboRescueMod {
@@ -56,10 +54,6 @@ public class RoboRescueMod {
 	public void init(FMLInitializationEvent event) {
 		// some example code
 		logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
-
-		EntityRegistry.registerModEntity((new ResourceLocation("SampleEntity")), EntitySample.class, "SampleEntity", 0,
-				this, 250, 1, false);
-		EntityRegistry.addSpawn(EntitySample.class, 20, 1, 4, EnumCreatureType.CREATURE, Biomes.PLAINS);
 
 	}
 

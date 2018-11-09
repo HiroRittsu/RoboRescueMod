@@ -3,7 +3,7 @@ package com.roborescuemod.kernel;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-import com.roborescuemod.agent.EntitySample;
+//import com.roborescuemod.agent.EntitySample;
 import com.roborescuemod.communication.OriginalSocket;
 import com.roborescuemod.communication.SocketClient;
 import com.roborescuemod.map.BuildMap;
