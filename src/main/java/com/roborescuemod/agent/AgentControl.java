@@ -22,38 +22,7 @@ public class AgentControl {
 
 	public void update() {
 
-		if (SocketClient.agent_datas.size() != 0) {
-			for (String data : SocketClient.agent_datas) {
-
-				this.time = SocketMegReader.getTime(data);
-
-				switch (SocketMegReader.getURN(data)) {
-				case "civilian":
-					agent_list.get(SocketMegReader.getID(data)).path.addAll(SocketMegReader.getHistory(data));
-					break;
-
-				case "firebrigade":
-					agent_list.get(SocketMegReader.getID(data)).path.addAll(SocketMegReader.getHistory(data));
-					break;
-
-				case "policeforce":
-					agent_list.get(SocketMegReader.getID(data)).path.addAll(SocketMegReader.getHistory(data));
-					break;
-
-				case "ambulanceteam":
-					agent_list.get(SocketMegReader.getID(data)).path.addAll(SocketMegReader.getHistory(data));
-					break;
-
-				default:
-					System.out.println("Error Agent");
-					break;
-				}
-			}
-		}
-
-		for (Map.Entry<Integer, AgentData> entry : agent_list.entrySet()) {
-			entry.getValue().shift();
-		}
+	
 
 	}
 

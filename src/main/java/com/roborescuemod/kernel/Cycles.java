@@ -1,16 +1,17 @@
 package com.roborescuemod.kernel;
 
 import java.io.InputStream;
-import java.sql.Time;
 
+import com.ibm.icu.impl.data.ResourceReader;
+import com.roborescuemod.agent.ActionAgent;
 import com.roborescuemod.agent.AgentControl;
+import com.roborescuemod.communication.RescueInfo;
 //import com.roborescuemod.agent.EntitySample;
 import com.roborescuemod.communication.SocketClient;
 import com.roborescuemod.map.BuildMap;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.MoverType;
-import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.world.World;
 
 public class Cycles {
@@ -26,11 +27,11 @@ public class Cycles {
 	private String Path = null;
 
 	private SocketClient client = null;
-	private AgentControl agentControl = null;
 
 	public Cycles(World world) {
 		Cycles.world = world;
-		agentControl = new AgentControl();
+		// agentControl = new AgentControl();
+		ActionAgent actionAgent = new ActionAgent();
 	}
 
 	public void calcCycles() {
@@ -69,9 +70,9 @@ public class Cycles {
 
 			System.out.println(cycle);
 
-			agentControl.registerAgent();
+			cycle = RescueInfo.time;
 
-			cycle = agentControl.getTime();
+			ActionAgent.update();
 
 			/*
 			 * sample_mob = new EntityCreeper(world);
@@ -85,7 +86,9 @@ public class Cycles {
 
 		} else {
 
-			agentControl.update();
+			ActionAgent.update();
+
+			cycle = RescueInfo.time;
 
 			/*
 			 * sample_mob.setRotationYawHead(i++); sample_mob.move(MoverType.SELF, 0, 0, 0);

@@ -27,8 +27,8 @@ public class SocketMegReader {
 		if (getHistorySize(agent_data) <= 0)
 			return null;
 
-		Point3Df point3Df = PointConverter.toMinecraftPoint(new Point3Df(Double.parseDouble(agent_data.split(",")[0]),
-				0, Double.parseDouble(agent_data.split(",")[1])));
+		Point3Df point3Df = PointConverter.toMinecraftPoint(new Point3Df(Integer.parseInt(agent_data.split(",")[3]), 0,
+				Integer.parseInt(agent_data.split(",")[4])));
 
 		return point3Df;
 	}

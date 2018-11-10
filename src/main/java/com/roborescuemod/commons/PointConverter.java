@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.roborescuemod.map.GMLMap;
-import com.roborescuemod.map.MinecraftMap;
 import com.roborescuemod.map.RescueMap;
 
 public class PointConverter {
@@ -103,8 +102,8 @@ public class PointConverter {
 	public static Point3Df toMinecraftPoint(Point3Df rescue_point) {
 
 		return new Point3Df((double) (rescue_point.x - RescueMap.centroid.x) / 1000,
-				(double) (rescue_point.x - RescueMap.centroid.x) / 1000,
-				(double) (rescue_point.x - RescueMap.centroid.x) / 1000);
+				(double) (rescue_point.y - RescueMap.centroid.y) / 1000,
+				(double) (rescue_point.z - RescueMap.centroid.z) / -1000);
 	}
 
 }
