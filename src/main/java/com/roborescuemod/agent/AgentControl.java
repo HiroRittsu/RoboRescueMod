@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.roborescuemod.commons.AgentData;
 import com.roborescuemod.communication.SocketClient;
+import com.roborescuemod.communication.SocketMegReader;
 
 public class AgentControl {
 
@@ -12,7 +13,7 @@ public class AgentControl {
 	private int time = 0;
 
 	public void registerAgent() {
-		this.agent_list = AgentReader.getDefaultInfo(SocketClient.agent_datas);
+		this.agent_list = SocketMegReader.getDefaultInfo(SocketClient.agent_datas);
 	}
 
 	public int getTime() {
@@ -24,23 +25,23 @@ public class AgentControl {
 		if (SocketClient.agent_datas.size() != 0) {
 			for (String data : SocketClient.agent_datas) {
 
-				this.time = AgentReader.getTime(data);
+				this.time = SocketMegReader.getTime(data);
 
-				switch (AgentReader.getURN(data)) {
+				switch (SocketMegReader.getURN(data)) {
 				case "civilian":
-					agent_list.get(AgentReader.getID(data)).path.addAll(AgentReader.getHistory(data));
+					agent_list.get(SocketMegReader.getID(data)).path.addAll(SocketMegReader.getHistory(data));
 					break;
 
 				case "firebrigade":
-					agent_list.get(AgentReader.getID(data)).path.addAll(AgentReader.getHistory(data));
+					agent_list.get(SocketMegReader.getID(data)).path.addAll(SocketMegReader.getHistory(data));
 					break;
 
 				case "policeforce":
-					agent_list.get(AgentReader.getID(data)).path.addAll(AgentReader.getHistory(data));
+					agent_list.get(SocketMegReader.getID(data)).path.addAll(SocketMegReader.getHistory(data));
 					break;
 
 				case "ambulanceteam":
-					agent_list.get(AgentReader.getID(data)).path.addAll(AgentReader.getHistory(data));
+					agent_list.get(SocketMegReader.getID(data)).path.addAll(SocketMegReader.getHistory(data));
 					break;
 
 				default:

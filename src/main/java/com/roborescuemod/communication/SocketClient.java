@@ -1,10 +1,6 @@
 package com.roborescuemod.communication;
 
-import java.util.ArrayList;
-
 public class SocketClient {
-
-	public static ArrayList<String> agent_datas = new ArrayList<>();
 
 	private OriginalSocket originalSocket = new OriginalSocket();
 
@@ -21,7 +17,7 @@ public class SocketClient {
 
 				while (true) {
 
-					agent_datas.add(originalSocket.subscribeMsgs());
+					RescueInfo.registerData(originalSocket.subscribeMsgs());
 
 					originalSocket.delaitinon(1);
 

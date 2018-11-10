@@ -1,10 +1,10 @@
-package com.roborescuemod.agent;
+package com.roborescuemod.communication;
 
 import java.util.ArrayList;
 import com.roborescuemod.commons.Point3Df;
 import com.roborescuemod.commons.PointConverter;
 
-public class AgentReader {
+public class SocketMegReader {
 
 	public static int getTime(String agent_data) {
 		return Integer.parseInt(agent_data.split(",")[0]);
