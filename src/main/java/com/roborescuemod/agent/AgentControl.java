@@ -14,7 +14,7 @@ public class AgentControl {
 	public void registerAgent() {
 		this.agent_list = AgentReader.getDefaultInfo(SocketClient.agent_datas);
 	}
-	
+
 	public int getTime() {
 		return time;
 	}
@@ -24,7 +24,7 @@ public class AgentControl {
 		if (SocketClient.agent_datas.size() != 0) {
 			for (String data : SocketClient.agent_datas) {
 
-				time = AgentReader.getTime(data);
+				this.time = AgentReader.getTime(data);
 
 				switch (AgentReader.getURN(data)) {
 				case "civilian":

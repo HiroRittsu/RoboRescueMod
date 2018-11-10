@@ -8,11 +8,8 @@ import net.minecraft.world.World;
 
 public class Civilian extends AgentData {
 
-	public int entityID;
-
 	public Civilian(World world, int entityID, Point3Df point) {
-		super(world, new EntityCreeper(world), point);
-		this.entityID = entityID;
+		super(world, new EntityCreeper(world), entityID, point);
 	}
 
 }

@@ -67,7 +67,7 @@ public class Cycles {
 
 		} else if (cycle <= 3) {
 
-			System.out.println("##############spwn");
+			System.out.println(cycle);
 
 			agentControl.registerAgent();
 

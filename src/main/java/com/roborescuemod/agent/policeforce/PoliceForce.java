@@ -9,11 +9,8 @@ import net.minecraft.world.World;
 
 public class PoliceForce extends AgentData {
 
-	public int entityID;
-
 	public PoliceForce(World world, int entityID, Point3Df point3Df) {
-		super(world, new EntityVillager(Cycles.world), point3Df);
-		this.entityID = entityID;
+		super(world, new EntityVillager(Cycles.world), entityID, point3Df);
 	}
 
 }

@@ -9,11 +9,8 @@ import net.minecraft.world.World;
 
 public class FireBrigade extends AgentData {
 
-	public int entityID;
-
 	public FireBrigade(World world, int entityID, Point3Df point3Df) {
-		super(world, new EntityVillager(Cycles.world), point3Df);
-		this.entityID = entityID;
+		super(world, new EntityVillager(Cycles.world), entityID, point3Df);
 	}
 
 }
