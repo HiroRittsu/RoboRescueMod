@@ -2,16 +2,13 @@ package com.roborescuemod.kernel;
 
 import java.io.InputStream;
 
-import com.ibm.icu.impl.data.ResourceReader;
-import com.roborescuemod.agent.ActionAgent;
-import com.roborescuemod.agent.AgentControl;
+import com.roborescuemod.world.agent.ActionAgent;
 import com.roborescuemod.communication.RescueInfo;
 //import com.roborescuemod.agent.EntitySample;
 import com.roborescuemod.communication.SocketClient;
-import com.roborescuemod.map.BuildMap;
+import com.roborescuemod.world.map.BuildMap;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.world.World;
 
 public class Cycles {

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.roborescuemod.commons.Point3D;
-import com.roborescuemod.map.Building;
-import com.roborescuemod.map.Edge;
-import com.roborescuemod.map.Road;
+import com.roborescuemod.world.map.Building;
+import com.roborescuemod.world.map.Edge;
+import com.roborescuemod.world.map.Road;
 
 public class MapData {
 

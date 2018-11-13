@@ -2,10 +2,10 @@ package com.roborescuemod.communication;
 
 import java.util.HashMap;
 
-import com.roborescuemod.agent.ambulanceteam.AmbulanceTeam;
-import com.roborescuemod.agent.civilian.Civilian;
-import com.roborescuemod.agent.firebrigade.FireBrigade;
-import com.roborescuemod.agent.policeforce.PoliceForce;
+import com.roborescuemod.world.agent.ambulanceteam.AmbulanceTeam;
+import com.roborescuemod.world.agent.civilian.Civilian;
+import com.roborescuemod.world.agent.firebrigade.FireBrigade;
+import com.roborescuemod.world.agent.policeforce.PoliceForce;
 import com.roborescuemod.commons.AgentData;
 import com.roborescuemod.kernel.Cycles;
 
