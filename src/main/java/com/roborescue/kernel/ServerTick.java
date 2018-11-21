@@ -1,7 +1,7 @@
 package com.roborescue.kernel;
 
-import com.roborescue.infomation.Agentinfo;
-import com.roborescue.infomation.Worldinfo;
+import com.roborescue.information.Agentinfo;
+import com.roborescue.information.Worldinfo;
 
 import net.minecraft.world.World;
 

@@ -21,14 +21,17 @@ public class Cycler {
 
 		switch (time) {
 		case -1:
-
+			render.renderMap();
 			break;
 
 		case 0:
-
+			
 			break;
 
 		default:
+			render.actionAgent();
+			render.updateBuild();
+			render.updateBlockade();
 			break;
 		}
 
