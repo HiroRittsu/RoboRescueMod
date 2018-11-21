@@ -4,14 +4,30 @@ import net.minecraft.world.World;
 
 public class Cycler {
 
+	private int time;
+
 	public World world;
 
 	public Cycler(World world) {
 		this.world = world;
+		this.time = -1;
 	}
 
 	public void update() {
-		System.out.println("cycle");
+
+		switch (time) {
+		case -1:
+
+			break;
+
+		case 0:
+
+			break;
+
+		default:
+			break;
+		}
+
 	}
 
 }
