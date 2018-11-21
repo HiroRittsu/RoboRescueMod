@@ -1,5 +1,6 @@
 package com.roborescue.roborescuemod;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -16,6 +17,7 @@ public class RoboRescueMod {
 	public static final String MODID = "roborescuemod";
 	public static final String NAME = "RoboRescue Mod";
 	public static final String VERSION = "2.0";
+	public static Minecraft mc = Minecraft.getMinecraft();
 
 	private static Logger logger;
 
@@ -30,9 +32,11 @@ public class RoboRescueMod {
 		// some example code
 		logger.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
 	}
-	
+
 	@SubscribeEvent
 	public void ServerTick(TickEvent.ServerTickEvent event) {
 		System.out.println("ServerTick");
+		if (mc.player != null)
+			mc.player.sendChatMessage("x");
 	}
 }
