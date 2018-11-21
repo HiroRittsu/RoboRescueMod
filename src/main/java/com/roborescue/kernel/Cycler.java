@@ -1,16 +1,20 @@
 package com.roborescue.kernel;
 
+import com.roborescue.render.Render;
+
 import net.minecraft.world.World;
 
 public class Cycler {
 
 	private int time;
+	private Render render;
 
 	public World world;
 
 	public Cycler(World world) {
 		this.world = world;
 		this.time = -1;
+		this.render = new Render(world);
 	}
 
 	public void update() {
