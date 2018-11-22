@@ -1,10 +1,12 @@
 package com.roborescue.socket;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.roborescue.commons.Point3D;
 import com.roborescue.world.map.parts.Edge;
+import com.roborescue.world.map.parts.Road;
 
 public class SocketReader {
 
@@ -35,12 +37,17 @@ public class SocketReader {
 	}
 
 	public void readRoad(String msg) {
-		for (int i = 1; i < msg.split(",").length; i++) {
-
+		String[] msgs = msg.split(",");
+		// {entityID, edgeID,・・・ }
+		ArrayList<Integer> edge_ids = new ArrayList<>();
+		for (int i = 1; i < msgs.length; i++) {
+			edge_ids.add(Integer.parseInt(msgs[i]));
 		}
+		Road road = new Road(Integer.parseInt(msgs[0]), edge_ids);
 	}
 
 	public void readBuilding(String msg) {
+		// {entityID, edgeID,・・・ }
 		for (int i = 1; i < msg.split(",").length; i++) {
 
 		}
