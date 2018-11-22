@@ -6,6 +6,7 @@ import java.util.HashSet;
 import com.roborescue.commons.Point3D;
 import com.roborescue.world.map.MinecraftMap;
 import com.roborescue.world.map.parts.Building;
+import com.roborescue.world.map.parts.Edge;
 import com.roborescue.world.map.parts.Road;
 
 import net.minecraft.block.BlockPlanks;
@@ -275,8 +276,9 @@ public class SetMap {
 
 			Road road = minecraftMap.getRoads().get(index);
 
-			for (Integer[] ids : road.getEdgeIds()) { // node points
-
+			for (Integer id : road.getEdgeIds()) { // node points
+				Edge edge = minecraftMap.getEdges().get(id);
+				edges = completionLine(edge.getNodeID()[0], edge.getNodeID()[1]);
 				edges = completionLine(minecraftMap.getNodes().get(ids[0]), minecraftMap.getNodes().get(ids[1])); // completion
 
 				flame.addAll(edges);
@@ -292,7 +294,7 @@ public class SetMap {
 		} else {
 			return false;
 		}
-		
+
 		return true;
 	}
 
