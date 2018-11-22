@@ -226,12 +226,12 @@ public class SetMap {
 
 			Building building = minecraftMap.getBuildins().get(index);
 
-			for (Integer[] ids : building.getEdgeIds()) { // node points すべてのエッジを書き出し
-
-				edges = completionLine(minecraftMap.getNodes().get(ids[0]), minecraftMap.getNodes().get(ids[1])); // completion
+			for (Integer id : building.getEdgeIds()) { // node points すべてのエッジを書き出し
+				Edge edge = minecraftMap.getEdges().get(id);
+				edges = completionLine(minecraftMap.getNodes().get(edge.getNodeID()[0]),
+						minecraftMap.getNodes().get(edge.getNodeID()[0])); // completion
 
 				flame.addAll(edges);
-
 			}
 
 			area = completionArea(flame);
@@ -278,8 +278,10 @@ public class SetMap {
 
 			for (Integer id : road.getEdgeIds()) { // node points
 				Edge edge = minecraftMap.getEdges().get(id);
-				edges = completionLine(edge.getNodeID()[0], edge.getNodeID()[1]);
-				edges = completionLine(minecraftMap.getNodes().get(ids[0]), minecraftMap.getNodes().get(ids[1])); // completion
+				edges = completionLine(minecraftMap.getNodes().get(edge.getNodeID()[0]),
+						minecraftMap.getNodes().get(edge.getNodeID()[1]));
+				// edges = completionLine(minecraftMap.getNodes().get(ids[0]),
+				// minecraftMap.getNodes().get(ids[1])); // completion
 
 				flame.addAll(edges);
 

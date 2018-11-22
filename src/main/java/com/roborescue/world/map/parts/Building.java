@@ -16,9 +16,9 @@ public class Building extends Polygon{
 	private int floor;
 	private String material;
 	private ArrayList<Edge> edges;
-	private ArrayList<Integer[]> edge_ids;
+	private ArrayList<Integer> edge_ids;
 
-	public Building(int id, int floor, String material, ArrayList<Integer[]> edge_ids) {
+	public Building(int id, int floor, String material, ArrayList<Integer> edge_ids) {
 		this.id = id;
 		this.floor = floor;
 		this.material = material;
@@ -45,7 +45,7 @@ public class Building extends Polygon{
 		return this.edges;
 	}
 
-	public ArrayList<Integer[]> getEdgeIds() {
+	public ArrayList<Integer> getEdgeIds() {
 		return this.edge_ids;
 	}
 
