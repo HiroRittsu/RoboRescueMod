@@ -22,10 +22,13 @@ public class Cycler {
 		switch (time) {
 		case -1:
 			render.renderMap();
+			if (render.readyMap) {
+				time++;
+			}
 			break;
 
 		case 0:
-			
+
 			break;
 
 		default:

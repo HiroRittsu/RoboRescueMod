@@ -229,7 +229,7 @@ public class SetMap {
 			for (Integer id : building.getEdgeIds()) { // node points すべてのエッジを書き出し
 				Edge edge = minecraftMap.getEdges().get(id);
 				edges = completionLine(minecraftMap.getNodes().get(edge.getNodeID()[0]),
-						minecraftMap.getNodes().get(edge.getNodeID()[0])); // completion
+						minecraftMap.getNodes().get(edge.getNodeID()[1])); // completion
 
 				flame.addAll(edges);
 			}
