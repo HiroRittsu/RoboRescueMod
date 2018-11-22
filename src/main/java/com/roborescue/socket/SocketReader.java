@@ -5,30 +5,66 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.roborescue.commons.Point3D;
+import com.roborescue.information.Worldinfo;
+import com.roborescue.world.map.GMLMap;
+import com.roborescue.world.map.MinecraftMap;
+import com.roborescue.world.map.RescueMap;
 import com.roborescue.world.map.parts.Building;
 import com.roborescue.world.map.parts.Edge;
 import com.roborescue.world.map.parts.Road;
 
 public class SocketReader {
 
-	////////////////////////////////////////////
+	public Map<Integer, Point3D> nodes = new HashMap<>();
+	public Map<Integer, Edge> edges = new HashMap<>();
+	public ArrayList<Road> roads = new ArrayList<>();
+	public ArrayList<Building> buildings = new ArrayList<>();
+	public GMLMap gmlMap;
+	public RescueMap rescueMap;
+	public MinecraftMap minecraftMap;
 
+	public void readCommand(String msg) {
+		String[] msgs = msg.split(",");
+		switch (msgs[0]) {
+		case "registry_map":
+			// gmlマップ作成
+			gmlMap = new GMLMap(nodes);
+			gmlMap.setEdges(edges);
+			gmlMap.setRoads(roads);
+			gmlMap.setBuildings(buildings);
+			
+			// rescueマップ作成
+			rescueMap = new RescueMap(gmlMap);
+			// minecraftマップ作成
+			minecraftMap = new MinecraftMap(gmlMap);
+
+			// Worldinfoに登録
+			Worldinfo.gmlMap = gmlMap;
+			Worldinfo.rescueMap = rescueMap;
+			Worldinfo.minecraftMap = minecraftMap;
+			break;
+
+		default:
+			System.out.println("Command例外受信");
+			break;
+		}
+	}
+
+	////////////////////////////////////////////
 	public void readNode(String msg) {
 		String[] msgs = msg.split(",");
 		// {entityID, x, y, z}
-		Map<Integer, Point3D> node = new HashMap<>();
 		for (int i = 1; i < msgs.length; i += 4) {
 			int id = Integer.parseInt(msgs[i]);
 			Point3D point3d = new Point3D((int) Double.parseDouble(msgs[i + 1]), (int) Double.parseDouble(msgs[i + 2]),
 					(int) Double.parseDouble(msgs[i + 3]));
-			node.put(id, point3d);
+			nodes.put(id, point3d);
 		}
 	}
 
 	public void readEdge(String msg) {
 		String[] msgs = msg.split(",");
 		// {entityID, firstID, endID}
-		Map<Integer, Edge> edges = new HashMap<>();
 		for (int i = 1; i < msgs.length; i += 3) {
 			int id = Integer.parseInt(msgs[i]);
 			Integer[] nodes = new Integer[2];
@@ -47,7 +83,7 @@ public class SocketReader {
 		for (int i = 1; i < msgs.length; i++) {
 			edge_ids.add(Integer.parseInt(msgs[i]));
 		}
-		Road road = new Road(id, edge_ids);
+		roads.add(new Road(id, edge_ids));
 	}
 
 	public void readBuilding(String msg) {
@@ -60,7 +96,7 @@ public class SocketReader {
 		for (int i = 3; i < msgs.length; i++) {
 			edge_ids.add(Integer.parseInt(msgs[i]));
 		}
-		Building building = new Building(id, floor, material, edge_ids);
+		buildings.add(new Building(id, floor, material, edge_ids));
 	}
 
 	////////////////////////////////////////////

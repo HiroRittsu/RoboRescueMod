@@ -27,6 +27,10 @@ public class SocketClient {
 					String msg = originalSocket.subscribeMsgs();
 
 					switch (msg.split(",")[0]) {
+					case "command":
+						socketReader.readCommand(msg);
+						break;
+						
 					case "node":
 						socketReader.readNode(msg);
 						break;
