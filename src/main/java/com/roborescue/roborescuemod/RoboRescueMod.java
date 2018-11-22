@@ -11,11 +11,12 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import org.apache.logging.log4j.Logger;
 
 import com.roborescue.kernel.ServerTick;
-
+import com.roborescue.socket.SocketClient;
 
 @Mod(modid = RoboRescueMod.MODID, name = RoboRescueMod.NAME, version = RoboRescueMod.VERSION)
 public class RoboRescueMod {
@@ -24,6 +25,7 @@ public class RoboRescueMod {
 	public static final String VERSION = "2.0";
 	public static Minecraft mc = Minecraft.getMinecraft();
 	public ServerTick serverTick;
+	public SocketClient socketClient;
 	public World world;
 
 	private static Logger logger;
@@ -32,6 +34,7 @@ public class RoboRescueMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(this);
 		logger = event.getModLog();
+		socketClient = new SocketClient(12345, "localhost");
 	}
 
 	@EventHandler

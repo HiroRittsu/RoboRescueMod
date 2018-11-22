@@ -19,8 +19,7 @@ public class Render {
 	}
 
 	public void renderMap() {
-		System.out.println("renderMap");
-
+		System.err.println(Worldinfo.readyMinecraftMap);
 		if (Worldinfo.canMinecraftMap()) {
 
 			// Road

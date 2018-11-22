@@ -1,5 +1,8 @@
 package com.roborescue.socket;
 
+import com.roborescue.information.Worldinfo;
+import com.roborescue.information.Agentinfo;
+
 public class SocketClient {
 
 	public OriginalSocket originalSocket;
@@ -19,7 +22,8 @@ public class SocketClient {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-
+				new Worldinfo();
+				new Agentinfo();
 				originalSocket.joinClient(port, ip);
 
 				while (true) {
@@ -30,20 +34,24 @@ public class SocketClient {
 					case "command":
 						socketReader.readCommand(msg);
 						break;
-						
+
 					case "node":
+						System.out.println("node");
 						socketReader.readNode(msg);
 						break;
 
 					case "edge":
+						System.out.println("edge");
 						socketReader.readEdge(msg);
 						break;
 
 					case "road":
+						System.out.println("road");
 						socketReader.readRoad(msg);
 						break;
 
 					case "building":
+						System.out.println("building");
 						socketReader.readBuilding(msg);
 						break;
 
@@ -69,7 +77,6 @@ public class SocketClient {
 					}
 
 					originalSocket.delaitinon(1);
-
 				}
 
 			}

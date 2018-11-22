@@ -9,17 +9,28 @@ public class Worldinfo {
 	public static MinecraftMap minecraftMap;
 	public static RescueMap rescueMap;
 	public static GMLMap gmlMap;
+	public static boolean readyMinecraftMap;
+	public static boolean readyRescueMap;
+	public static boolean readyGmlMap;
+	public static int time;
+
+	public Worldinfo() {
+		readyGmlMap = false;
+		readyRescueMap = false;
+		readyMinecraftMap = false;
+		time = -1;
+	}
 
 	public static boolean canMinecraftMap() {
-		return false;
+		return readyMinecraftMap;
 	}
 
 	public static boolean canRescueMap() {
-		return false;
+		return readyRescueMap;
 	}
 
-	public static boolean canGMLMap() {
-		return false;
+	public static boolean canGmlMap() {
+		return readyGmlMap;
 	}
 
 }

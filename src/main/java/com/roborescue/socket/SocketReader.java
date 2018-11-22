@@ -25,14 +25,14 @@ public class SocketReader {
 
 	public void readCommand(String msg) {
 		String[] msgs = msg.split(",");
-		switch (msgs[0]) {
+		switch (msgs[1]) {
 		case "registry_map":
 			// gmlマップ作成
 			gmlMap = new GMLMap(nodes);
 			gmlMap.setEdges(edges);
 			gmlMap.setRoads(roads);
 			gmlMap.setBuildings(buildings);
-			
+
 			// rescueマップ作成
 			rescueMap = new RescueMap(gmlMap);
 			// minecraftマップ作成
@@ -40,8 +40,15 @@ public class SocketReader {
 
 			// Worldinfoに登録
 			Worldinfo.gmlMap = gmlMap;
+			Worldinfo.readyGmlMap = true;
+
 			Worldinfo.rescueMap = rescueMap;
+			Worldinfo.readyRescueMap = true;
+
 			Worldinfo.minecraftMap = minecraftMap;
+			Worldinfo.readyMinecraftMap = true;
+
+			System.out.println("マップ登録完了");
 			break;
 
 		default:
@@ -53,7 +60,7 @@ public class SocketReader {
 	////////////////////////////////////////////
 	public void readNode(String msg) {
 		String[] msgs = msg.split(",");
-		// {entityID, x, y, z}
+		// {node, entityID, x, y, z}
 		for (int i = 1; i < msgs.length; i += 4) {
 			int id = Integer.parseInt(msgs[i]);
 			Point3D point3d = new Point3D((int) Double.parseDouble(msgs[i + 1]), (int) Double.parseDouble(msgs[i + 2]),
@@ -64,7 +71,7 @@ public class SocketReader {
 
 	public void readEdge(String msg) {
 		String[] msgs = msg.split(",");
-		// {entityID, firstID, endID}
+		// {edge, entityID, firstID, endID}
 		for (int i = 1; i < msgs.length; i += 3) {
 			int id = Integer.parseInt(msgs[i]);
 			Integer[] nodes = new Integer[2];
@@ -77,10 +84,10 @@ public class SocketReader {
 
 	public void readRoad(String msg) {
 		String[] msgs = msg.split(",");
-		// {entityID, edgeID,・・・ }
-		int id = Integer.parseInt(msgs[0]);
+		// {road, entityID, edgeID,・・・ }
+		int id = Integer.parseInt(msgs[1]);
 		ArrayList<Integer> edge_ids = new ArrayList<>();
-		for (int i = 1; i < msgs.length; i++) {
+		for (int i = 2; i < msgs.length; i++) {
 			edge_ids.add(Integer.parseInt(msgs[i]));
 		}
 		roads.add(new Road(id, edge_ids));
@@ -88,12 +95,12 @@ public class SocketReader {
 
 	public void readBuilding(String msg) {
 		String[] msgs = msg.split(",");
-		// {entityID, floor, material, edgeID,・・・ }
-		int id = Integer.parseInt(msgs[0]);
-		int floor = Integer.parseInt(msgs[1]);
-		String material = msgs[2];
+		// {building, entityID, floor, material, edgeID,・・・ }
+		int id = Integer.parseInt(msgs[1]);
+		int floor = Integer.parseInt(msgs[2]);
+		String material = msgs[3];
 		ArrayList<Integer> edge_ids = new ArrayList<>();
-		for (int i = 3; i < msgs.length; i++) {
+		for (int i = 4; i < msgs.length; i++) {
 			edge_ids.add(Integer.parseInt(msgs[i]));
 		}
 		buildings.add(new Building(id, floor, material, edge_ids));
