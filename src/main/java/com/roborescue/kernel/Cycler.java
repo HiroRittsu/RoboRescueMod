@@ -1,5 +1,6 @@
 package com.roborescue.kernel;
 
+import com.roborescue.information.Worldinfo;
 import com.roborescue.render.Render;
 
 import net.minecraft.world.World;
@@ -22,7 +23,7 @@ public class Cycler {
 		switch (time) {
 		case -1:
 			render.renderMap();
-			if (render.readyMap) {
+			if (Worldinfo.readyMap) {
 				time++;
 			}
 			break;

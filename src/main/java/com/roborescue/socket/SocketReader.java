@@ -108,6 +108,13 @@ public class SocketReader {
 
 	////////////////////////////////////////////
 
+	public void readScenario(String msg) {
+		String[] msgs = msg.split(",");
+		for (int i = 1; i < msgs.length; i++) {
+
+		}
+	}
+
 	public void readCivilian(String msg) {
 		for (int i = 1; i < msg.split(",").length; i++) {
 

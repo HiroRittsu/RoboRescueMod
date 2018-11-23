@@ -12,12 +12,14 @@ public class Worldinfo {
 	public static boolean readyMinecraftMap;
 	public static boolean readyRescueMap;
 	public static boolean readyGmlMap;
+	public static boolean readyMap;
 	public static int time;
 
 	public Worldinfo() {
 		readyGmlMap = false;
 		readyRescueMap = false;
 		readyMinecraftMap = false;
+		readyMap = false;
 		time = -1;
 	}
 

@@ -54,6 +54,10 @@ public class SocketClient {
 						System.out.println("building");
 						socketReader.readBuilding(msg);
 						break;
+					case "scenario":
+						System.out.println("scenario");
+						socketReader.readScenario(msg);
+						break;
 
 					case "civilian":
 						socketReader.readCivilian(msg);

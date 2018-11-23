@@ -14,7 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class SetMap {
+public class RenderMap {
 
 	private static boolean contains(int x, int y, int z, HashSet<Point3D> closed, int[] bounding_box) {
 
