@@ -43,4 +43,44 @@ public class StandardMap {
 		return this.buildings;
 	}
 
+	public Point3D getPosition(int enetityID) {
+
+		int sumX = 0;
+		int sumY = 0;
+		int sumZ = 0;
+		int count = 0;
+
+		// get building entytyID
+		for (Building building : buildings) {
+			if (building.getId() == enetityID) {
+				for (int edge_id : building.getEdgeIds()) {
+					for (int node_id : edges.get(edge_id).getNodeID()) {
+						sumX = nodes.get(node_id).x;
+						sumY = nodes.get(node_id).y;
+						sumZ = nodes.get(node_id).z;
+						count++;
+					}
+				}
+				return new Point3D(-sumX / count, sumY / count, sumZ / count);
+			}
+		}
+
+		// get road entityID
+		for (Road road : roads) {
+			if (road.getId() == enetityID) {
+				for (int edge_id : road.getEdgeIds()) {
+					for (int node_id : edges.get(edge_id).getNodeID()) {
+						sumX = nodes.get(node_id).x;
+						sumY = nodes.get(node_id).y;
+						sumZ = nodes.get(node_id).z;
+						count++;
+					}
+				}
+				return new Point3D(-sumX / count, sumY / count, sumZ / count);
+			}
+		}
+
+		return null;
+	}
+
 }

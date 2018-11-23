@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import com.roborescue.commons.Point3D;
 
-public class Building extends Polygon{
+public class Building extends Polygon {
 
 	/**
 	 * 
@@ -15,7 +15,6 @@ public class Building extends Polygon{
 	private int id;
 	private int floor;
 	private String material;
-	private ArrayList<Edge> edges;
 	private ArrayList<Integer> edge_ids;
 
 	public Building(int id, int floor, String material, ArrayList<Integer> edge_ids) {
@@ -39,10 +38,6 @@ public class Building extends Polygon{
 
 	public String getMaterial() {
 		return this.material;
-	}
-
-	public ArrayList<Edge> getEdgeId() {
-		return this.edges;
 	}
 
 	public ArrayList<Integer> getEdgeIds() {

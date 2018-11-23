@@ -1,5 +1,6 @@
 package com.roborescue.world.anget;
 
+import com.roborescue.commons.Point3D;
 import com.roborescue.information.Worldinfo;
 import com.roborescue.world.map.MinecraftMap;
 
@@ -20,7 +21,14 @@ public class StandardAgent {
 		this.world = world;
 		this.positionID = positionID;
 		this.minecraftMap = Worldinfo.minecraftMap;
-		
-		
+
+		// Spawn
+		Point3D position = minecraftMap.getPosition(positionID);
+		if (position != null) {
+			entity.setPosition(position.x, position.y, position.z);
+			world.spawnEntity(entity);
+			spawned = true;
+		}
+
 	}
 }
