@@ -31,7 +31,6 @@ public class SocketClient {
 				originalSocket.joinClient(port, ip);
 
 				while (true) {
-
 					String msg = originalSocket.subscribeMsgs();
 
 					switch (msg.split(",")[0]) {

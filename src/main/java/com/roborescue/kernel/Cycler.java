@@ -31,7 +31,11 @@ public class Cycler {
 			break;
 
 		case 0:
-
+			render.renderScenario();
+			if (Worldinfo.readyScenario) {
+				time++;
+				SocketClient.publishCommand("ready_scenario");
+			}
 			break;
 
 		default:

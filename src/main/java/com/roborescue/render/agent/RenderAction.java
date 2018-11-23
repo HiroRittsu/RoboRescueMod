@@ -2,11 +2,11 @@ package com.roborescue.render.agent;
 
 import net.minecraft.world.World;
 
-public class RenderAgent {
+public class RenderAction {
 
 	public World world;
 
-	public RenderAgent(World world) {
+	public RenderAction(World world) {
 		this.world = world;
 	}
 	

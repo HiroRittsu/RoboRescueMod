@@ -280,8 +280,6 @@ public class RenderMap {
 				Edge edge = minecraftMap.getEdges().get(id);
 				edges = completionLine(minecraftMap.getNodes().get(edge.getNodeID()[0]),
 						minecraftMap.getNodes().get(edge.getNodeID()[1]));
-				// edges = completionLine(minecraftMap.getNodes().get(ids[0]),
-				// minecraftMap.getNodes().get(ids[1])); // completion
 
 				flame.addAll(edges);
 
