@@ -1,6 +1,6 @@
 package information;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 import anget.StandardAgent;
 import map.GMLMap;
@@ -18,7 +18,7 @@ public class Worldinfo {
 	public static boolean readyMap;
 	public static boolean readyScenario;
 	public static int time;
-	public static ArrayList<StandardAgent> agents;
+	public static HashMap<Integer, StandardAgent> agents;
 
 	public Worldinfo() {
 		readyGmlMap = false;
@@ -26,7 +26,7 @@ public class Worldinfo {
 		readyMinecraftMap = false;
 		readyMap = false;
 		time = -1;
-		agents = new ArrayList<>();
+		agents = new HashMap<>();
 	}
 
 	public static boolean canMinecraftMap() {
