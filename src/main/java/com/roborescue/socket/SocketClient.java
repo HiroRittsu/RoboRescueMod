@@ -5,7 +5,7 @@ import com.roborescue.information.Agentinfo;
 
 public class SocketClient {
 
-	public OriginalSocket originalSocket;
+	public static OriginalSocket originalSocket;
 	public SocketReader socketReader;
 	public int port;
 	public String ip;
@@ -13,9 +13,13 @@ public class SocketClient {
 	public SocketClient(int port, String ip) {
 		this.port = port;
 		this.ip = ip;
-		this.originalSocket = new OriginalSocket();
+		originalSocket = new OriginalSocket();
 		this.socketReader = new SocketReader();
 		threadSocket();
+	}
+
+	public static void publishCommand(String command) {
+		originalSocket.publishMsgs("command," + command);
 	}
 
 	private void threadSocket() {
@@ -32,6 +36,7 @@ public class SocketClient {
 
 					switch (msg.split(",")[0]) {
 					case "command":
+						System.out.println("command");
 						socketReader.readCommand(msg);
 						break;
 

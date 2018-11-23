@@ -2,6 +2,7 @@ package com.roborescue.kernel;
 
 import com.roborescue.information.Worldinfo;
 import com.roborescue.render.Render;
+import com.roborescue.socket.SocketClient;
 
 import net.minecraft.world.World;
 
@@ -25,6 +26,7 @@ public class Cycler {
 			render.renderMap();
 			if (Worldinfo.readyMap) {
 				time++;
+				SocketClient.publishCommand("ready_map");
 			}
 			break;
 
