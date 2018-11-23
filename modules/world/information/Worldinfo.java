@@ -17,6 +17,7 @@ public class Worldinfo {
 	public static boolean readyGmlMap;
 	public static boolean readyMap;
 	public static boolean readyScenario;
+	public static boolean readyAgent;
 	public static int time;
 	public static HashMap<Integer, StandardAgent> agents;
 
@@ -25,8 +26,17 @@ public class Worldinfo {
 		readyRescueMap = false;
 		readyMinecraftMap = false;
 		readyMap = false;
+		readyAgent = false;
 		time = -1;
 		agents = new HashMap<>();
+	}
+
+	public static HashMap<Integer, StandardAgent> getAgents() {
+		return agents;
+	}
+
+	public static boolean canSpawnAgent() {
+		return readyAgent;
 	}
 
 	public static boolean canMinecraftMap() {

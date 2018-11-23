@@ -1,8 +1,10 @@
 package render;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
+import anget.StandardAgent;
 import commons.Point3D;
 import information.Worldinfo;
 import map.MinecraftMap;
@@ -10,6 +12,8 @@ import map.parts.Building;
 import map.parts.Edge;
 import map.parts.Road;
 import net.minecraft.block.BlockPlanks;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -19,7 +23,7 @@ public class Render {
 	public World world;
 	private int build_index = 0;
 	private int road_index = 0;
-	private int scenario_index = 0;
+	private int spawn_agent_index = 0;
 
 	public Render(World world) {
 		this.world = world;
@@ -50,12 +54,19 @@ public class Render {
 		}
 	}
 
-	public void renderScenario() {
-
-		if (scenario_index != -1) {
-
+	public void spawnAgent() {
+		if (Worldinfo.canSpawnAgent()) {
+			if (spawn_agent_index != -1) {
+				if (drawScenario(spawn_agent_index, Worldinfo.minecraftMap, world)) {
+					spawn_agent_index++;
+				} else {
+					spawn_agent_index = -1;
+				}
+			}
+			if (spawn_agent_index == -1) {
+				Worldinfo.readyScenario = true;
+			}
 		}
-
 	}
 
 	public void actionAgent() {
@@ -116,10 +127,10 @@ public class Render {
 
 		Point3D[] targets = new Point3D[4];
 
-		targets[0] = new Point3D(point.x, 0, point.z + 1);
-		targets[1] = new Point3D(point.x + 1, 0, point.z);
-		targets[2] = new Point3D(point.x, 0, point.z - 1);
-		targets[3] = new Point3D(point.x - 1, 0, point.z);
+		targets[0] = new Point3D(point.x, point.y, point.z + 1);
+		targets[1] = new Point3D(point.x + 1, point.y, point.z);
+		targets[2] = new Point3D(point.x, point.y, point.z - 1);
+		targets[3] = new Point3D(point.x - 1, point.y, point.z);
 
 		return targets;
 	}
@@ -163,7 +174,7 @@ public class Render {
 				if (closed.contains(serch))
 					continue;
 
-				if (contains(serch.x, 0, serch.z, closed, bounding_box)) { // エッジ内の場合
+				if (contains(serch.x, serch.y, serch.z, closed, bounding_box)) { // エッジ内の場合
 
 					flag = true;
 
@@ -175,7 +186,6 @@ public class Render {
 
 					while (!open.isEmpty()) {
 
-						// System.out.println("opensize :" + open.size());
 						if (open.size() > 5000) {
 							break;
 						}
@@ -202,6 +212,7 @@ public class Render {
 	private static ArrayList<Point3D> completionLine(Point3D start, Point3D end) {
 
 		int nextX = (int) start.x;
+		int nextY = (int) start.y;
 		int nextZ = (int) start.z;
 		int deltaX = (int) (end.x - start.x);
 		int deltaZ = (int) (end.z - start.z);
@@ -222,7 +233,7 @@ public class Render {
 		deltaX = Math.abs(deltaX * 2);
 		deltaZ = Math.abs(deltaZ * 2);
 
-		result.add(new Point3D(nextX, 0, nextZ));
+		result.add(new Point3D(nextX, nextY, nextZ));
 
 		if (deltaX > deltaZ) {
 			fraction = deltaZ - deltaX / 2;
@@ -233,7 +244,7 @@ public class Render {
 				}
 				nextX += stepX;
 				fraction += deltaZ;
-				result.add(new Point3D(nextX, 0, nextZ));
+				result.add(new Point3D(nextX, nextY, nextZ));
 			}
 		} else {
 			fraction = deltaX - deltaZ / 2;
@@ -244,7 +255,7 @@ public class Render {
 				}
 				nextZ += stepZ;
 				fraction += deltaX;
-				result.add(new Point3D(nextX, 0, nextZ));
+				result.add(new Point3D(nextX, nextY, nextZ));
 			}
 		}
 
@@ -298,7 +309,7 @@ public class Render {
 
 					for (Point3D point : area) { // draw
 
-						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
+						BlockPos pos = new BlockPos(point.x, point.y + i, -1 * point.z);
 						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
 								BlockPlanks.EnumType.byMetadata(building.getId() % 6)));
 					}
@@ -307,7 +318,7 @@ public class Render {
 
 					for (Point3D point : flame) { // draw
 
-						BlockPos pos = new BlockPos(point.x, 3 + i, -1 * point.z);
+						BlockPos pos = new BlockPos(point.x, point.y + i, -1 * point.z);
 						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
 								BlockPlanks.EnumType.byMetadata(building.getId() % 6)));
 					}
@@ -318,7 +329,6 @@ public class Render {
 		} else {
 			return false;
 		}
-
 		return true;
 	}
 
@@ -329,20 +339,14 @@ public class Render {
 		HashSet<Point3D> area;
 
 		if (index < minecraftMap.getRoads().size()) {
-
 			Road road = minecraftMap.getRoads().get(index);
-
 			for (Integer id : road.getEdgeIds()) { // node points
 				Edge edge = minecraftMap.getEdges().get(id);
 				edges = completionLine(minecraftMap.getNodes().get(edge.getNodeID()[0]),
 						minecraftMap.getNodes().get(edge.getNodeID()[1]));
-
 				flame.addAll(edges);
-
 			}
-
 			area = completionArea(flame);
-
 			for (Point3D point : area) { // draw
 				BlockPos pos = new BlockPos(point.x, 3, -1 * point.z);
 				world.setBlockState(pos, Blocks.DOUBLE_STONE_SLAB.getDefaultState());
@@ -350,12 +354,31 @@ public class Render {
 		} else {
 			return false;
 		}
-
 		return true;
 	}
 
-	public void drawScenario(int index, MinecraftMap minecraftMap, World world) {
-		
+	public boolean drawScenario(int index, MinecraftMap minecraftMap, World world) {
+
+		int entityID;
+		Entity entity;
+		HashMap<Integer, StandardAgent> agents = Worldinfo.getAgents();
+		if (index < agents.size()) {
+			entityID = agents.keySet().toArray(new Integer[0])[index];
+			StandardAgent standardAgent = agents.get(entityID);
+
+			standardAgent.setEntity(new EntityVillager(world));
+
+			Point3D point3d = minecraftMap.getPosition(standardAgent.spawn_locationID);
+			System.out.println(point3d);
+			standardAgent.getEntity().setPosition(point3d.x, point3d.y + 1, point3d.z);
+			world.spawnEntity(standardAgent.getEntity());
+			standardAgent.spawned = true;
+			System.out.println("スポーン");
+
+		} else {
+			return false;
+		}
+		return true;
 	}
 
 }

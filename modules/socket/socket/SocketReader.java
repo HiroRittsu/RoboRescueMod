@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import anget.StandardAgent;
 import anget.ambulanceteam.AT;
 import anget.civilian.Civilian;
 import anget.firebrigade.FB;
@@ -23,6 +24,7 @@ public class SocketReader {
 	public Map<Integer, Edge> edges = new HashMap<>();
 	public ArrayList<Road> roads = new ArrayList<>();
 	public ArrayList<Building> buildings = new ArrayList<>();
+	public HashMap<Integer, StandardAgent> agents = new HashMap<>();
 	public GMLMap gmlMap;
 	public RescueMap rescueMap;
 	public MinecraftMap minecraftMap;
@@ -55,7 +57,15 @@ public class SocketReader {
 			System.out.println("マップ登録完了");
 			break;
 
+		case "orient_scenario":
+			Worldinfo.agents.putAll(agents);
+			Worldinfo.readyAgent = true;
+
+			System.out.println("シナリオ登録完了");
+			break;
+
 		default:
+			System.out.println(msg);
 			System.out.println("Command例外受信");
 			break;
 		}
@@ -69,6 +79,7 @@ public class SocketReader {
 			int id = Integer.parseInt(msgs[i]);
 			Point3D point3d = new Point3D((int) Double.parseDouble(msgs[i + 1]), (int) Double.parseDouble(msgs[i + 2]),
 					(int) Double.parseDouble(msgs[i + 3]));
+			point3d.y = 3;
 			nodes.put(id, point3d);
 		}
 	}
@@ -116,24 +127,28 @@ public class SocketReader {
 		String[] msgs = msg.split(",");
 		switch (msgs[1]) {
 		case "civilian":
+			System.out.println("civilian");
 			// {scenario, civilian, entityID, locarionID}
 			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
 					new Civilian(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
 			break;
 
 		case "policeforce":
+			System.out.println("policeforce");
 			// {scenario, policeforce, entityID, locarionID}
 			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
 					new PF(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
 			break;
 
 		case "firebrigade":
+			System.out.println("firebrigade");
 			// {scenario, firebrigade, entityID, locarionID}
 			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
 					new FB(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
 			break;
 
 		case "ambulanceteam":
+			System.out.println("ambulanceteam");
 			// {scenario, ambulanceteam, entityID, locarionID}
 			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
 					new AT(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
@@ -146,10 +161,6 @@ public class SocketReader {
 		default:
 			System.out.println("scenario例外受信");
 			break;
-		}
-
-		for (int i = 1; i < msgs.length; i++) {
-
 		}
 	}
 

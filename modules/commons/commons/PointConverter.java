@@ -55,7 +55,7 @@ public class PointConverter {
 		for (Map.Entry<Integer, Point3D> entry : nodes.entrySet()) {
 
 			result.put(entry.getKey(), new Point3D(entry.getValue().getX() - (int) distance.getX(),
-					entry.getValue().getY() - (int) distance.getY(), entry.getValue().getZ() - (int) distance.getZ()));
+					(int) entry.getValue().getY(), entry.getValue().getZ() - (int) distance.getZ()));
 
 		}
 
@@ -74,7 +74,7 @@ public class PointConverter {
 		for (Map.Entry<Integer, Point3D> entry : gmlMap.getNodes().entrySet()) {
 
 			result.put(entry.getKey(), new Point3D(entry.getValue().getX() + (int) distance.getX(),
-					entry.getValue().getY() + (int) distance.getY(), entry.getValue().getZ() + (int) distance.getZ()));
+					entry.getValue().getY(), entry.getValue().getZ() + (int) distance.getZ()));
 
 		}
 
@@ -89,10 +89,8 @@ public class PointConverter {
 
 		for (Map.Entry<Integer, Point3D> entry : gmlMap.getNodes().entrySet()) {
 
-			result.put(entry.getKey(),
-					new Point3D((int) ((entry.getValue().getX() + distance.getX()) * 1000),
-							(int) ((entry.getValue().getY() + distance.getY()) * 1000),
-							(int) ((entry.getValue().getZ() + distance.getZ()) * 1000)));
+			result.put(entry.getKey(), new Point3D((int) ((entry.getValue().getX() + distance.getX()) * 1000),
+					(int) entry.getValue().getY(), (int) ((entry.getValue().getZ() + distance.getZ()) * 1000)));
 
 		}
 
@@ -101,8 +99,7 @@ public class PointConverter {
 
 	public static Point3Df toMinecraftPoint(Point3Df rescue_point) {
 
-		return new Point3Df((double) (rescue_point.x - RescueMap.centroid.x) / 1000,
-				(double) (rescue_point.y - RescueMap.centroid.y) / 1000,
+		return new Point3Df((double) (rescue_point.x - RescueMap.centroid.x) / 1000, (double) rescue_point.y / 1000,
 				(double) (rescue_point.z - RescueMap.centroid.z) / -1000);
 	}
 

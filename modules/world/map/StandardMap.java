@@ -55,13 +55,13 @@ public class StandardMap {
 			if (building.getId() == enetityID) {
 				for (int edge_id : building.getEdgeIds()) {
 					for (int node_id : edges.get(edge_id).getNodeID()) {
-						sumX = nodes.get(node_id).x;
-						sumY = nodes.get(node_id).y;
-						sumZ = nodes.get(node_id).z;
+						sumX += nodes.get(node_id).x;
+						sumY += nodes.get(node_id).y;
+						sumZ += nodes.get(node_id).z;
 						count++;
 					}
 				}
-				return new Point3D(-sumX / count, sumY / count, sumZ / count);
+				return new Point3D(sumX / count, sumY / count, -sumZ / count);
 			}
 		}
 
@@ -70,12 +70,13 @@ public class StandardMap {
 			if (road.getId() == enetityID) {
 				for (int edge_id : road.getEdgeIds()) {
 					for (int node_id : edges.get(edge_id).getNodeID()) {
-						sumX = nodes.get(node_id).x;
-						sumY = nodes.get(node_id).y;
-						sumZ = nodes.get(node_id).z;
+						sumX += nodes.get(node_id).x;
+						sumY += nodes.get(node_id).y;
+						sumZ += nodes.get(node_id).z;
 						count++;
 					}
 				}
+				System.out.println("sumY" + sumY);
 				return new Point3D(-sumX / count, sumY / count, sumZ / count);
 			}
 		}

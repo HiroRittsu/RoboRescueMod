@@ -8,6 +8,7 @@ public class SocketClient {
 	public SocketReader socketReader;
 	public int port;
 	public String ip;
+	public Worldinfo worldinfo;
 
 	public SocketClient(int port, String ip) {
 		this.port = port;
@@ -25,7 +26,7 @@ public class SocketClient {
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
-				new Worldinfo();
+				worldinfo = new Worldinfo();
 				originalSocket.joinClient(port, ip);
 
 				while (true) {

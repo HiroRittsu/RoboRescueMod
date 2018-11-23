@@ -8,7 +8,7 @@ public class StandardAgent {
 	public boolean spawned = false;
 	public Entity entity;
 	public int entityID;
-	public int spaen_locationID;
+	public int spawn_locationID;
 
 	public StandardAgent(int entityID) {
 		this.entityID = entityID;
@@ -16,7 +16,7 @@ public class StandardAgent {
 
 	public StandardAgent(int entityID, int spaen_locationID) {
 		this.entityID = entityID;
-		this.spaen_locationID = spaen_locationID;
+		this.spawn_locationID = spaen_locationID;
 	}
 
 	public void setEntity(Entity entity) {
