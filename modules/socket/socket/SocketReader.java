@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import anget.ambulanceteam.AT;
+import anget.civilian.Civilian;
+import anget.firebrigade.FB;
+import anget.policeforce.PF;
 import commons.Point3D;
 import information.Worldinfo;
 import map.GMLMap;
@@ -113,23 +117,30 @@ public class SocketReader {
 		switch (msgs[1]) {
 		case "civilian":
 			// {scenario, civilian, entityID, locarionID}
-			// Worldinfo.agents.add(new Civilian(new EntityVill, entityID, positionID));
+			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
+					new Civilian(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
 			break;
 
 		case "policeforce":
 			// {scenario, policeforce, entityID, locarionID}
+			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
+					new PF(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
 			break;
 
 		case "firebrigade":
 			// {scenario, firebrigade, entityID, locarionID}
+			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
+					new FB(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
 			break;
 
 		case "ambulanceteam":
 			// {scenario, ambulanceteam, entityID, locarionID}
+			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
+					new AT(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
 			break;
 
 		case "fire":
-
+			System.out.println("fire scenario");
 			break;
 
 		default:
