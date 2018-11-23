@@ -1,4 +1,4 @@
-package com.roborescue.world;
+package com.roborescue.world.map;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -8,7 +8,7 @@ import com.roborescue.world.map.parts.Building;
 import com.roborescue.world.map.parts.Edge;
 import com.roborescue.world.map.parts.Road;
 
-public class MapData {
+public class StandardMap {
 
 	public Map<Integer, Point3D> nodes = null;
 	public Map<Integer, Edge> edges = null;

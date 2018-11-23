@@ -2,9 +2,8 @@ package com.roborescue.world.map;
 
 import com.roborescue.commons.Point3Df;
 import com.roborescue.commons.PointConverter;
-import com.roborescue.world.MapData;
 
-public class RescueMap extends MapData {
+public class RescueMap extends StandardMap {
 
 	public static Point3Df max;
 	public static Point3Df min;

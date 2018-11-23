@@ -2,12 +2,11 @@ package com.roborescue.world.map;
 
 import java.util.Map;
 
-import com.roborescue.world.MapData;
 import com.roborescue.commons.Point3D;
 import com.roborescue.commons.Point3Df;
 import com.roborescue.commons.PointConverter;
 
-public class GMLMap extends MapData {
+public class GMLMap extends StandardMap {
 
 	private Point3Df max;
 	private Point3Df min;
