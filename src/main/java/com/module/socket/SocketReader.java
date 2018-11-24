@@ -1,9 +1,7 @@
 package com.module.socket;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import com.module.anget.StandardAgent;
 import com.module.anget.ambulanceteam.AT;
 import com.module.anget.civilian.Civilian;
 import com.module.anget.firebrigade.FB;
@@ -20,9 +18,6 @@ import com.module.map.parts.Road;
 
 public class SocketReader {
 
-	public ArrayList<Road> roads = new ArrayList<>();
-	public ArrayList<Building> buildings = new ArrayList<>();
-	public HashMap<Integer, StandardAgent> agents = new HashMap<>();
 	public GMLMap gmlMap;
 	public RescueMap rescueMap;
 	public MinecraftMap minecraftMap;
@@ -32,11 +27,7 @@ public class SocketReader {
 		switch (msgs[1]) {
 		case "registry_map":
 			// gmlマップ作成
-			gmlMap = new GMLMap(Worldinfo.nodes);
-			gmlMap.setEdges(Worldinfo.edges);
-			gmlMap.setRoads(roads);
-			gmlMap.setBuildings(buildings);
-
+			gmlMap = new GMLMap();
 			// rescueマップ作成
 			rescueMap = new RescueMap(gmlMap);
 			// minecraftマップ作成
@@ -56,7 +47,6 @@ public class SocketReader {
 			break;
 
 		case "orient_scenario":
-			Worldinfo.agents.putAll(agents);
 			Worldinfo.readyAgent = true;
 
 			System.out.println("シナリオ登録完了");
@@ -99,7 +89,7 @@ public class SocketReader {
 		for (int i = 2; i < msgs.length; i++) {
 			edge_ids.add(Integer.parseInt(msgs[i]));
 		}
-		roads.add(new Road(id, edge_ids));
+		Worldinfo.getRoads().put(id, new Road(id, edge_ids));
 	}
 
 	public void readBuilding(String msg) {
@@ -112,7 +102,7 @@ public class SocketReader {
 		for (int i = 4; i < msgs.length; i++) {
 			edge_ids.add(Integer.parseInt(msgs[i]));
 		}
-		buildings.add(new Building(id, floor, material, edge_ids));
+		Worldinfo.getBuildings().put(id, new Building(id, floor, material, edge_ids));
 	}
 
 	////////////////////////////////////////////
@@ -123,28 +113,28 @@ public class SocketReader {
 		case "civilian":
 			System.out.println("civilian");
 			// {scenario, civilian, entityID, locarionID}
-			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
+			Worldinfo.getAgents().put(Integer.parseInt(msgs[2]),
 					new Civilian(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
 			break;
 
 		case "policeforce":
 			System.out.println("policeforce");
 			// {scenario, policeforce, entityID, locarionID}
-			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
+			Worldinfo.getAgents().put(Integer.parseInt(msgs[2]),
 					new PF(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
 			break;
 
 		case "firebrigade":
 			System.out.println("firebrigade");
 			// {scenario, firebrigade, entityID, locarionID}
-			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
+			Worldinfo.getAgents().put(Integer.parseInt(msgs[2]),
 					new FB(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
 			break;
 
 		case "ambulanceteam":
 			System.out.println("ambulanceteam");
 			// {scenario, ambulanceteam, entityID, locarionID}
-			Worldinfo.agents.put(Integer.parseInt(msgs[2]),
+			Worldinfo.getAgents().put(Integer.parseInt(msgs[2]),
 					new AT(Integer.parseInt(msgs[2]), Integer.parseInt(msgs[3])));
 			break;
 

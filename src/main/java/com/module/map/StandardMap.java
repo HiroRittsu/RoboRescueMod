@@ -1,6 +1,5 @@
 package com.module.map;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +14,8 @@ public class StandardMap {
 
 	public Map<Integer, Node> nodes = null;
 	public Map<Integer, Edge> edges = null;
-	public ArrayList<Road> roads = null;
-	public ArrayList<Building> buildings = null;
+	public Map<Integer, Road> roads = null;
+	public Map<Integer, Building> buildings = null;
 
 	public Map<Integer, Node> getNodes() {
 		return this.nodes;
@@ -30,20 +29,32 @@ public class StandardMap {
 		return this.edges;
 	}
 
-	public void setRoads(ArrayList<Road> roads) {
+	public void setRoads(Map<Integer, Road> roads) {
 		this.roads = roads;
 	}
 
-	public ArrayList<Road> getRoads() {
+	public Map<Integer, Road> getRoads() {
 		return this.roads;
 	}
 
-	public void setBuildings(ArrayList<Building> buildings) {
+	public void setBuildings(Map<Integer, Building> buildings) {
 		this.buildings = buildings;
 	}
 
-	public ArrayList<Building> getBuildins() {
+	public Map<Integer, Building> getBuildins() {
 		return this.buildings;
+	}
+	
+	public Point3D getPosition(int enetityID) {
+		// get building entityID
+		if (buildings.containsKey(enetityID)) {
+			return buildings.get(enetityID).position;
+		}
+		// get road entityID
+		if (roads.containsKey(enetityID)) {
+			return roads.get(enetityID).getPosition();
+		}
+		return null;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////

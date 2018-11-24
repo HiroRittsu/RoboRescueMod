@@ -1,7 +1,6 @@
 package com.module.render;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -11,7 +10,6 @@ import com.module.information.Worldinfo;
 import com.module.map.MinecraftMap;
 import com.module.map.parts.Building;
 import com.module.map.parts.Edge;
-import com.module.map.parts.Node;
 import com.module.map.parts.Road;
 
 import net.minecraft.block.BlockPlanks;
@@ -254,14 +252,45 @@ public class Render {
 		}
 	}
 
+	public boolean drawRoad(int index, MinecraftMap minecraftMap, World world) throws NullPointerException {
+
+		int entityID;
+		ArrayList<Point3D> edges;
+		ArrayList<Point3D> flame = new ArrayList<>();
+		HashSet<Point3D> area;
+		Map<Integer, Road> roads = Worldinfo.getRoads();
+
+		if (index < roads.size()) {
+			entityID = roads.keySet().toArray(new Integer[0])[index];
+			Road road = minecraftMap.getRoads().get(entityID);
+			System.out.println(minecraftMap.getRoads());
+			System.out.println(road);
+			for (Edge edge : road.getEdges()) {
+				edges = completionLine(edge.getStartNode().getPoint(), edge.getEndNode().getPoint());
+				flame.addAll(edges);
+			}
+			area = completionArea(flame);
+			for (Point3D point : area) { // draw
+				BlockPos pos = new BlockPos(point.x, 3, -1 * point.z);
+				world.setBlockState(pos, Blocks.DOUBLE_STONE_SLAB.getDefaultState());
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
+
 	public boolean drawBuildings(int index, MinecraftMap minecraftMap, World world) throws NullPointerException {
 
+		int entityID;
 		ArrayList<Point3D> edges = new ArrayList<>();
 		ArrayList<Point3D> flame = new ArrayList<>();
 		HashSet<Point3D> area = new HashSet<>();
+		Map<Integer, Building> buildings = Worldinfo.getBuildings();
 
-		if (index < minecraftMap.getBuildins().size()) {
-			Building building = minecraftMap.getBuildins().get(index);
+		if (index < buildings.size()) {
+			entityID = buildings.keySet().toArray(new Integer[0])[index];
+			Building building = minecraftMap.getBuildins().get(entityID);
 			for (Edge edge : building.getEdges()) {
 				edges = completionLine(edge.getStartNode().getPoint(), edge.getEndNode().getPoint());
 				flame.addAll(edges);
@@ -282,29 +311,6 @@ public class Render {
 								BlockPlanks.EnumType.byMetadata(building.getID() % 6)));
 					}
 				}
-			}
-		} else {
-			return false;
-		}
-		return true;
-	}
-
-	public boolean drawRoad(int index, MinecraftMap minecraftMap, World world) throws NullPointerException {
-
-		ArrayList<Point3D> edges;
-		ArrayList<Point3D> flame = new ArrayList<>();
-		HashSet<Point3D> area;
-
-		if (index < minecraftMap.getRoads().size()) {
-			Road road = minecraftMap.getRoads().get(index);
-			for (Edge edge : road.getEdges()) {
-				edges = completionLine(edge.getStartNode().getPoint(), edge.getEndNode().getPoint());
-				flame.addAll(edges);
-			}
-			area = completionArea(flame);
-			for (Point3D point : area) { // draw
-				BlockPos pos = new BlockPos(point.x, 3, -1 * point.z);
-				world.setBlockState(pos, Blocks.DOUBLE_STONE_SLAB.getDefaultState());
 			}
 		} else {
 			return false;
