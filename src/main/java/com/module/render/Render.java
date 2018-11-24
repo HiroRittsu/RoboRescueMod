@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.Map;
 
 import com.module.anget.StandardAgent;
+import com.module.anget.ambulanceteam.AT;
+import com.module.anget.civilian.Civilian;
+import com.module.anget.firebrigade.FB;
+import com.module.anget.policeforce.PF;
 import com.module.commons.Point3D;
 import com.module.information.Worldinfo;
 import com.module.map.MinecraftMap;
@@ -327,13 +331,42 @@ public class Render {
 		if (index < agents.size()) {
 			entityID = agents.keySet().toArray(new Integer[0])[index];
 			StandardAgent standardAgent = agents.get(entityID);
-			standardAgent.setEntity(new EntityVillager(world));
-			Point3D point3d = minecraftMap.getPosition(standardAgent.spawn_locationID);
-			standardAgent.getEntity().setPosition(point3d.x, point3d.y + 1, point3d.z);
-			world.spawnEntity(standardAgent.getEntity());
-			standardAgent.spawned = true;
-			System.out.println("スポーン");
-
+			if (standardAgent instanceof Civilian) {
+				Civilian civilian = (Civilian) standardAgent;
+				Point3D point = minecraftMap.getPosition(civilian.spawn_locationID);
+				entity = new EntityVillager(world);
+				entity.setPosition(point.x, point.y + 1, point.z);
+				world.spawnEntity(entity);
+				civilian.spawned = true;
+				System.out.println("Civilian spawned");
+			}
+			if (standardAgent instanceof AT) {
+				AT at = (AT) standardAgent;
+				Point3D point = minecraftMap.getPosition(at.spawn_locationID);
+				entity = new EntityVillager(world);
+				entity.setPosition(point.x, point.y + 1, point.z);
+				world.spawnEntity(entity);
+				at.spawned = true;
+				System.out.println("AT spawned");
+			}
+			if (standardAgent instanceof FB) {
+				FB fb = (FB) standardAgent;
+				Point3D point = minecraftMap.getPosition(fb.spawn_locationID);
+				entity = new EntityVillager(world);
+				entity.setPosition(point.x, point.y + 1, point.z);
+				world.spawnEntity(entity);
+				fb.spawned = true;
+				System.out.println("FB spawned");
+			}
+			if (standardAgent instanceof PF) {
+				PF pf = (PF) standardAgent;
+				Point3D point = minecraftMap.getPosition(pf.spawn_locationID);
+				entity = new EntityVillager(world);
+				entity.setPosition(point.x, point.y + 1, point.z);
+				world.spawnEntity(entity);
+				pf.spawned = true;
+				System.out.println("PF spawned");
+			}
 		} else {
 			return false;
 		}

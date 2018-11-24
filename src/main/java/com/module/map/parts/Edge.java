@@ -45,6 +45,6 @@ public class Edge {
 
 	public Point3D calcPosition(Node first, Node end) {
 		return new Point3D((first.getPoint().x + end.getPoint().x) / 2, (first.getPoint().y + end.getPoint().y) / 2,
-				(first.getPoint().y + end.getPoint().y) / 2);
+				(first.getPoint().z + end.getPoint().z) / 2);
 	}
 }
