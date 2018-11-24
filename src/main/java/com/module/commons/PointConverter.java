@@ -8,7 +8,7 @@ import com.module.map.RescueMap;
 
 public class PointConverter {
 
-	public static Point3Df[] calcPrimaryPoint(Map<Integer, Point3D> nodes) {
+	/*public static Point3Df[] calcPrimaryPoint(Map<Integer, Point3D> nodes) {
 
 		// [0]: max, [1]:min, [2]:centroid
 		Point3Df[] result = new Point3Df[3];
@@ -44,8 +44,8 @@ public class PointConverter {
 
 		return result;
 
-	}
-
+	}*/
+/*
 	public static Map<Integer, Point3D> convertPoint(Map<Integer, Point3D> nodes, Point3Df centroid, Point3D origin) {
 
 		Map<Integer, Point3D> result = new HashMap<>();
@@ -80,8 +80,8 @@ public class PointConverter {
 
 		return result;
 	}
-
-	public static Map<Integer, Point3D> convertRescueMap(GMLMap gmlMap) {
+*/
+	/*public static Map<Integer, Point3D> convertRescueMap(GMLMap gmlMap) {
 
 		Map<Integer, Point3D> result = new HashMap<>();
 		Point3Df distance = new Point3Df(-1 * gmlMap.getMinPoint().getX(), -1 * gmlMap.getMinPoint().getY(),
@@ -95,12 +95,12 @@ public class PointConverter {
 		}
 
 		return result;
-	}
-
+	}*/
+/*
 	public static Point3Df toMinecraftPoint(Point3Df rescue_point) {
 
 		return new Point3Df((double) (rescue_point.x - RescueMap.centroid.x) / 1000, (double) rescue_point.y / 1000,
 				(double) (rescue_point.z - RescueMap.centroid.z) / -1000);
 	}
-
+*/
 }

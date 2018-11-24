@@ -3,6 +3,7 @@ package com.module.render;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import com.module.anget.StandardAgent;
 import com.module.commons.Point3D;
@@ -10,6 +11,7 @@ import com.module.information.Worldinfo;
 import com.module.map.MinecraftMap;
 import com.module.map.parts.Building;
 import com.module.map.parts.Edge;
+import com.module.map.parts.Node;
 import com.module.map.parts.Road;
 
 import net.minecraft.block.BlockPlanks;
@@ -55,10 +57,10 @@ public class Render {
 		}
 	}
 
-	public void spawnAgent() {
+	public void renderScenario() {
 		if (Worldinfo.canSpawnAgent()) {
 			if (spawn_agent_index != -1) {
-				if (drawScenario(spawn_agent_index, Worldinfo.minecraftMap, world)) {
+				if (spawnAgent(spawn_agent_index, Worldinfo.minecraftMap, world)) {
 					spawn_agent_index++;
 				} else {
 					spawn_agent_index = -1;
@@ -97,29 +99,22 @@ public class Render {
 			return false;
 
 		while (p_x || m_x || p_z || m_z) {
-
 			if (x + i > bounding_box[2] && x - i < bounding_box[0] && z + i > bounding_box[3]
 					&& z - i < bounding_box[1])
 				return false;
-
 			i++;
-
 			// +x方向
 			if (closed.contains(new Point3D(x + i, y, z)))
 				p_x = false;
-
 			// -x方向
 			if (closed.contains(new Point3D(x - i, y, z)))
 				m_x = false;
-
 			// +z方向
 			if (closed.contains(new Point3D(x, y, z + i)))
 				p_z = false;
-
 			// -z方向
 			if (closed.contains(new Point3D(x, y, z - i)))
 				m_z = false;
-
 		}
 		return true;
 	}
@@ -132,7 +127,6 @@ public class Render {
 		targets[1] = new Point3D(point.x + 1, point.y, point.z);
 		targets[2] = new Point3D(point.x, point.y, point.z - 1);
 		targets[3] = new Point3D(point.x - 1, point.y, point.z);
-
 		return targets;
 	}
 
@@ -146,58 +140,38 @@ public class Render {
 		// 探索済み座標格納
 		for (Point3D point3d : flame) {
 			closed.add(point3d);
-
 			if (bounding_box[0] > point3d.x)
 				bounding_box[0] = point3d.x;
-
 			if (bounding_box[1] > point3d.z)
 				bounding_box[1] = point3d.z;
-
 			if (bounding_box[2] < point3d.x)
 				bounding_box[2] = point3d.x;
-
 			if (bounding_box[3] < point3d.z)
 				bounding_box[3] = point3d.z;
 		}
-
 		boolean flag = false;
-
 		// 塗りつぶし
 		for (Point3D point3d : flame) {
-
 			if (flag)
 				break;
-
 			temp = serchArea(point3d);
-
 			for (Point3D serch : temp) {
-
 				if (closed.contains(serch))
 					continue;
-
 				if (contains(serch.x, serch.y, serch.z, closed, bounding_box)) { // エッジ内の場合
-
 					flag = true;
-
 					/////// 幅優先///////////////
 					Point3D pop;
-
 					// 開始地点を格納
 					open.add(serch);
-
 					while (!open.isEmpty()) {
-
 						if (open.size() > 5000) {
 							break;
 						}
-
 						pop = open.iterator().next(); // pop
 						open.remove(pop);
-
 						closed.add(pop); // set
-
 						Point3D[] targets = serchArea(pop);
-
 						for (Point3D target : targets) {
 							if (!closed.contains(target))
 								open.add(target);
@@ -206,7 +180,6 @@ public class Render {
 				}
 			}
 		}
-
 		return closed;
 	}
 
@@ -219,7 +192,6 @@ public class Render {
 		int deltaZ = (int) (end.z - start.z);
 		int stepX, stepZ;
 		int fraction;
-
 		ArrayList<Point3D> result = new ArrayList<>();
 
 		if (deltaX < 0)
@@ -230,10 +202,8 @@ public class Render {
 			stepZ = -1;
 		else
 			stepZ = 1;
-
 		deltaX = Math.abs(deltaX * 2);
 		deltaZ = Math.abs(deltaZ * 2);
-
 		result.add(new Point3D(nextX, nextY, nextZ));
 
 		if (deltaX > deltaZ) {
@@ -291,42 +261,28 @@ public class Render {
 		HashSet<Point3D> area = new HashSet<>();
 
 		if (index < minecraftMap.getBuildins().size()) {
-
 			Building building = minecraftMap.getBuildins().get(index);
-
-			for (Integer id : building.getEdgeIds()) { // node points すべてのエッジを書き出し
-				Edge edge = minecraftMap.getEdges().get(id);
-				edges = completionLine(minecraftMap.getNodes().get(edge.getNodeID()[0]),
-						minecraftMap.getNodes().get(edge.getNodeID()[1])); // completion
-
+			for (Edge edge : building.getEdges()) {
+				edges = completionLine(edge.getStartNode().getPoint(), edge.getEndNode().getPoint());
 				flame.addAll(edges);
 			}
-
 			area = completionArea(flame);
-
 			for (int i = 0; i <= building.getFloor() * 4; i++) {
-
 				if (i % 4 == 0) {
-
 					for (Point3D point : area) { // draw
-
 						BlockPos pos = new BlockPos(point.x, point.y + i, -1 * point.z);
 						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
-								BlockPlanks.EnumType.byMetadata(building.getId() % 6)));
+								BlockPlanks.EnumType.byMetadata(building.getID() % 6)));
 					}
-
 				} else {
-
 					for (Point3D point : flame) { // draw
 
 						BlockPos pos = new BlockPos(point.x, point.y + i, -1 * point.z);
 						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
-								BlockPlanks.EnumType.byMetadata(building.getId() % 6)));
+								BlockPlanks.EnumType.byMetadata(building.getID() % 6)));
 					}
 				}
-
 			}
-
 		} else {
 			return false;
 		}
@@ -341,10 +297,8 @@ public class Render {
 
 		if (index < minecraftMap.getRoads().size()) {
 			Road road = minecraftMap.getRoads().get(index);
-			for (Integer id : road.getEdgeIds()) { // node points
-				Edge edge = minecraftMap.getEdges().get(id);
-				edges = completionLine(minecraftMap.getNodes().get(edge.getNodeID()[0]),
-						minecraftMap.getNodes().get(edge.getNodeID()[1]));
+			for (Edge edge : road.getEdges()) {
+				edges = completionLine(edge.getStartNode().getPoint(), edge.getEndNode().getPoint());
 				flame.addAll(edges);
 			}
 			area = completionArea(flame);
@@ -358,19 +312,17 @@ public class Render {
 		return true;
 	}
 
-	public boolean drawScenario(int index, MinecraftMap minecraftMap, World world) {
+	public boolean spawnAgent(int index, MinecraftMap minecraftMap, World world) {
 
 		int entityID;
 		Entity entity;
-		HashMap<Integer, StandardAgent> agents = Worldinfo.getAgents();
+		Map<Integer, StandardAgent> agents = Worldinfo.getAgents();
+
 		if (index < agents.size()) {
 			entityID = agents.keySet().toArray(new Integer[0])[index];
 			StandardAgent standardAgent = agents.get(entityID);
-
 			standardAgent.setEntity(new EntityVillager(world));
-
 			Point3D point3d = minecraftMap.getPosition(standardAgent.spawn_locationID);
-			System.out.println(point3d);
 			standardAgent.getEntity().setPosition(point3d.x, point3d.y + 1, point3d.z);
 			world.spawnEntity(standardAgent.getEntity());
 			standardAgent.spawned = true;

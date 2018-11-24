@@ -2,7 +2,6 @@ package com.module.socket;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 import com.module.anget.StandardAgent;
 import com.module.anget.ambulanceteam.AT;
@@ -16,12 +15,11 @@ import com.module.map.MinecraftMap;
 import com.module.map.RescueMap;
 import com.module.map.parts.Building;
 import com.module.map.parts.Edge;
+import com.module.map.parts.Node;
 import com.module.map.parts.Road;
 
 public class SocketReader {
 
-	public Map<Integer, Point3D> nodes = new HashMap<>();
-	public Map<Integer, Edge> edges = new HashMap<>();
 	public ArrayList<Road> roads = new ArrayList<>();
 	public ArrayList<Building> buildings = new ArrayList<>();
 	public HashMap<Integer, StandardAgent> agents = new HashMap<>();
@@ -34,8 +32,8 @@ public class SocketReader {
 		switch (msgs[1]) {
 		case "registry_map":
 			// gmlマップ作成
-			gmlMap = new GMLMap(nodes);
-			gmlMap.setEdges(edges);
+			gmlMap = new GMLMap(Worldinfo.nodes);
+			gmlMap.setEdges(Worldinfo.edges);
 			gmlMap.setRoads(roads);
 			gmlMap.setBuildings(buildings);
 
@@ -77,24 +75,20 @@ public class SocketReader {
 		// {node, entityID, x, y, z}
 		for (int i = 1; i < msgs.length; i += 4) {
 			int id = Integer.parseInt(msgs[i]);
-			Point3D point3d = new Point3D((int) Double.parseDouble(msgs[i + 1]), (int) Double.parseDouble(msgs[i + 2]),
+			Point3D point = new Point3D((int) Double.parseDouble(msgs[i + 1]), (int) Double.parseDouble(msgs[i + 2]),
 					(int) Double.parseDouble(msgs[i + 3]));
-			point3d.y = 3;
-			nodes.put(id, point3d);
+			point.y = 3; // minecraftのフラットワールドの高さ
+			Worldinfo.getNodes().put(id, new Node(id, point));
 		}
 	}
 
 	public void readEdge(String msg) {
 		String[] msgs = msg.split(",");
 		// {edge, entityID, firstID, endID}
-		for (int i = 1; i < msgs.length; i += 3) {
-			int id = Integer.parseInt(msgs[i]);
-			Integer[] nodes = new Integer[2];
-			nodes[0] = Integer.parseInt(msgs[i + 1]);
-			nodes[1] = Integer.parseInt(msgs[i + 2]);
-			Edge edge = new Edge(id, nodes);
-			edges.put(edge.getId(), edge);
-		}
+		int id = Integer.parseInt(msgs[1]);
+		Node first = Worldinfo.nodes.get(Integer.parseInt(msgs[2]));
+		Node end = Worldinfo.nodes.get(Integer.parseInt(msgs[3]));
+		Worldinfo.getEdges().put(id, new Edge(id, first, end));
 	}
 
 	public void readRoad(String msg) {

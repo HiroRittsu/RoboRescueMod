@@ -4,7 +4,7 @@ import java.util.Map;
 
 import com.module.commons.Point3D;
 import com.module.commons.Point3Df;
-import com.module.commons.PointConverter;
+import com.module.map.parts.Node;
 
 public class GMLMap extends StandardMap {
 
@@ -12,9 +12,9 @@ public class GMLMap extends StandardMap {
 	private Point3Df min;
 	private Point3Df centroid;
 
-	public GMLMap(Map<Integer, Point3D> nodes) {
+	public GMLMap(Map<Integer, Node> nodes) {
 		this.nodes = nodes;
-		Point3Df[] primary = PointConverter.calcPrimaryPoint(this.nodes);
+		Point3Df[] primary = calcPrimaryPoint(nodes);
 		this.max = primary[0];
 		this.min = primary[1];
 		this.centroid = primary[2];

@@ -1,11 +1,14 @@
 package com.module.information;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import com.module.anget.StandardAgent;
 import com.module.map.GMLMap;
 import com.module.map.MinecraftMap;
 import com.module.map.RescueMap;
+import com.module.map.parts.Edge;
+import com.module.map.parts.Node;
 
 public class Worldinfo {
 
@@ -19,7 +22,9 @@ public class Worldinfo {
 	public static boolean readyScenario;
 	public static boolean readyAgent;
 	public static int time;
-	public static HashMap<Integer, StandardAgent> agents;
+	public static Map<Integer, StandardAgent> agents;
+	public static Map<Integer, Node> nodes;
+	public static Map<Integer, Edge> edges;
 
 	public Worldinfo() {
 		readyGmlMap = false;
@@ -29,10 +34,20 @@ public class Worldinfo {
 		readyAgent = false;
 		time = -1;
 		agents = new HashMap<>();
+		nodes = new HashMap<>();
+		edges = new HashMap<>();
 	}
 
-	public static HashMap<Integer, StandardAgent> getAgents() {
+	public static Map<Integer, StandardAgent> getAgents() {
 		return agents;
+	}
+
+	public static Map<Integer, Node> getNodes() {
+		return nodes;
+	}
+
+	public static Map<Integer, Edge> getEdges() {
+		return edges;
 	}
 
 	public static boolean canSpawnAgent() {

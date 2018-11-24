@@ -1,7 +1,6 @@
 package com.module.map;
 
 import com.module.commons.Point3Df;
-import com.module.commons.PointConverter;
 
 public class RescueMap extends StandardMap {
 
@@ -10,9 +9,9 @@ public class RescueMap extends StandardMap {
 	public static Point3Df centroid;
 
 	public RescueMap(GMLMap gmlMap) {
-		this.nodes = PointConverter.convertRescueMap(gmlMap);
+		this.nodes = convertRescueMap(gmlMap);
 
-		Point3Df[] primary = PointConverter.calcPrimaryPoint(this.nodes);
+		Point3Df[] primary = calcPrimaryPoint(this.nodes);
 		RescueMap.max = primary[0];
 		RescueMap.min = primary[1];
 		RescueMap.centroid = primary[2];

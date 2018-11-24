@@ -1,21 +1,24 @@
 package com.module.map;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.module.commons.Point3D;
+import com.module.commons.Point3Df;
 import com.module.map.parts.Building;
 import com.module.map.parts.Edge;
+import com.module.map.parts.Node;
 import com.module.map.parts.Road;
 
 public class StandardMap {
 
-	public Map<Integer, Point3D> nodes = null;
+	public Map<Integer, Node> nodes = null;
 	public Map<Integer, Edge> edges = null;
 	public ArrayList<Road> roads = null;
 	public ArrayList<Building> buildings = null;
 
-	public Map<Integer, Point3D> getNodes() {
+	public Map<Integer, Node> getNodes() {
 		return this.nodes;
 	}
 
@@ -43,45 +46,66 @@ public class StandardMap {
 		return this.buildings;
 	}
 
-	public Point3D getPosition(int enetityID) {
+	////////////////////////////////////////////////////////////////////////////////////////////
 
-		int sumX = 0;
-		int sumY = 0;
-		int sumZ = 0;
-		int count = 0;
+	public static Point3Df[] calcPrimaryPoint(Map<Integer, Node> nodes) {
 
-		// get building entytyID
-		for (Building building : buildings) {
-			if (building.getId() == enetityID) {
-				for (int edge_id : building.getEdgeIds()) {
-					for (int node_id : edges.get(edge_id).getNodeID()) {
-						sumX += nodes.get(node_id).x;
-						sumY += nodes.get(node_id).y;
-						sumZ += nodes.get(node_id).z;
-						count++;
-					}
-				}
-				return new Point3D(sumX / count, sumY / count, -sumZ / count);
-			}
+		// [0]: max, [1]:min, [2]:centroid
+		Point3Df[] result = new Point3Df[3];
+
+		for (int i = 0; i < result.length; i++)
+			result[i] = new Point3Df(0, 0, 0);
+		for (Map.Entry<Integer, Node> entry : nodes.entrySet()) {
+			Node node = entry.getValue();
+			if (result[1].getX() > node.getPoint().x)
+				result[1].x = node.getPoint().x;
+			if (result[1].getY() > node.getPoint().y)
+				result[1].y = node.getPoint().y;
+			if (result[1].getZ() > node.getPoint().z)
+				result[1].z = node.getPoint().z;
+			if (result[0].getX() < node.getPoint().x)
+				result[0].x = node.getPoint().x;
+			if (result[0].getY() < node.getPoint().y)
+				result[0].y = node.getPoint().y;
+			if (result[0].getZ() < node.getPoint().z)
+				result[0].z = node.getPoint().z;
 		}
+		result[2].x = (result[0].getX() + result[1].getX()) / 2.0;
+		result[2].y = (result[0].getY() + result[1].getY()) / 2.0;
+		result[2].z = (result[0].getZ() + result[1].getZ()) / 2.0;
+		return result;
+	}
 
-		// get road entityID
-		for (Road road : roads) {
-			if (road.getId() == enetityID) {
-				for (int edge_id : road.getEdgeIds()) {
-					for (int node_id : edges.get(edge_id).getNodeID()) {
-						sumX += nodes.get(node_id).x;
-						sumY += nodes.get(node_id).y;
-						sumZ += nodes.get(node_id).z;
-						count++;
-					}
-				}
-				System.out.println("sumY" + sumY);
-				return new Point3D(-sumX / count, sumY / count, sumZ / count);
-			}
+	public static Map<Integer, Node> convertRescueMap(GMLMap gmlMap) {
+
+		Map<Integer, Node> result = new HashMap<>();
+
+		Point3D distance = new Point3D((int) (-1 * gmlMap.getMinPoint().getX()),
+				(int) (-1 * gmlMap.getMinPoint().getY()), (int) (-1 * gmlMap.getMinPoint().getZ()));
+		for (Map.Entry<Integer, Node> entry : gmlMap.getNodes().entrySet()) {
+			Node node = entry.getValue();
+			Point3D newPoint = new Point3D((node.getPoint().x + distance.getX()) * 1000, node.getPoint().y,
+					(node.getPoint().x + distance.getX()) * 1000);
+			result.put(entry.getKey(), new Node(node.getID(), newPoint));
 		}
+		return result;
+	}
 
-		return null;
+	public static Map<Integer, Node> convertMinecraftMap(GMLMap gmlMap) {
+
+		Point3D origin = new Point3D(0, 0, 0);
+		Map<Integer, Node> result = new HashMap<>();
+
+		Point3D distance = new Point3D((int) (origin.getX() - gmlMap.getCentroid().getX()),
+				(int) (origin.getY() - gmlMap.getCentroid().getY()),
+				(int) (origin.getZ() - gmlMap.getCentroid().getZ()));
+		for (Map.Entry<Integer, Node> entry : gmlMap.getNodes().entrySet()) {
+			Node node = entry.getValue();
+			Point3D newPoint = new Point3D(node.getPoint().x - distance.getX(), node.getPoint().y,
+					node.getPoint().z - distance.getZ());
+			result.put(entry.getKey(), new Node(node.getID(), newPoint));
+		}
+		return result;
 	}
 
 }

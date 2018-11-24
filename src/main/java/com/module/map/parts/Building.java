@@ -1,35 +1,16 @@
 package com.module.map.parts;
 
-import java.awt.Polygon;
 import java.util.ArrayList;
 
-import com.module.commons.Point3D;
+public class Building extends Area {
 
-public class Building extends Polygon {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Point3D point;
-	private int id;
 	private int floor;
 	private String material;
-	private ArrayList<Integer> edge_ids;
 
-	public Building(int id, int floor, String material, ArrayList<Integer> edge_ids) {
-		this.id = id;
+	public Building(int entityID, int floor, String material, ArrayList<Integer> edge_ids) {
+		super(entityID, getEdge_list(edge_ids));
 		this.floor = floor;
 		this.material = material;
-		this.edge_ids = edge_ids;
-	}
-
-	public int getId() {
-		return this.id;
-	}
-
-	public Point3D getPosition() {
-		return this.point;
 	}
 
 	public int getFloor() {
@@ -38,10 +19,6 @@ public class Building extends Polygon {
 
 	public String getMaterial() {
 		return this.material;
-	}
-
-	public ArrayList<Integer> getEdgeIds() {
-		return this.edge_ids;
 	}
 
 }
