@@ -33,7 +33,7 @@ public class RoboRescueMod {
 	public void preInit(FMLPreInitializationEvent event) {
 		MinecraftForge.EVENT_BUS.register(this);
 		logger = event.getModLog();
-		socketClient = new SocketClient(12345, "192.168.11.5");
+		socketClient = new SocketClient(12345, "localhost");
 	}
 
 	@EventHandler
