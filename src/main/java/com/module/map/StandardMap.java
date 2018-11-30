@@ -93,13 +93,12 @@ public class StandardMap {
 
 	public static Map<Integer, Node> convertRescueMap_node(GMLMap gmlMap) {
 		Map<Integer, Node> result = new HashMap<>();
-		Point3Df distance = new Point3Df(-1 * gmlMap.getMinPoint().getX(), -1 * gmlMap.getMinPoint().getY(),
-				-1 * gmlMap.getMinPoint().getZ());
+		Point3Df distance = new Point3Df(-1 * gmlMap.getMinPoint().getX(), 0, -1 * gmlMap.getMinPoint().getZ());
 		for (Map.Entry<Integer, Node> entry : gmlMap.getNodes().entrySet()) {
 			result.put(entry.getKey(),
 					new Node(entry.getKey(),
 							new Point3D((int) ((entry.getValue().point.getX() + distance.getX()) * 1000),
-									(int) ((entry.getValue().point.getY() + distance.getY()) * 1000),
+									(int) entry.getValue().point.getY(),
 									(int) ((entry.getValue().point.getZ() + distance.getZ()) * 1000))));
 		}
 		return result;
@@ -149,10 +148,8 @@ public class StandardMap {
 
 		for (Map.Entry<Integer, Node> entry : gmlMap.getNodes().entrySet()) {
 			result.put(entry.getKey(),
-					new Node(entry.getKey(),
-							new Point3D(entry.getValue().point.getX() + (int) distance.getX(),
-									entry.getValue().point.getY() + (int) distance.getY(),
-									entry.getValue().point.getZ() + (int) distance.getZ())));
+					new Node(entry.getKey(), new Point3D(entry.getValue().point.getX() + (int) distance.getX(),
+							entry.getValue().point.getY(), entry.getValue().point.getZ() + (int) distance.getZ())));
 		}
 		return result;
 	}

@@ -39,7 +39,7 @@ public class Render {
 		if (Worldinfo.canMinecraftMap()) {
 			// Road
 			if (road_index != -1) {
-				if (drawRoad(road_index, Worldinfo.minecraftMap, world)) {
+				if (drawRoad(road_index, world)) {
 					road_index++;
 				} else {
 					road_index = -1;
@@ -47,7 +47,7 @@ public class Render {
 			}
 			// Building
 			if (build_index != -1) {
-				if (drawBuildings(build_index, Worldinfo.minecraftMap, world)) {
+				if (drawBuildings(build_index, world)) {
 					build_index++;
 				} else {
 					build_index = -1;
@@ -263,12 +263,13 @@ public class Render {
 		}
 	}
 
-	public boolean drawRoad(int index, MinecraftMap minecraftMap, World world) throws NullPointerException {
+	public boolean drawRoad(int index, World world) throws NullPointerException {
 
 		int entityID;
 		ArrayList<Point3D> edges;
 		ArrayList<Point3D> flame = new ArrayList<>();
 		HashSet<Point3D> area;
+		MinecraftMap minecraftMap = Worldinfo.minecraftMap;
 		Map<Integer, Road> roads = Worldinfo.minecraftMap.getRoads();
 
 		if (index < roads.size()) {
@@ -280,7 +281,7 @@ public class Render {
 			}
 			area = completionArea(flame);
 			for (Point3D point : area) { // draw
-				BlockPos pos = new BlockPos(point.x, 3, -1 * point.z);
+				BlockPos pos = new BlockPos(point.x, point.y, -1 * point.z);
 				world.setBlockState(pos, Blocks.DOUBLE_STONE_SLAB.getDefaultState());
 			}
 		} else {
@@ -289,13 +290,14 @@ public class Render {
 		return true;
 	}
 
-	public boolean drawBuildings(int index, MinecraftMap minecraftMap, World world) throws NullPointerException {
+	public boolean drawBuildings(int index, World world) throws NullPointerException {
 
 		int entityID;
 		ArrayList<Point3D> edges = new ArrayList<>();
 		ArrayList<Point3D> flame = new ArrayList<>();
 		HashSet<Point3D> area = new HashSet<>();
-		Map<Integer, Building> buildings = Worldinfo.minecraftMap.getBuildins();
+		MinecraftMap minecraftMap = Worldinfo.minecraftMap;
+		Map<Integer, Building> buildings = minecraftMap.getBuildins();
 
 		if (index < buildings.size()) {
 			entityID = buildings.keySet().toArray(new Integer[0])[index];
