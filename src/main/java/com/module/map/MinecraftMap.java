@@ -18,7 +18,7 @@ public class MinecraftMap extends StandardMap {
 		this.centroid = primary[2];
 
 		this.roads = convertMinecraftMap_road(gmlMap, this.edges);
-		this.buildings = convertMinecraftMap_building(gmlMap, this.buildings);
+		this.buildings = convertMinecraftMap_building(gmlMap, this.edges);
 	}
 	
 	public Point3Df getCentroid() {

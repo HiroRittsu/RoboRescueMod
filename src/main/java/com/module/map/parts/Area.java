@@ -3,7 +3,6 @@ package com.module.map.parts;
 import java.util.ArrayList;
 
 import com.module.commons.Point3D;
-import com.module.information.Worldinfo;
 
 public class Area {
 
@@ -45,13 +44,5 @@ public class Area {
 			count++;
 		}
 		return new Point3D(sumX / count, sumY / count, -sumZ / count);
-	}
-
-	public static ArrayList<Edge> getEdge_list(ArrayList<Integer> edge_ids) {
-		ArrayList<Edge> edges = new ArrayList<>();
-		for (int id : edge_ids) {
-	//		edges.add(Worldinfo.edges.get(id));
-		}
-		return edges;
 	}
 }

@@ -117,24 +117,24 @@ public class StandardMap {
 	public static Map<Integer, Road> convertRescueMap_road(GMLMap gmlMap, Map<Integer, Edge> edges) {
 		Map<Integer, Road> result = new HashMap<>();
 		for (Map.Entry<Integer, Road> entry : gmlMap.getRoads().entrySet()) {
-			ArrayList<Edge> edge_list = new ArrayList<>();
+			ArrayList<Edge> new_edges = new ArrayList<>();
 			for (Edge edge : entry.getValue().getEdges()) {
-				edge_list.add(edge);
+				new_edges.add(edges.get(edge.getId()));
 			}
-			result.put(entry.getKey(), new Road(entry.getKey(), edge_list));
+			result.put(entry.getKey(), new Road(entry.getKey(), new_edges));
 		}
 		return result;
 	}
 
-	public static Map<Integer, Building> convertRescueMap_building(GMLMap gmlMap, Map<Integer, Building> buildings) {
+	public static Map<Integer, Building> convertRescueMap_building(GMLMap gmlMap, Map<Integer, Edge> edges) {
 		Map<Integer, Building> result = new HashMap<>();
 		for (Map.Entry<Integer, Building> entry : gmlMap.getBuildins().entrySet()) {
-			ArrayList<Edge> edge_list = new ArrayList<>();
+			ArrayList<Edge> new_edges = new ArrayList<>();
 			for (Edge edge : entry.getValue().getEdges()) {
-				edge_list.add(edge);
+				new_edges.add(edges.get(edge.getId()));
 			}
 			result.put(entry.getKey(), new Building(entry.getKey(), entry.getValue().getFloor(),
-					entry.getValue().getMaterial(), edge_list));
+					entry.getValue().getMaterial(), new_edges));
 		}
 		return result;
 	}
@@ -169,24 +169,24 @@ public class StandardMap {
 	public static Map<Integer, Road> convertMinecraftMap_road(GMLMap gmlMap, Map<Integer, Edge> edges) {
 		Map<Integer, Road> result = new HashMap<>();
 		for (Map.Entry<Integer, Road> entry : gmlMap.getRoads().entrySet()) {
-			ArrayList<Edge> edge_list = new ArrayList<>();
+			ArrayList<Edge> new_edges = new ArrayList<>();
 			for (Edge edge : entry.getValue().getEdges()) {
-				edge_list.add(edge);
+				new_edges.add(edges.get(edge.getId()));
 			}
-			result.put(entry.getKey(), new Road(entry.getKey(), edge_list));
+			result.put(entry.getKey(), new Road(entry.getKey(), new_edges));
 		}
 		return result;
 	}
 
-	public static Map<Integer, Building> convertMinecraftMap_building(GMLMap gmlMap, Map<Integer, Building> buildings) {
+	public static Map<Integer, Building> convertMinecraftMap_building(GMLMap gmlMap, Map<Integer, Edge> edges) {
 		Map<Integer, Building> result = new HashMap<>();
 		for (Map.Entry<Integer, Building> entry : gmlMap.getBuildins().entrySet()) {
-			ArrayList<Edge> edge_list = new ArrayList<>();
+			ArrayList<Edge> new_edges = new ArrayList<>();
 			for (Edge edge : entry.getValue().getEdges()) {
-				edge_list.add(edge);
+				new_edges.add(edges.get(edge.getId()));
 			}
 			result.put(entry.getKey(), new Building(entry.getKey(), entry.getValue().getFloor(),
-					entry.getValue().getMaterial(), edge_list));
+					entry.getValue().getMaterial(), new_edges));
 		}
 		return result;
 	}

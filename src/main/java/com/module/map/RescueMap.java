@@ -18,9 +18,9 @@ public class RescueMap extends StandardMap {
 		this.centroid = primary[2];
 
 		this.roads = convertRescueMap_road(gmlMap, this.edges);
-		this.buildings = convertRescueMap_building(gmlMap, this.buildings);
+		this.buildings = convertRescueMap_building(gmlMap, this.edges);
 	}
-	
+
 	public Point3Df getCentroid() {
 		return this.centroid;
 	}
