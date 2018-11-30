@@ -8,40 +8,41 @@ import net.minecraft.world.World;
 
 public class Cycler {
 
-	private int time;
 	private Render render;
 
 	public World world;
 
 	public Cycler(World world) {
 		this.world = world;
-		this.time = -1;
 		this.render = new Render(world);
 	}
 
 	public void update() {
 
-		switch (time) {
+		switch (Worldinfo.time) {
 		case -1:
 			render.renderMap();
-			if (Worldinfo.readyMap) {
-				time++;
+			if (Worldinfo.completeMap) {
+				Worldinfo.time++;
 				SocketClient.publishCommand("ready_map");
 			}
 			break;
 
 		case 0:
 			render.renderScenario();
-			if (Worldinfo.readyScenario) {
-				time++;
+			if (Worldinfo.completeScenario) {
+				Worldinfo.time++;
 				SocketClient.publishCommand("ready_scenario");
 			}
 			break;
 
 		default:
-			render.actionAgent();
-			render.updateBuild();
-			render.updateBlockade();
+			render.renderStetas();
+			if (Worldinfo.completeStetas) {
+				Worldinfo.readyStetas = false;
+				Worldinfo.completeStetas = false;
+				SocketClient.publishCommand("next");
+			}
 			break;
 		}
 

@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.module.commons.Point3D;
 import com.module.commons.Point3Df;
+import com.module.information.Worldinfo;
 import com.module.map.parts.Building;
 import com.module.map.parts.Edge;
 import com.module.map.parts.Node;
@@ -44,7 +45,7 @@ public class StandardMap {
 	public Map<Integer, Building> getBuildins() {
 		return this.buildings;
 	}
-	
+
 	public Point3D getPosition(int enetityID) {
 		// get building entityID
 		if (buildings.containsKey(enetityID)) {
@@ -90,33 +91,62 @@ public class StandardMap {
 	public static Map<Integer, Node> convertRescueMap(GMLMap gmlMap) {
 
 		Map<Integer, Node> result = new HashMap<>();
+		Point3Df distance = new Point3Df(-1 * gmlMap.getMinPoint().getX(), -1 * gmlMap.getMinPoint().getY(),
+				-1 * gmlMap.getMinPoint().getZ());
 
-		Point3D distance = new Point3D((int) (-1 * gmlMap.getMinPoint().getX()),
-				(int) (-1 * gmlMap.getMinPoint().getY()), (int) (-1 * gmlMap.getMinPoint().getZ()));
 		for (Map.Entry<Integer, Node> entry : gmlMap.getNodes().entrySet()) {
-			Node node = entry.getValue();
-			Point3D newPoint = new Point3D((node.getPoint().x + distance.getX()) * 1000, node.getPoint().y,
-					(node.getPoint().x + distance.getX()) * 1000);
-			result.put(entry.getKey(), new Node(node.getID(), newPoint));
+			result.put(entry.getKey(),
+					new Node(entry.getKey(),
+							new Point3D((int) ((entry.getValue().point.getX() + distance.getX()) * 1000),
+									(int) ((entry.getValue().point.getY() + distance.getY()) * 1000),
+									(int) ((entry.getValue().point.getZ() + distance.getZ()) * 1000))));
+		}
+
+		for (Map.Entry<Integer, Edge> entry : gmlMap.getEdges().entrySet()) {
+			
+			Map<Integer, Edge> result = new HashMap<>();
+
+			result.put(entry.getKey(),
+					new Node(entry.getKey(),
+							new Point3D((int) ((entry.getValue().point.getX() + distance.getX()) * 1000),
+									(int) ((entry.getValue().point.getY() + distance.getY()) * 1000),
+									(int) ((entry.getValue().point.getZ() + distance.getZ()) * 1000))));
 		}
 		return result;
 	}
 
 	public static Map<Integer, Node> convertMinecraftMap(GMLMap gmlMap) {
 
-		Point3D origin = new Point3D(0, 0, 0);
-		Map<Integer, Node> result = new HashMap<>();
+		Point3Df origin = new Point3Df(0, 0, 0);
 
-		Point3D distance = new Point3D((int) (origin.getX() - gmlMap.getCentroid().getX()),
-				(int) (origin.getY() - gmlMap.getCentroid().getY()),
-				(int) (origin.getZ() - gmlMap.getCentroid().getZ()));
+		Map<Integer, Node> result = new HashMap<>();
+		Point3Df distance = new Point3Df(origin.getX() - gmlMap.getCentroid().getX(),
+				origin.getY() - gmlMap.getCentroid().getY(), origin.getZ() - gmlMap.getCentroid().getZ());
+
 		for (Map.Entry<Integer, Node> entry : gmlMap.getNodes().entrySet()) {
-			Node node = entry.getValue();
-			Point3D newPoint = new Point3D(node.getPoint().x - distance.getX(), node.getPoint().y,
-					node.getPoint().z - distance.getZ());
-			result.put(entry.getKey(), new Node(node.getID(), newPoint));
+			result.put(entry.getKey(),
+					new Node(entry.getKey(),
+							new Point3D(entry.getValue().point.getX() + (int) distance.getX(),
+									entry.getValue().point.getY() + (int) distance.getY(),
+									entry.getValue().point.getZ() + (int) distance.getZ())));
 		}
 		return result;
+	}
+
+	public Point3D toMinecraftPoint(Point3D rescue_point) {
+
+		/*
+		 * Point3Df distance = new Point3Df((double) (Worldinfo.rescueMap.centroid.x),
+		 * (double) (Worldinfo.rescueMap.centroid.y), (double)
+		 * (Worldinfo.rescueMap.centroid.z));
+		 * 
+		 * return new Point3D((int) (rescue_point.x - distance.x) / 1000, (int)
+		 * (rescue_point.y - distance.y) / 1000, (int) (rescue_point.z - distance.z) /
+		 * -1000);
+		 */
+		return new Point3D((int) (rescue_point.x - Worldinfo.rescueMap.centroid.x) / 1000,
+				(int) (rescue_point.y - Worldinfo.rescueMap.centroid.y) / 1000,
+				(int) (rescue_point.z - Worldinfo.rescueMap.centroid.z) / -1000);
 	}
 
 }

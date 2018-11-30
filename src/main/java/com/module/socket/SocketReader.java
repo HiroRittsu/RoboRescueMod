@@ -2,6 +2,7 @@ package com.module.socket;
 
 import java.util.ArrayList;
 
+import com.module.anget.StandardAgent;
 import com.module.anget.ambulanceteam.AT;
 import com.module.anget.civilian.Civilian;
 import com.module.anget.firebrigade.FB;
@@ -28,10 +29,13 @@ public class SocketReader {
 		case "registry_map":
 			// gmlマップ作成
 			gmlMap = new GMLMap();
+			System.out.println("gmlMap" + gmlMap.getCentroid());
 			// rescueマップ作成
 			rescueMap = new RescueMap(gmlMap);
+			System.out.println("rescueMap" + rescueMap.centroid);
 			// minecraftマップ作成
 			minecraftMap = new MinecraftMap(gmlMap);
+			System.out.println("minecraftMap " + minecraftMap.centroid);
 
 			// Worldinfoに登録
 			Worldinfo.gmlMap = gmlMap;
@@ -48,8 +52,12 @@ public class SocketReader {
 
 		case "orient_scenario":
 			Worldinfo.readyAgent = true;
+			System.out.println("シナリオ反映");
+			break;
 
-			System.out.println("シナリオ登録完了");
+		case "orient_stetas":
+			Worldinfo.readyStetas = true;
+			System.out.println("ステータス反映");
 			break;
 
 		default:
@@ -150,31 +158,58 @@ public class SocketReader {
 
 	////////////////////////////////////////////////////////////////
 
-	public void readCivilian(String msg) {
-		for (int i = 1; i < msg.split(",").length; i++) {
-
+	public void readCivilian_State(String msg) {
+		String[] msgs = msg.split(",");
+		// {civilian, entityID, HP, historyX, historyZ ・・・}
+		if (msgs.length >= 3) {
+			StandardAgent agent = Worldinfo.getAgents().get(Integer.parseInt(msgs[1]));
+			agent.hp = Integer.parseInt(msgs[2]);
+			for (int i = 3; i < msgs.length; i++) {
+				agent.history_position.add(Integer.parseInt(msgs[i]));
+			}
 		}
 	}
 
-	public void readAT(String msg) {
-		for (int i = 1; i < msg.split(",").length; i++) {
-
+	public void readAT_State(String msg) {
+		String[] msgs = msg.split(",");
+		// {ambulanceteam, enriryID, HP, historyX, historyZ ・・・}
+		if (msgs.length >= 3) {
+			StandardAgent agent = Worldinfo.getAgents().get(Integer.parseInt(msgs[1]));
+			agent.hp = Integer.parseInt(msgs[2]);
+			for (int i = 3; i < msgs.length; i++) {
+				agent.history_position.add(Integer.parseInt(msgs[i]));
+			}
 		}
 	}
 
-	public void readFB(String msg) {
-		for (int i = 1; i < msg.split(",").length; i++) {
-
+	public void readFB_State(String msg) {
+		String[] msgs = msg.split(",");
+		// {firebrigade, enriryID, HP, Water, historyX, historyZ ・・・}
+		if (msgs.length >= 4) {
+			StandardAgent agent = Worldinfo.getAgents().get(Integer.parseInt(msgs[1]));
+			agent.hp = Integer.parseInt(msgs[2]);
+			if (agent instanceof FB) {
+				((FB) agent).water = Integer.parseInt(msgs[3]);
+			}
+			for (int i = 4; i < msgs.length; i++) {
+				agent.history_position.add(Integer.parseInt(msgs[i]));
+			}
 		}
 	}
 
-	public void readPF(String msg) {
-		for (int i = 1; i < msg.split(",").length; i++) {
-
+	public void readPF_State(String msg) {
+		String[] msgs = msg.split(",");
+		// {policeforce, enriryID, HP, historyX, historyZ ・・・}
+		if (msgs.length >= 3) {
+			StandardAgent agent = Worldinfo.getAgents().get(Integer.parseInt(msgs[1]));
+			agent.hp = Integer.parseInt(msgs[2]);
+			for (int i = 3; i < msgs.length; i++) {
+				agent.history_position.add(Integer.parseInt(msgs[i]));
+			}
 		}
 	}
 
-	public void readBlickade(String msg) {
+	public void readBlickade_State(String msg) {
 		for (int i = 1; i < msg.split(",").length; i++) {
 
 		}

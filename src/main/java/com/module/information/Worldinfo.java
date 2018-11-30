@@ -1,5 +1,6 @@
 package com.module.information;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,28 +21,35 @@ public class Worldinfo {
 	public static boolean readyMinecraftMap;
 	public static boolean readyRescueMap;
 	public static boolean readyGmlMap;
-	public static boolean readyMap;
-	public static boolean readyScenario;
 	public static boolean readyAgent;
+	public static boolean readyStetas;
+	public static boolean completeMap;
+	public static boolean completeScenario;
+	public static boolean completeStetas;
 	public static int time;
 	public static Map<Integer, StandardAgent> agents;
 	public static Map<Integer, Node> nodes;
 	public static Map<Integer, Edge> edges;
 	public static Map<Integer, Road> roads;
 	public static Map<Integer, Building> buildings;
+	public static ArrayList<String> stetas;
 
 	public Worldinfo() {
 		readyGmlMap = false;
 		readyRescueMap = false;
 		readyMinecraftMap = false;
-		readyMap = false;
 		readyAgent = false;
+		readyStetas = false;
+		completeMap = false;
+		completeScenario = false;
+		completeStetas = false;
 		time = -1;
 		agents = new HashMap<>();
 		nodes = new HashMap<>();
 		edges = new HashMap<>();
 		roads = new HashMap<>();
 		buildings = new HashMap<>();
+		stetas = new ArrayList<>();
 	}
 
 	public static Map<Integer, StandardAgent> getAgents() {
@@ -64,6 +72,10 @@ public class Worldinfo {
 		return buildings;
 	}
 
+	public static ArrayList<String> getStates() {
+		return stetas;
+	}
+
 	public static boolean canSpawnAgent() {
 		return readyAgent;
 	}
@@ -78,6 +90,10 @@ public class Worldinfo {
 
 	public static boolean canGmlMap() {
 		return readyGmlMap;
+	}
+
+	public static boolean canStetas() {
+		return readyStetas;
 	}
 
 }

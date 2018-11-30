@@ -31,6 +31,7 @@ public class SocketClient {
 
 				while (true) {
 					String msg = originalSocket.subscribeMsgs();
+					System.out.println(msg);
 
 					switch (msg.split(",")[0]) {
 					case "command":
@@ -62,32 +63,42 @@ public class SocketClient {
 						socketReader.readScenario(msg);
 						break;
 
-					case "civilian":
-						socketReader.readCivilian(msg);
+					case "civilian_steta":
+						System.out.println("civilian_state");
+						socketReader.readCivilian_State(msg);
 						break;
 
-					case "AT":
-						socketReader.readAT(msg);
+					case "ambulanceteam_steta":
+						System.out.println("ambulanceteam_state");
+						socketReader.readAT_State(msg);
 						break;
 
-					case "FB":
-						socketReader.readFB(msg);
+					case "firebrigade_steta":
+						System.out.println("firebrigade_state");
+						socketReader.readFB_State(msg);
 						break;
 
-					case "PF":
-						socketReader.readPF(msg);
+					case "policeforce_steta":
+						System.out.println("policeforce_state");
+						socketReader.readPF_State(msg);
+						break;
+
+					case "building_state":
+						System.out.println("building_state");
+						break;
+
+					case "blockade_steta":
+						System.out.println("blockade_steta");
 						break;
 
 					default:
-						System.out.println("sokcet例外受信");
+						System.out.println("sokcet例外受信" + msg.split(",")[0]);
 						break;
 					}
 
 					originalSocket.delaitinon(1);
 				}
-
 			}
 		}).start();
 	}
-
 }

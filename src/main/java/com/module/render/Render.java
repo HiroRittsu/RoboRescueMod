@@ -18,6 +18,7 @@ import com.module.map.parts.Road;
 
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -48,13 +49,12 @@ public class Render {
 			if (build_index != -1) {
 				if (drawBuildings(build_index, Worldinfo.minecraftMap, world)) {
 					build_index++;
-					System.out.println("building_index: " + build_index);
 				} else {
 					build_index = -1;
 				}
 			}
 			if (road_index == -1 && build_index == -1) {
-				Worldinfo.readyMap = true;
+				Worldinfo.completeMap = true;
 			}
 		}
 	}
@@ -69,23 +69,28 @@ public class Render {
 				}
 			}
 			if (spawn_agent_index == -1) {
-				Worldinfo.readyScenario = true;
+				Worldinfo.completeScenario = true;
 			}
 		}
 	}
 
-	public void actionAgent() {
-
+	public void renderStetas() {
+		if (Worldinfo.canStetas()) {
+			Worldinfo.completeStetas = true;
+			for (Map.Entry<Integer, StandardAgent> entry : Worldinfo.getAgents().entrySet()) {
+				int x = 0, z = 0;
+				StandardAgent agent = entry.getValue();
+				if (!agent.isHistory()) {
+					Worldinfo.completeStetas = false;
+					Point3D point = new Point3D(agent.popHistory(), 0, agent.popHistory());
+					Point3D newPoint = Worldinfo.minecraftMap.toMinecraftPoint(point);
+					x = newPoint.x - agent.getPosition().x;
+					z = newPoint.z - agent.getPosition().z;
+				}
+				agent.getEntity().move(MoverType.SELF, x, 0, z);
+			}
+		}
 	}
-
-	public void updateBuild() {
-
-	}
-
-	public void updateBlockade() {
-
-	}
-
 	///////////////////////////////////////////////////////////////////////////////
 
 	private static boolean contains(int x, int y, int z, HashSet<Point3D> closed, int[] bounding_box) {
@@ -239,8 +244,10 @@ public class Render {
 
 		for (int i = 0; i < 5; i++) {
 
-			for (int z = (int) (MinecraftMap.min.getZ()) - 5; z < (int) (MinecraftMap.max.getZ()) + 5; z++) {
-				for (int x = (int) (MinecraftMap.min.getX()) - 5; x < (int) (MinecraftMap.max.getX()) + 5; x++) {
+			for (int z = (int) (Worldinfo.minecraftMap.min.getZ()) - 5; z < (int) (Worldinfo.minecraftMap.max.getZ())
+					+ 5; z++) {
+				for (int x = (int) (Worldinfo.minecraftMap.min.getX())
+						- 5; x < (int) (Worldinfo.minecraftMap.max.getX()) + 5; x++) {
 
 					BlockPos pos = new BlockPos(x, i + 3, z);
 
@@ -267,8 +274,6 @@ public class Render {
 		if (index < roads.size()) {
 			entityID = roads.keySet().toArray(new Integer[0])[index];
 			Road road = minecraftMap.getRoads().get(entityID);
-			System.out.println(minecraftMap.getRoads());
-			System.out.println(road);
 			for (Edge edge : road.getEdges()) {
 				edges = completionLine(edge.getStartNode().getPoint(), edge.getEndNode().getPoint());
 				flame.addAll(edges);
@@ -310,9 +315,10 @@ public class Render {
 				} else {
 					for (Point3D point : flame) { // draw
 
-						BlockPos pos = new BlockPos(point.x, point.y + i, -1 * point.z);
-						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
-								BlockPlanks.EnumType.byMetadata(building.getID() % 6)));
+						// BlockPos pos = new BlockPos(point.x, point.y + i, -1 * point.z);
+						// world.setBlockState(pos,
+						// Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
+						// BlockPlanks.EnumType.byMetadata(building.getID() % 6)));
 					}
 				}
 			}
@@ -337,6 +343,7 @@ public class Render {
 				entity = new EntityVillager(world);
 				entity.setPosition(point.x, point.y + 1, point.z);
 				world.spawnEntity(entity);
+				civilian.entity = entity;
 				civilian.spawned = true;
 				System.out.println("Civilian spawned");
 			}
@@ -346,6 +353,7 @@ public class Render {
 				entity = new EntityVillager(world);
 				entity.setPosition(point.x, point.y + 1, point.z);
 				world.spawnEntity(entity);
+				at.entity = entity;
 				at.spawned = true;
 				System.out.println("AT spawned");
 			}
@@ -355,6 +363,7 @@ public class Render {
 				entity = new EntityVillager(world);
 				entity.setPosition(point.x, point.y + 1, point.z);
 				world.spawnEntity(entity);
+				fb.entity = entity;
 				fb.spawned = true;
 				System.out.println("FB spawned");
 			}
@@ -364,6 +373,7 @@ public class Render {
 				entity = new EntityVillager(world);
 				entity.setPosition(point.x, point.y + 1, point.z);
 				world.spawnEntity(entity);
+				pf.entity = entity;
 				pf.spawned = true;
 				System.out.println("PF spawned");
 			}
