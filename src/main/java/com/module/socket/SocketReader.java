@@ -1,6 +1,8 @@
 package com.module.socket;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.module.anget.StandardAgent;
 import com.module.anget.ambulanceteam.AT;
@@ -22,20 +24,31 @@ public class SocketReader {
 	public GMLMap gmlMap;
 	public RescueMap rescueMap;
 	public MinecraftMap minecraftMap;
+	public Map<Integer, Node> nodes;
+	public Map<Integer, Edge> edges;
+	public Map<Integer, Road> roads;
+	public Map<Integer, Building> buildings;
+
+	public SocketReader() {
+		this.nodes = new HashMap<>();
+		this.edges = new HashMap<>();
+		this.roads = new HashMap<>();
+		this.buildings = new HashMap<>();
+	}
 
 	public void readCommand(String msg) {
 		String[] msgs = msg.split(",");
 		switch (msgs[1]) {
 		case "registry_map":
 			// gmlマップ作成
-			gmlMap = new GMLMap();
+			gmlMap = new GMLMap(nodes, edges, roads, buildings);
 			System.out.println("gmlMap" + gmlMap.getCentroid());
 			// rescueマップ作成
 			rescueMap = new RescueMap(gmlMap);
-			System.out.println("rescueMap" + rescueMap.centroid);
+			System.out.println("rescueMap" + rescueMap.getCentroid());
 			// minecraftマップ作成
 			minecraftMap = new MinecraftMap(gmlMap);
-			System.out.println("minecraftMap " + minecraftMap.centroid);
+			System.out.println("minecraftMap " + minecraftMap.getCentroid());
 
 			// Worldinfoに登録
 			Worldinfo.gmlMap = gmlMap;
@@ -76,7 +89,7 @@ public class SocketReader {
 			Point3D point = new Point3D((int) Double.parseDouble(msgs[i + 1]), (int) Double.parseDouble(msgs[i + 2]),
 					(int) Double.parseDouble(msgs[i + 3]));
 			point.y = 3; // minecraftのフラットワールドの高さ
-			Worldinfo.getNodes().put(id, new Node(id, point));
+			nodes.put(id, new Node(id, point));
 		}
 	}
 
@@ -84,20 +97,20 @@ public class SocketReader {
 		String[] msgs = msg.split(",");
 		// {edge, entityID, firstID, endID}
 		int id = Integer.parseInt(msgs[1]);
-		Node first = Worldinfo.nodes.get(Integer.parseInt(msgs[2]));
-		Node end = Worldinfo.nodes.get(Integer.parseInt(msgs[3]));
-		Worldinfo.getEdges().put(id, new Edge(id, first, end));
+		Node first = nodes.get(Integer.parseInt(msgs[2]));
+		Node end = nodes.get(Integer.parseInt(msgs[3]));
+		edges.put(id, new Edge(id, first, end));
 	}
 
 	public void readRoad(String msg) {
 		String[] msgs = msg.split(",");
 		// {road, entityID, edgeID,・・・ }
 		int id = Integer.parseInt(msgs[1]);
-		ArrayList<Integer> edge_ids = new ArrayList<>();
+		ArrayList<Edge> result = new ArrayList<>();
 		for (int i = 2; i < msgs.length; i++) {
-			edge_ids.add(Integer.parseInt(msgs[i]));
+			result.add(this.edges.get(Integer.parseInt(msgs[i])));
 		}
-		Worldinfo.getRoads().put(id, new Road(id, edge_ids));
+		roads.put(id, new Road(id, result));
 	}
 
 	public void readBuilding(String msg) {
@@ -105,12 +118,12 @@ public class SocketReader {
 		// {building, entityID, floor, material, edgeID,・・・ }
 		int id = Integer.parseInt(msgs[1]);
 		int floor = Integer.parseInt(msgs[2]);
+		ArrayList<Edge> result = new ArrayList<>();
 		String material = msgs[3];
-		ArrayList<Integer> edge_ids = new ArrayList<>();
 		for (int i = 4; i < msgs.length; i++) {
-			edge_ids.add(Integer.parseInt(msgs[i]));
+			result.add(this.edges.get(Integer.parseInt(msgs[i])));
 		}
-		Worldinfo.getBuildings().put(id, new Building(id, floor, material, edge_ids));
+		buildings.put(id, new Building(id, floor, material, result));
 	}
 
 	////////////////////////////////////////////

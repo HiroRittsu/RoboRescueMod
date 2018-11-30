@@ -28,10 +28,10 @@ public class Worldinfo {
 	public static boolean completeStetas;
 	public static int time;
 	public static Map<Integer, StandardAgent> agents;
-	public static Map<Integer, Node> nodes;
-	public static Map<Integer, Edge> edges;
-	public static Map<Integer, Road> roads;
-	public static Map<Integer, Building> buildings;
+	//public static Map<Integer, Node> nodes;
+	//public static Map<Integer, Edge> edges;
+	//public static Map<Integer, Road> roads;
+	//public static Map<Integer, Building> buildings;
 	public static ArrayList<String> stetas;
 
 	public Worldinfo() {
@@ -45,10 +45,10 @@ public class Worldinfo {
 		completeStetas = false;
 		time = -1;
 		agents = new HashMap<>();
-		nodes = new HashMap<>();
-		edges = new HashMap<>();
-		roads = new HashMap<>();
-		buildings = new HashMap<>();
+		//nodes = new HashMap<>();
+		//edges = new HashMap<>();
+		//roads = new HashMap<>();
+		//buildings = new HashMap<>();
 		stetas = new ArrayList<>();
 	}
 
@@ -56,7 +56,7 @@ public class Worldinfo {
 		return agents;
 	}
 
-	public static Map<Integer, Node> getNodes() {
+	/*public static Map<Integer, Node> getNodes() {
 		return nodes;
 	}
 
@@ -70,7 +70,7 @@ public class Worldinfo {
 
 	public static Map<Integer, Building> getBuildings() {
 		return buildings;
-	}
+	}*/
 
 	public static ArrayList<String> getStates() {
 		return stetas;

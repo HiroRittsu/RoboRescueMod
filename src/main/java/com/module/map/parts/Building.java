@@ -7,8 +7,8 @@ public class Building extends Area {
 	private int floor;
 	private String material;
 
-	public Building(int entityID, int floor, String material, ArrayList<Integer> edge_ids) {
-		super(entityID, getEdge_list(edge_ids));
+	public Building(int entityID, int floor, String material, ArrayList<Edge> edges) {
+		super(entityID, edges);
 		this.floor = floor;
 		this.material = material;
 	}

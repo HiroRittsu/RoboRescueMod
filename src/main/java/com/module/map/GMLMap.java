@@ -1,7 +1,12 @@
 package com.module.map;
 
+import java.util.Map;
+
 import com.module.commons.Point3Df;
-import com.module.information.Worldinfo;
+import com.module.map.parts.Building;
+import com.module.map.parts.Edge;
+import com.module.map.parts.Node;
+import com.module.map.parts.Road;
 
 public class GMLMap extends StandardMap {
 
@@ -9,11 +14,12 @@ public class GMLMap extends StandardMap {
 	private Point3Df min;
 	private Point3Df centroid;
 
-	public GMLMap() {
-		this.nodes = Worldinfo.getNodes();
-		this.edges = Worldinfo.getEdges();
-		this.roads = Worldinfo.getRoads();
-		this.buildings = Worldinfo.getBuildings();
+	public GMLMap(Map<Integer, Node> nodes, Map<Integer, Edge> edges, Map<Integer, Road> roads,
+			Map<Integer, Building> buildings) {
+		this.nodes = nodes;
+		this.edges = edges;
+		this.roads = roads;
+		this.buildings = buildings;
 		Point3Df[] primary = calcPrimaryPoint(nodes);
 		this.max = primary[0];
 		this.min = primary[1];

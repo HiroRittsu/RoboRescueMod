@@ -50,7 +50,7 @@ public class Area {
 	public static ArrayList<Edge> getEdge_list(ArrayList<Integer> edge_ids) {
 		ArrayList<Edge> edges = new ArrayList<>();
 		for (int id : edge_ids) {
-			edges.add(Worldinfo.edges.get(id));
+	//		edges.add(Worldinfo.edges.get(id));
 		}
 		return edges;
 	}

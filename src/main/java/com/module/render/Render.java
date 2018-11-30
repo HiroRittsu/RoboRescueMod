@@ -269,7 +269,7 @@ public class Render {
 		ArrayList<Point3D> edges;
 		ArrayList<Point3D> flame = new ArrayList<>();
 		HashSet<Point3D> area;
-		Map<Integer, Road> roads = Worldinfo.getRoads();
+		Map<Integer, Road> roads = Worldinfo.minecraftMap.getRoads();
 
 		if (index < roads.size()) {
 			entityID = roads.keySet().toArray(new Integer[0])[index];
@@ -295,7 +295,7 @@ public class Render {
 		ArrayList<Point3D> edges = new ArrayList<>();
 		ArrayList<Point3D> flame = new ArrayList<>();
 		HashSet<Point3D> area = new HashSet<>();
-		Map<Integer, Building> buildings = Worldinfo.getBuildings();
+		Map<Integer, Building> buildings = Worldinfo.minecraftMap.getBuildins();
 
 		if (index < buildings.size()) {
 			entityID = buildings.keySet().toArray(new Integer[0])[index];
