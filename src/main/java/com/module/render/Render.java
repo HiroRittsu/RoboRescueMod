@@ -102,6 +102,10 @@ public class Render {
 				}
 				agent.getEntity().move(MoverType.SELF, x, 0, z);
 			}
+		} else {
+			for (Map.Entry<Integer, StandardAgent> entry : Worldinfo.getAgents().entrySet()) {
+				entry.getValue().getEntity().move(MoverType.SELF, 0.0, 0.0, 0.0);
+			}
 		}
 	}
 	///////////////////////////////////////////////////////////////////////////////

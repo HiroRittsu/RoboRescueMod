@@ -31,7 +31,6 @@ public class SocketClient {
 
 				while (true) {
 					String msg = originalSocket.subscribeMsgs();
-					System.out.println(msg);
 
 					switch (msg.split(",")[0]) {
 					case "command":
@@ -88,7 +87,7 @@ public class SocketClient {
 						break;
 
 					case "building_state":
-						System.out.println("building_state");
+						//System.out.println("building_state");
 						break;
 
 					case "blockade_steta":
