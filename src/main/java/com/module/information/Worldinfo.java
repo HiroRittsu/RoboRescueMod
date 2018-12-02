@@ -24,7 +24,7 @@ public class Worldinfo {
 	public static boolean completeScenario;
 	public static boolean completeStetas;
 	public static int time;
-	public static ArrayList<Integer> neighbour;
+	public static ArrayList<Integer> neighbours;
 	public static Map<Integer, StandardAgent> agents;
 	public static ArrayList<String> stetas;
 
@@ -39,7 +39,7 @@ public class Worldinfo {
 		completeScenario = false;
 		completeStetas = false;
 		time = -1;
-		neighbour = new ArrayList<>();
+		neighbours = new ArrayList<>();
 		agents = new HashMap<>();
 		stetas = new ArrayList<>();
 	}
@@ -66,6 +66,10 @@ public class Worldinfo {
 
 	public static boolean canGmlMap() {
 		return readyGmlMap;
+	}
+
+	public static boolean canNeighbour() {
+		return readyNeighbour;
 	}
 
 	public static boolean canStetas() {

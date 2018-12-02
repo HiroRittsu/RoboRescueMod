@@ -29,6 +29,7 @@ public class Render {
 	public World world;
 	private int build_index = 0;
 	private int road_index = 0;
+	private int neighbour_index = 0;
 	private int spawn_agent_index = 0;
 
 	public Render(World world) {
@@ -60,6 +61,17 @@ public class Render {
 	}
 
 	public void renderScenario() {
+		// 入り口作成
+		if (Worldinfo.canNeighbour()) {
+			if (neighbour_index != -1) {
+				if (drawNighbours(neighbour_index, world)) {
+					neighbour_index++;
+				} else {
+					neighbour_index = -1;
+				}
+			}
+		}
+		// 初期スポーン
 		if (Worldinfo.canSpawnAgent()) {
 			if (spawn_agent_index != -1) {
 				if (spawnAgent(spawn_agent_index, Worldinfo.minecraftMap, world)) {
@@ -68,9 +80,10 @@ public class Render {
 					spawn_agent_index = -1;
 				}
 			}
-			if (spawn_agent_index == -1) {
-				Worldinfo.completeScenario = true;
-			}
+		}
+
+		if (spawn_agent_index == -1 && neighbour_index == -1) {
+			Worldinfo.completeScenario = true;
 		}
 	}
 
@@ -316,11 +329,31 @@ public class Render {
 					}
 				} else {
 					for (Point3D point : flame) { // draw
+						BlockPos pos = new BlockPos(point.x, point.y + i, -1 * point.z);
+						world.setBlockState(pos, Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
+								BlockPlanks.EnumType.byMetadata(building.getID() % 6)));
+					}
+				}
+			}
+		} else {
+			return false;
+		}
+		return true;
+	}
 
-						// BlockPos pos = new BlockPos(point.x, point.y + i, -1 * point.z);
-						// world.setBlockState(pos,
-						// Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT,
-						// BlockPlanks.EnumType.byMetadata(building.getID() % 6)));
+	public boolean drawNighbours(int index, World world) {
+
+		ArrayList<Integer> neighbours = Worldinfo.neighbours;
+		MinecraftMap minecraftMap = Worldinfo.minecraftMap;
+
+		if (index < neighbours.size()) {
+			Edge edge = minecraftMap.getEdges().get(neighbours.get(index));
+			Point3D point = edge.getPosition();
+			for (int x = -1; x <= 1; x++) {
+				for (int y = 0; y < 2; y++) {
+					for (int z = -1; z <= 1; z++) {
+						BlockPos pos = new BlockPos(point.x + x, point.y + 1 + y, -1 * (point.z + z));
+						world.setBlockState(pos, Blocks.AIR.getDefaultState());
 					}
 				}
 			}

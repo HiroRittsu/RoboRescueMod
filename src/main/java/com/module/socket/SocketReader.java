@@ -62,7 +62,7 @@ public class SocketReader {
 			Worldinfo.minecraftMap = minecraftMap;
 			Worldinfo.readyMinecraftMap = true;
 
-			Worldinfo.neighbour = neighbour;
+			Worldinfo.neighbours = neighbour;
 			Worldinfo.readyNeighbour = true;
 
 			System.out.println("マップ登録完了");
