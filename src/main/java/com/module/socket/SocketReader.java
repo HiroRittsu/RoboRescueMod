@@ -28,6 +28,7 @@ public class SocketReader {
 	public Map<Integer, Edge> edges;
 	public Map<Integer, Road> roads;
 	public Map<Integer, Building> buildings;
+	public ArrayList<Integer> neighbour;
 
 	public SocketReader() {
 		this.nodes = new HashMap<>();
@@ -124,6 +125,14 @@ public class SocketReader {
 			result.add(this.edges.get(Integer.parseInt(msgs[i])));
 		}
 		buildings.put(id, new Building(id, floor, material, result));
+	}
+
+	public void readBuilding_neighbour(String msg) {
+		String[] msgs = msg.split(",");
+		// {building_neighbour, edgeID,・・・ }
+		for (String edge : msgs) {
+			neighbour.add(Integer.parseInt(edge));
+		}
 	}
 
 	////////////////////////////////////////////
@@ -227,5 +236,4 @@ public class SocketReader {
 
 		}
 	}
-
 }

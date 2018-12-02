@@ -189,16 +189,6 @@ public class StandardMap {
 	}
 
 	public Point3D toMinecraftPoint(Point3D rescue_point) {
-
-		/*
-		 * Point3Df distance = new Point3Df((double) (Worldinfo.rescueMap.centroid.x),
-		 * (double) (Worldinfo.rescueMap.centroid.y), (double)
-		 * (Worldinfo.rescueMap.centroid.z));
-		 * 
-		 * return new Point3D((int) (rescue_point.x - distance.x) / 1000, (int)
-		 * (rescue_point.y - distance.y) / 1000, (int) (rescue_point.z - distance.z) /
-		 * -1000);
-		 */
 		return new Point3D((int) (rescue_point.x - Worldinfo.rescueMap.centroid.x) / 1000,
 				(int) (rescue_point.y - Worldinfo.rescueMap.centroid.y) / 1000,
 				(int) (rescue_point.z - Worldinfo.rescueMap.centroid.z) / -1000);

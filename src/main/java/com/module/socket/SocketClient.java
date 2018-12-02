@@ -58,6 +58,10 @@ public class SocketClient {
 						System.out.println("building");
 						socketReader.readBuilding(msg);
 						break;
+					case "building_neighbour":
+						System.out.println("neighbour");
+						socketReader.readBuilding_neighbour(msg);
+						break;
 					case "scenario":
 						System.out.println("scenario");
 						socketReader.readScenario(msg);
