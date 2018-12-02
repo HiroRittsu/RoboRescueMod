@@ -17,12 +17,14 @@ public class Worldinfo {
 	public static boolean readyMinecraftMap;
 	public static boolean readyRescueMap;
 	public static boolean readyGmlMap;
+	public static boolean readyNeighbour;
 	public static boolean readyAgent;
 	public static boolean readyStetas;
 	public static boolean completeMap;
 	public static boolean completeScenario;
 	public static boolean completeStetas;
 	public static int time;
+	public static ArrayList<Integer> neighbour;
 	public static Map<Integer, StandardAgent> agents;
 	public static ArrayList<String> stetas;
 
@@ -30,12 +32,14 @@ public class Worldinfo {
 		readyGmlMap = false;
 		readyRescueMap = false;
 		readyMinecraftMap = false;
+		readyNeighbour = false;
 		readyAgent = false;
 		readyStetas = false;
 		completeMap = false;
 		completeScenario = false;
 		completeStetas = false;
 		time = -1;
+		neighbour = new ArrayList<>();
 		agents = new HashMap<>();
 		stetas = new ArrayList<>();
 	}

@@ -35,6 +35,7 @@ public class SocketReader {
 		this.edges = new HashMap<>();
 		this.roads = new HashMap<>();
 		this.buildings = new HashMap<>();
+		this.neighbour = new ArrayList<>();
 	}
 
 	public void readCommand(String msg) {
@@ -60,6 +61,9 @@ public class SocketReader {
 
 			Worldinfo.minecraftMap = minecraftMap;
 			Worldinfo.readyMinecraftMap = true;
+
+			Worldinfo.neighbour = neighbour;
+			Worldinfo.readyNeighbour = true;
 
 			System.out.println("マップ登録完了");
 			break;
@@ -128,10 +132,11 @@ public class SocketReader {
 	}
 
 	public void readBuilding_neighbour(String msg) {
+		System.out.println(msg);
 		String[] msgs = msg.split(",");
 		// {building_neighbour, edgeID,・・・ }
-		for (String edge : msgs) {
-			neighbour.add(Integer.parseInt(edge));
+		for (int i = 1; i < msgs.length; i++) {
+			neighbour.add(Integer.parseInt(msgs[i]));
 		}
 	}
 
